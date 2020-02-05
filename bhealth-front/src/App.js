@@ -13,14 +13,17 @@ function App() {
   return (
     <div className="App">
       <Navbar />
-      { user._id ? (
-        <div className="uk-flex">
-          <Sidebar />
+      <main>
+        { user._id ? (
+          <div className="uk-flex">
+            <Sidebar />
+            <Router />
+          </div>
+        ) : (
           <Router />
-        </div>
-      ) : (
-        <Router />
-      )}
+        )}
+      </main>
+      
       
     </div>
   );

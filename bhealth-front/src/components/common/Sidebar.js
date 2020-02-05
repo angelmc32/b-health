@@ -22,27 +22,37 @@ const Sidebar = () => {
 
   return (
      
-    <div className="sidebar uk-flex uk-flex-column uk-flex-center uk-flex-top">
-      <ul className="uk-nav-default uk-nav-parent-icon uk-height-large uk-width-4-5 uk-text-left uk-margin-left" uk-nav="true">
+    <div className="sidebar uk-flex uk-flex-column uk-flex-left uk-flex-top">
+      <ul className="uk-nav-default uk-nav-parent-icon uk-width-4-5 uk-text-left uk-margin-left uk-margin-large-top" uk-nav="true">
         <li className="uk-active" onClick={event => handleRoute(event, "myConsultations")} >
-          <NavLink to="/consultations">Mis Consultas</NavLink>
+          <NavLink to="/home">Mi Salud</NavLink>
+        </li>
+        <li className="uk-active" onClick={event => handleRoute(event, "myConsultations")} >
+          <NavLink to="/historial">Historial</NavLink>
+        </li>
+        <li className="uk-active" onClick={event => handleRoute(event, "myConsultations")} >
+          <NavLink to="/consultas">Consultas</NavLink>
         </li>
         <li className="uk-active">
-          <NavLink to="/prescriptions">Mis Recetas</NavLink>
+          <NavLink to="/recetas">Recetas</NavLink>
         </li>
         <li className="uk-active" onClick={event => handleRoute(event, "doctors")} >
-          <NavLink to="/doctors">Doctores</NavLink>
+          <NavLink to="/estudios">Estudios</NavLink>
         </li>
-        <li className="uk-parent uk-active">
-          <a href="#">Consultorios</a>
-          <ul className="uk-nav-sub">
-            <li onClick={event => handleRoute(event, "search")}>
-              <NavLink to="/facilities">Buscar</NavLink>
-            </li>
-            <li onClick={event => handleRoute(event, "myFacilities")}>
-              <NavLink to="/facilities">Mis Consultorios</NavLink>
-            </li>
-          </ul>
+        <li className="uk-active" onClick={event => handleRoute(event, "doctors")} >
+          <NavLink to="/urgencias">Urgencias</NavLink>
+        </li>
+        <li className="uk-active" onClick={event => handleRoute(event, "doctors")} >
+          <NavLink to="/hospitalizaciones">Hospitalizaciones</NavLink>
+        </li>
+        <li className="uk-active" onClick={event => handleRoute(event, "doctors")} >
+          <NavLink to="/agenda">Agenda</NavLink>
+        </li>
+        <li className="uk-active" onClick={event => handleRoute(event, "doctors")} >
+          <NavLink to="/terapias">Otras Terapias</NavLink>
+        </li>
+        <li className="uk-active" onClick={event => handleRoute(event, "doctors")} >
+          <NavLink to="/tienda">Tienda</NavLink>
         </li>
       </ul>
     </div>

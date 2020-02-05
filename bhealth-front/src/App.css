@@ -2,6 +2,7 @@
   height: 10vh;
   width: 100%;
   border-bottom: 1px solid #EAEAEB;
+  box-sizing: border-box;
 }
 
 .uk-navbar-nav.menu  {
@@ -46,13 +47,6 @@ main {
   text-align: center;
 }
 
-#login {
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-  align-items: center;
-}
-
 #slideshow, #details, #additional, #messages {
   scroll-snap-align: start;
 }
@@ -79,7 +73,7 @@ label {
   display: none
 }
 
-.uk-button-primary {
+.uk-button {
   background-color: #F14958
 }
 
@@ -108,4 +102,15 @@ label {
     background-color: #f8f8f8;
   }
   
+}
+
+@media only screen and (min-width: 1200px) {
+
+  .sidebar {
+    width: 15vw;
+    height: 90vh;
+    border-right: #C9C9C9 solid 1px;
+    box-sizing: border-box;
+  }
+
 }

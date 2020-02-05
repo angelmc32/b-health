@@ -29,11 +29,11 @@ const Router = () => {
   return (
     <Switch>
       <Route path="/signup">
-        <Signup usertype="Patient"/>
+        <Signup />
       </Route>
       
       <Route path="/login">
-        <Login usertype="Patient"/>
+        <Login />
       </Route>
     </Switch>
   )

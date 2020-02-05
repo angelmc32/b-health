@@ -41,7 +41,7 @@ const Navbar = () => {
             </NavLink>
           </li>
           <li className="uk-active uk-flex uk-flex-middle uk-height-1-1">
-              <NavLink to="/#slideshow">
+              <NavLink to="/">
                 B-Health
               </NavLink>
           </li>
@@ -53,17 +53,21 @@ const Navbar = () => {
       <ul className="menu uk-navbar-nav">
           <li className="uk-active uk-width-1-1 uk-flex uk-flex-center uk-flex-middle" onClick={closeMenu} ><Link to="/servicios">Servicios</Link></li>
           <li className="uk-active uk-width-1-1 uk-flex uk-flex-center uk-flex-middle" onClick={closeMenu} ><Link to="/nosotros">Nosotros</Link></li>
-          <li className="uk-active uk-width-1-1 uk-flex uk-flex-center uk-flex-middle" onClick={closeMenu} >
-            <Link to="/login">
-              <button className="uk-button uk-button-primary uk-button-small">
-                Ingresar
-              </button>
-            </Link>
-          </li>
+          
           { user._id ? 
-            <li className="uk-active uk-width-1-1 uk-flex uk-flex-center uk-flex-middle"><button className="uk-button uk-button-primary uk-border-pill" onClick={handleLogout} >Logout</button></li>
+            <li className="uk-active uk-width-1-1 uk-flex uk-flex-center uk-flex-middle">
+              <button className="uk-button uk-button-primary uk-button-small uk-border-pill" onClick={handleLogout} >
+                Logout
+              </button>
+            </li>
             :
-            <div></div>
+            <li className="uk-active uk-width-1-1 uk-flex uk-flex-center uk-flex-middle" onClick={closeMenu} >
+              <Link to="/login">
+                <button className="uk-button uk-button-primary uk-button-small uk-border-pill">
+                  Ingresar
+                </button>
+              </Link>
+            </li>
           }
       </ul>
 
