@@ -1,24 +1,27 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import Router from './Router';
+import { AppContext } from './AppContext';
 import logo from './logo.svg';
 import './App.css';
+import Navbar from './components/common/Navbar'
+import Sidebar from './components/common/Sidebar';
 
 function App() {
+
+  const { user } = useContext(AppContext); // Destructure user state variable
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Navbar />
+      { user._id ? (
+        <div className="uk-flex">
+          <Sidebar />
+          <Router />
+        </div>
+      ) : (
+        <Router />
+      )}
+      
     </div>
   );
 }

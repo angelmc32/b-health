@@ -1,38 +1,111 @@
-.App {
+.uk-navbar.uk-navbar-container {
+  height: 10vh;
+  width: 100%;
+  border-bottom: 1px solid #EAEAEB;
+}
+
+.uk-navbar-nav.menu  {
+  font-family: 'Raleway', sans-serif;
+  text-decoration: none;
+  color: #F14958;
+  margin: 0 10px;
+  line-height: 10vh;
+}
+
+.uk-navbar-nav>li.uk-active>a {
+  color: #D82B39;
+  text-transform: none;
+}
+
+.uk-navbar-nav>li>a {
+  padding: 0 5px
+}
+
+a {
+  color: #D82B39;
+}
+
+.uk-icon {
+  color: #D82B39;
+}
+
+main {
+  width: 100%;
+  height: 90vh;
+  padding: 0;
+  text-align: center;
+  scroll-snap-type: y mandatory;
+  scroll-snap-points-y: repeat(90vh);
+  overflow-y: auto;
+}
+
+.uk-section {
+  width: 100%;
+  height: 90vh;
+  padding: 0;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+#login {
   display: flex;
   flex-direction: column;
+  justify-content: start;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+#slideshow, #details, #additional, #messages {
+  scroll-snap-align: start;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.menu {
+  margin: 0 30px 0 0;
+  z-index: 1;
+}
+
+.menu a {
+  font-family: 'Raleway', sans-serif;
+  text-decoration: none;
+  color: rgb(64, 64, 64);
+  margin: 0 10px;
+  line-height: 10vh;
+}
+
+label {
+  line-height: 10vh;
+  display: none
+}
+
+#toggle {
+  display: none
+}
+
+.uk-button-primary {
+  background-color: #F14958
+}
+
+@media only screen and (max-width: 479px) {
+
+  label {
+    display: block;
+    cursor: pointer
   }
-  to {
-    transform: rotate(360deg);
+
+  .uk-navbar-nav.menu {
+    text-align: center;
+    display: none;
+    margin: 0;
+    width: 100%
   }
+
+  .menu a {
+    display: block;
+    border-bottom: 1px solid #EAEAEB;
+    margin: 0
+  }
+
+  #toggle:checked + .menu {
+    display: block;
+    background-color: #f8f8f8;
+  }
+  
 }
