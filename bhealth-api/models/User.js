@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');   // Require mongoose to create model schema
-const { Schema, model } = mongoose;     // Destructure Schema and model from mongoose
+const mongoose = require('mongoose');
+const { Schema, model } = mongoose;
 
 const userSchema = new Schema(
   {
