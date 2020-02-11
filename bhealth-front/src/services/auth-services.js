@@ -2,7 +2,7 @@ import axios from 'axios';                      // Import axios to enable API ca
 
 // Set URL according to environment
 const isProduction = process.env.NODE_ENV === 'production';
-const base_url = isProduction ? 'https://nubiomed-iron.herokuapp.com/api' : 'http://localhost:3000/api';
+const base_url = isProduction ? 'https://b-health.herokuapp.com/api' : 'http://localhost:3000/api';
 
 // Export signup function, which receives data as parameters to enable signup
 export const signup = (data) => {

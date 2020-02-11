@@ -2,7 +2,7 @@ import axios from 'axios';                      // Import axios to enable API ca
 
 // Set URL according to environment
 const isProduction = process.env.NODE_ENV === 'production';
-const base_url = isProduction ? 'https://nubiomed-iron.herokuapp.com/api/consultations' : 'http://localhost:3000/api/consultations';
+const base_url = isProduction ? 'https://b-health.herokuapp.com/api/consultations' : 'http://localhost:3000/api/consultations';
 
 // Export get function to retrieve all consultations of the current logged in user
 export const getConsultations = () => {
