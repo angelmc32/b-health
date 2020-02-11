@@ -4,6 +4,7 @@ const Prescription = require('../models/Prescription');
 
 // Import helper for token verification (jwt)
 const { verifyToken } = require('../helpers/auth-helper');
+const uploader = require('../helpers/multer-helper');
 
 router.get('/', verifyToken, (req, res, next) => {
 
@@ -23,9 +24,16 @@ router.get('/', verifyToken, (req, res, next) => {
 
 });
 
-router.post('/', verifyToken, (req, res, next) => {
+router.post('/', verifyToken, uploader.single('image'), (req, res, next) => {
 
   const { id } = req.user;
+  const body  = req.body;               // Extract body from request
+
+  // If a file is being uploaded, set the secure_url property in the secure_url variable
+  if ( req.file ) {
+    const secure_url = req.file.secure_url;
+    body['image'] = secure_url;
+  }
 
   Prescription.create({ ...req.body, user: id })
   .then( prescription => {

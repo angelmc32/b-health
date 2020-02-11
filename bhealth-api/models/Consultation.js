@@ -27,8 +27,11 @@ const consultationSchema = new Schema(
     temperature: {
       type: Number
     },
-    blood_pressure: {
-      type: [Number]
+    blood_pressure_sys: {
+      type: Number
+    },
+    blood_pressure_dias: {
+      type: Number
     },
     heart_rate: {
       type: Number

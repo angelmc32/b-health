@@ -5,7 +5,7 @@ const isProduction = process.env.NODE_ENV === 'production';
 const base_url = isProduction ? 'https://nubiomed-iron.herokuapp.com/api/prescriptions' : 'http://localhost:3000/api/prescriptions';
 
 // Export get function to retrieve all prescriptions of the current logged in user
-export const getprescriptions = () => {
+export const getPrescriptions = () => {
 
   const token = localStorage.getItem('token');  // Get token from localStorage
 

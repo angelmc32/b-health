@@ -10,7 +10,7 @@ import logo from '../../images/health-check.svg'
 const Navbar = () => {
   
   // Destructure user state variable and resetUserContext function from context
-  const { user, route, setRoute, resetUserContext } = useContext(AppContext);
+  const { user, setRoute, resetUserContext } = useContext(AppContext);
   // Destructure push method from useHistory to "redirect" user
   const { push } = useHistory();
 
@@ -20,8 +20,17 @@ const Navbar = () => {
     logout();                   // Execute logout function (clear localStorage)
     push('/login');             // Redirect user to login
     resetUserContext();         // delete user data from context to an empty object
+    closeMenu();
 
   };
+
+  const handleRoute = (event, newRoute) => {
+    
+    event.preventDefault();               // Prevent page reloading after submit action
+    setRoute(newRoute);                   // Update route state variable with route sent as parameter
+    closeMenu();
+
+  }
 
   const closeMenu = () => {
     const toggle = document.getElementById('toggle');
@@ -47,29 +56,74 @@ const Navbar = () => {
           </li>
       </ul>
 
-      <label htmlFor="toggle" className="uk-margin-right uk-height-1-1"><span uk-icon="menu"></span></label>
+      <label id="nav-menu" htmlFor="toggle" className="uk-margin-right uk-height-1-1"><span uk-icon="menu"></span></label>
       <input type="checkbox" id="toggle"/>
       
-      <ul className="menu uk-navbar-nav">
-          <li className="uk-active uk-width-1-1 uk-flex uk-flex-center uk-flex-middle" onClick={closeMenu} ><Link to="/servicios">Servicios</Link></li>
-          <li className="uk-active uk-width-1-1 uk-flex uk-flex-center uk-flex-middle" onClick={closeMenu} ><Link to="/nosotros">Nosotros</Link></li>
+      
           
           { user._id ? 
-            <li className="uk-active uk-width-1-1 uk-flex uk-flex-center uk-flex-middle">
-              <button className="uk-button uk-button-primary uk-button-small uk-border-pill" onClick={handleLogout} >
-                Logout
-              </button>
-            </li>
+            <ul className="menu uk-navbar-nav">
+              <li className="uk-active"  onClick={event => handleRoute(event, "none")}>
+                <NavLink to="/perfil">
+                  <div className="uk-width-auto uk-margin-small-right">
+                    <img className="uk-border-circle" width={40} height={40} src={user.profile_picture} alt="User profile" />
+                  </div>
+                  <p className="uk-margin-remove">Mi Perfil</p>
+                </NavLink>
+              </li>
+              <li className="uk-active">
+                <NavLink to="/login">
+                  <button className="uk-button uk-button-primary uk-button-small uk-border-pill" onClick={handleLogout} >
+                    Logout
+                  </button>
+                </NavLink>
+              </li>
+              <div className="mobile-only uk-overflow-auto">
+                <li className="uk-active" onClick={event => handleRoute(event, "none")} >
+                  <NavLink to="/home">Mi Salud</NavLink>
+                </li>
+                <li className="uk-active" onClick={event => handleRoute(event, "none")} >
+                  <NavLink to="/historial">Historial</NavLink>
+                </li>
+                <li className="uk-active" onClick={event => handleRoute(event, "none")} >
+                  <NavLink to="/consultas">Consultas</NavLink>
+                </li>
+                <li className="uk-active" onClick={event => handleRoute(event, "none")} >
+                  <NavLink to="/recetas">Recetas</NavLink>
+                </li>
+                <li className="uk-active" onClick={event => handleRoute(event, "none")} >
+                  <NavLink to="/estudios">Estudios</NavLink>
+                </li>
+                <li className="uk-active" onClick={event => handleRoute(event, "none")} >
+                  <NavLink to="/urgencias">Urgencias</NavLink>
+                </li>
+                <li className="uk-active" onClick={event => handleRoute(event, "none")} >
+                  <NavLink to="/hospitalizaciones">Hospitalizaciones</NavLink>
+                </li>
+                <li className="uk-active" onClick={event => handleRoute(event, "none")} >
+                  <NavLink to="/agenda">Agenda</NavLink>
+                </li>
+                <li className="uk-active" onClick={event => handleRoute(event, "none")} >
+                  <NavLink to="/terapias">Otras Terapias</NavLink>
+                </li>
+                <li className="uk-active" onClick={event => handleRoute(event, "none")} >
+                  <NavLink to="/tienda">Tienda</NavLink>
+                </li>
+              </div>
+            </ul>
             :
-            <li className="uk-active uk-width-1-1 uk-flex uk-flex-center uk-flex-middle" onClick={closeMenu} >
-              <Link to="/login">
-                <button className="uk-button uk-button-primary uk-button-small uk-border-pill">
-                  Ingresar
-                </button>
-              </Link>
-            </li>
+            <ul className="menu uk-navbar-nav">
+              <li className="uk-active uk-width-1-1 uk-flex uk-flex-center uk-flex-middle" onClick={closeMenu} ><Link to="/servicios">Servicios</Link></li>
+              <li className="uk-active uk-width-1-1 uk-flex uk-flex-center uk-flex-middle" onClick={closeMenu} ><Link to="/nosotros">Nosotros</Link></li>
+              <li className="uk-active uk-width-1-1 uk-flex uk-flex-center uk-flex-middle" onClick={closeMenu} >
+                <Link to="/login">
+                  <button className="uk-button uk-button-primary uk-button-small uk-border-pill">
+                    Ingresar
+                  </button>
+                </Link>
+              </li>
+            </ul>
           }
-      </ul>
 
     </nav>
     

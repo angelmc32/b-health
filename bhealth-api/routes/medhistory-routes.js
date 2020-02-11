@@ -41,33 +41,11 @@ router.post('/', verifyToken, (req, res, next) => {
 
 })
 
-router.get('/:medicalHistoryID', verifyToken, (req, res, next) => {
+router.patch('/', verifyToken, (req, res, next) => {
 
-  const { medicalHistoryID } = req.params;
   const { id } = req.user;
 
-  MedicalHistory.findById(medicalHistoryID)
-  .then( medicalHistory => {
-    
-    if ( medicalHistory.user != id )
-      return res.status(401).json({ error, msg: 'You are not authorized to view this medicalHistory' });
-    else
-      res.status(200).json({ medicalHistory });
-
-  })
-  .catch( error => {
-
-    res.status(500).json({ error, msg: 'Unable to retrieve data' }); // Respond 500 status, error and message
-
-  });
-
-});
-
-router.patch('/:medicalHistoryID', verifyToken, (req, res, next) => {
-
-  const { medicalHistoryID } = req.params;
-
-  MedicalHistory.findByIdAndUpdate(medicalHistoryID, { $set: { ...req.body } }, { new: true} )
+  MedicalHistory.findOneAndUpdate({ user: id }, { $set: { ...req.body } }, { new: true} )
   .then( medicalHistory => {
 
     res.status(200).json({ medicalHistory });

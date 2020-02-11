@@ -10,7 +10,6 @@
   text-decoration: none;
   color: #F14958;
   margin: 0 10px;
-  line-height: 10vh;
 }
 
 .uk-navbar-nav>li.uk-active>a {
@@ -20,14 +19,6 @@
 
 .uk-navbar-nav>li>a {
   padding: 0 5px
-}
-
-a {
-  color: #D82B39;
-}
-
-.uk-icon {
-  color: #D82B39;
 }
 
 main {
@@ -45,6 +36,17 @@ main {
   height: 90vh;
   padding: 0;
   text-align: center;
+  scroll-snap-align: start;
+}
+
+.content {
+  width: 100%;
+  height: 90vh;
+  padding: 0;
+  text-align: center;
+  scroll-snap-type: y mandatory;
+  scroll-snap-points-y: repeat(90vh);
+  overflow-y: auto;
 }
 
 #slideshow, #details, #additional, #messages {
@@ -61,10 +63,10 @@ main {
   text-decoration: none;
   color: rgb(64, 64, 64);
   margin: 0 10px;
-  line-height: 10vh;
+  line-height: 8vh;
 }
 
-label {
+label#nav-menu {
   line-height: 10vh;
   display: none
 }
@@ -79,7 +81,7 @@ label {
 
 @media only screen and (max-width: 479px) {
 
-  label {
+  label#nav-menu {
     display: block;
     cursor: pointer
   }
@@ -101,6 +103,27 @@ label {
     display: block;
     background-color: #f8f8f8;
   }
+
+  .sidebar {
+    display: none
+  }
+
+  .uk-section {
+    width: 100%;
+    height: 90vh;
+    padding: 0;
+    text-align: center;
+    scroll-snap-align: start;
+    overflow: auto;
+  }
+
+  .overflow-container {
+    overflow: auto;
+  }
+
+  .large-only {
+    display: none;
+  }
   
 }
 
@@ -111,6 +134,19 @@ label {
     height: 90vh;
     border-right: #C9C9C9 solid 1px;
     box-sizing: border-box;
+  }
+
+  .uk-section {
+    width: 100%;
+    height: 90vh;
+    padding: 0;
+    text-align: center;
+    scroll-snap-align: start;
+    overflow: auto;
+  }
+
+  .mobile-only {
+    display: none
   }
 
 }

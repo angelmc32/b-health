@@ -6,7 +6,7 @@ import { AppContext } from './AppContext';
 // import Landing from './components/landing/Landing';
 import Signup from './components/auth/Signup';
 import Login from './components/auth/Login';
-// import Profile from './components/profile/Profile';
+import Profile from './components/profile/Profile';
 // import Preferences from './components/profile/Preferences';
 // import Doctors from './components/doctor/Doctors';
 // import DoctorLanding from './components/doctor/DoctorLanding';
@@ -14,9 +14,9 @@ import Login from './components/auth/Login';
 // import PatientHome from './components/patient/PatientHome';
 // import Patients from './components/doctor/myPatients/Patients'
 // import Facility from './components/facility/Facility';
-// import Consultation from './components/consultation/Consultation';
-// import Prescription from './components/prescription/Prescription';
-// import Map from './components/common/Mapbox';
+import Consultation from './components/consultation/Consultation';
+import Prescription from './components/prescription/Prescription';
+import MedHistory from './components/medHistory/MedHistory';
 // import AppLoader from './components/common/Loader';
 // import Calendar from './components/schedule/Calendar';
 
@@ -28,6 +28,7 @@ const Router = () => {
 
   return (
     <Switch>
+
       <Route path="/signup">
         <Signup />
       </Route>
@@ -35,6 +36,23 @@ const Router = () => {
       <Route path="/login">
         <Login />
       </Route>
+
+      <Route path="/perfil">
+        <Profile />
+      </Route>
+
+      <Route path="/historial">
+        <MedHistory />
+      </Route>
+
+      <Route path="/consultas">
+        <Consultation />
+      </Route>
+
+      <Route path="/recetas">
+        <Prescription />
+      </Route>
+
     </Switch>
   )
 };

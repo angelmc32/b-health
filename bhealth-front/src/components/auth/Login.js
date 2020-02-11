@@ -25,9 +25,9 @@ const Login = () => {
       const { user, token } = res.data;         // Destructure user and token from response, sent by API
       
       // Store user and token in localStorage
-      console.log(user);
       localStorage.setItem('user', JSON.stringify(user));
       localStorage.setItem('token', token);
+      console.log(user)
 
       setUser(user);    // Modify user state variable, setting the user data in the state
       setRoute('');

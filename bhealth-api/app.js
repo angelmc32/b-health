@@ -63,6 +63,7 @@ app.locals.title = 'B-health API by Mel';
 
 // Routes declaration
 const authRoutes = require('./routes/auth-routes');
+const profileRoutes = require('./routes/profile-routes');
 const consultationRoutes = require('./routes/consultation-routes');
 const emergencyRoutes = require('./routes/emergency-routes');
 const hospitalizationRoutes = require('./routes/hospitalization-routes');
@@ -70,6 +71,7 @@ const medicalHistoryRoutes = require('./routes/medhistory-routes');
 const prescriptionRoutes = require('./routes/prescription-routes');
 
 app.use('/api', authRoutes);
+app.use('/api/profile', profileRoutes);
 app.use('/api/consultations', consultationRoutes);
 app.use('/api/emergencies', emergencyRoutes);
 app.use('/api/hospitalizations', hospitalizationRoutes);

@@ -5,7 +5,7 @@ const isProduction = process.env.NODE_ENV === 'production';
 const base_url = isProduction ? 'https://nubiomed-iron.herokuapp.com/api/medicalhistory' : 'http://localhost:3000/api/medicalhistory';
 
 // Export get function to retrieve all emergencies of the current logged in user
-export const getMedicalHistory = () => {
+export const getMedicalHistories = () => {
 
   const token = localStorage.getItem('token');  // Get token from localStorage
 
@@ -31,11 +31,11 @@ export const createMedicalHistory = (data) => {
 
 };
 
-export const getMedicalHistory = (medicalHistoryID) => {
+export const getMedicalHistory = () => {
 
   const token = localStorage.getItem('token');  // Get token from localStorage
 
-  return axios.get(`${base_url}/${medicalHistoryID}`, {
+  return axios.get(`${base_url}/`, {
     headers: {
       Authorization: token,                     // Send token in request headers (check api/helpers/auth-helper)
     }
@@ -43,11 +43,11 @@ export const getMedicalHistory = (medicalHistoryID) => {
 
 };
 
-export const editMedicalHistory = (medicalHistoryID, data) => {
+export const editMedicalHistory = (userID, data) => {
 
   const token = localStorage.getItem('token');  // Get token from localStorage
 
-  return axios.patch(`${base_url}/${medicalHistoryID}`, data, {
+  return axios.patch(`${base_url}/${userID}`, data, {
     headers: {
       Authorization: token,                     // Send token in request headers (check api/helpers/auth-helper)
     }

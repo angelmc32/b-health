@@ -22,36 +22,36 @@ const Sidebar = () => {
 
   return (
      
-    <div className="sidebar uk-flex uk-flex-column uk-flex-left uk-flex-top">
+    <div className="sidebar">
       <ul className="uk-nav-default uk-nav-parent-icon uk-width-4-5 uk-text-left uk-margin-left uk-margin-large-top" uk-nav="true">
-        <li className="uk-active" onClick={event => handleRoute(event, "myConsultations")} >
+        <li className="uk-active" onClick={event => handleRoute(event, "none")} >
           <NavLink to="/home">Mi Salud</NavLink>
         </li>
-        <li className="uk-active" onClick={event => handleRoute(event, "myConsultations")} >
+        <li className="uk-active" onClick={event => handleRoute(event, "none")} >
           <NavLink to="/historial">Historial</NavLink>
         </li>
-        <li className="uk-active" onClick={event => handleRoute(event, "myConsultations")} >
+        <li className="uk-active" onClick={event => handleRoute(event, "none")} >
           <NavLink to="/consultas">Consultas</NavLink>
         </li>
         <li className="uk-active">
           <NavLink to="/recetas">Recetas</NavLink>
         </li>
-        <li className="uk-active" onClick={event => handleRoute(event, "doctors")} >
+        <li className="uk-active" onClick={event => handleRoute(event, "none")} >
           <NavLink to="/estudios">Estudios</NavLink>
         </li>
-        <li className="uk-active" onClick={event => handleRoute(event, "doctors")} >
+        <li className="uk-active" onClick={event => handleRoute(event, "none")} >
           <NavLink to="/urgencias">Urgencias</NavLink>
         </li>
-        <li className="uk-active" onClick={event => handleRoute(event, "doctors")} >
+        <li className="uk-active" onClick={event => handleRoute(event, "none")} >
           <NavLink to="/hospitalizaciones">Hospitalizaciones</NavLink>
         </li>
-        <li className="uk-active" onClick={event => handleRoute(event, "doctors")} >
+        <li className="uk-active" onClick={event => handleRoute(event, "none")} >
           <NavLink to="/agenda">Agenda</NavLink>
         </li>
-        <li className="uk-active" onClick={event => handleRoute(event, "doctors")} >
+        <li className="uk-active" onClick={event => handleRoute(event, "none")} >
           <NavLink to="/terapias">Otras Terapias</NavLink>
         </li>
-        <li className="uk-active" onClick={event => handleRoute(event, "doctors")} >
+        <li className="uk-active" onClick={event => handleRoute(event, "none")} >
           <NavLink to="/tienda">Tienda</NavLink>
         </li>
       </ul>

@@ -14,13 +14,13 @@ const historySchema = new Schema(
     health_history: {
       type: [String],
     },
-    social_history: {
+    weekly_exercise_hours: {
+      type: Number
+    },
+    addictions: {
       type: [String],
     },
     allergies: {
-      type: [String],
-    },
-    immunizations: {
       type: [String],
     }
   },

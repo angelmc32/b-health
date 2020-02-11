@@ -11,6 +11,13 @@ const prescriptionSchema = new Schema (
       type: Date,
       default: Date.now
     },
+    doctor: {
+      type: String,
+    },
+    image: {
+      type: String,
+      default: 'Sin imagen registrada'
+    },
     brand_name: {
       type: [String]
     },
