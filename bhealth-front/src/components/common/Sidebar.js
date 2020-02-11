@@ -33,7 +33,7 @@ const Sidebar = () => {
         <li className="uk-active" onClick={event => handleRoute(event, "none")} >
           <NavLink to="/consultas">Consultas</NavLink>
         </li>
-        <li className="uk-active">
+        <li className="uk-active" onClick={event => handleRoute(event, "none")} >
           <NavLink to="/recetas">Recetas</NavLink>
         </li>
         <li className="uk-active" onClick={event => handleRoute(event, "none")} >

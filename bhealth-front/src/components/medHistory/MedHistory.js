@@ -225,13 +225,13 @@ const MedHistory = () => {
             </button>
             <div className="uk-margin">
               <h4 className="uk-margin">Antecedentes Heredo-Familiares</h4>
-              <ul>
+              <ul className="uk-list">
                 { medHistory.family_history ? medHistory.family_history.map( (disease, index) => {
                   return (<li key={index}>{disease}</li>)
                 }) : 'Cargando' }
               </ul>
               <h4 className="uk-margin">Antecedentes Personales Patológicos</h4>
-              <ul>
+              <ul className="uk-list">
                 { medHistory.health_history ? medHistory.health_history.map( (disease, index) => {
                   return (<li key={index}>{disease}</li>)
                 }) : 'Cargando' }
@@ -239,13 +239,13 @@ const MedHistory = () => {
               <h4 className="uk-margin">Antecedentes Personales No Patológicos</h4>
               <p>Horas de actividad física a la semana: {medHistory.weekly_exercise_hours}</p>
               <p>Adicciones:</p>
-              <ul>
+              <ul className="uk-list">
                 { medHistory.addictions ? medHistory.addictions.map( (addiction, index) => {
                   return (<li key={index}>{addiction}</li>)
                 }) : 'Cargando' }
               </ul>
               <h4 className="uk-margin">Alergias</h4>
-              <ul>
+              <ul className="uk-list">
                 { medHistory.allergies ? medHistory.allergies.map( (allergy, index) => {
                   return (<li key={index}>{allergy}</li>)
                 }) : 'Sin información registrada' }

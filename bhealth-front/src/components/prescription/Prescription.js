@@ -15,7 +15,7 @@ const Prescription = () => {
   const { form, handleInput, handleFileInput } = useForm();
 
   const { push } = useHistory();                    // Destructure push method from useHistory to "redirect" user
-  const { user, route, setRoute } = useContext(AppContext);
+  const { user, route, setRoute, objectHandler, setObjectHandler } = useContext(AppContext);
   const [ prescription, setPrescription] = useState({});
   const [ prescriptions, setPrescriptions ] = useState([]);
   const [ showForm, setShowForm ] = useState(false);
@@ -37,16 +37,21 @@ const Prescription = () => {
 
     };
 
-    getPrescriptions()
-    .then( res => {
+    if ( route !== 'create' && route !== 'read' ) {
+      console.log(route)
+      getPrescriptions()
+      .then( res => {
       
-      const { prescriptions } = res.data;
-      setPrescriptions(prescriptions);
-      setRoute('prescriptions');
+        const { prescriptions } = res.data;
+        setPrescriptions(prescriptions);
+        setRoute('prescriptions');
 
-    })
+      });
+    }
+
     
-  }, [isButtonDisabled]);
+    
+  }, [route]);
 
   const handleSubmit = (event) => {
 
@@ -83,6 +88,7 @@ const Prescription = () => {
 
       setRoute('prescriptions');
       setIsButtonDisabled(false);
+      setObjectHandler({});
 
     })
     .catch( error => {
@@ -156,10 +162,14 @@ const Prescription = () => {
               <div className="uk-section">
                 <div className="uk-container">
                   <h2>Nueva Receta</h2>
+                  { objectHandler._id ?
+                      <h4>{objectHandler._id}</h4>
+                      : null
+                  }
                   <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin" onClick={event => setRoute('prescriptions')} >
                     Regresar
                   </button>
-                  <PrescriptionForm handleSubmit={handleSubmit} handleInput={handleInput} handleFileInput={handleFileInput} form={form} isButtonDisabled={isButtonDisabled} />
+                  <PrescriptionForm handleSubmit={handleSubmit} handleInput={handleInput} handleFileInput={handleFileInput} form={form} isButtonDisabled={isButtonDisabled} objectHandler={objectHandler}/>
                 </div>
               </div>
             ) : (
@@ -173,7 +183,7 @@ const Prescription = () => {
                 </div>
               ) : (
                 <div className="uk-section">
-                  <h2>Ocurrió un error</h2>
+                  <h2>Cargando...</h2>
                   <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m" onClick={event => setRoute('prescriptions')} >
                     Regresar
                   </button>

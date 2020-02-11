@@ -1,15 +1,11 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { useHistory } from 'react-router-dom';                      // Import useHistory for "redirection"
-import { AppContext } from '../../AppContext';                      // Import AppContext to use created context
-import useForm from '../../hooks/useForm';                          // Import useForm custom hook
-import UIkit from 'uikit';                                          // Import UIkit for notifications
+import React from 'react';
 import moment from 'moment';                                        // Import momentjs for date formatting
 
 const ConsultationInfo = ({ consultation }) => {
   return (
     <div className="uk-container">
       <div className="uk-margin">
-        <p>Fecha de consulta: {consultation.date}</p>
+        <p>Fecha de consulta: {moment(consultation.date).locale('es').format('LL')}</p>
         <p>Doctor: {consultation.doctor}</p>
         <p>Motivo de consulta: {consultation.chief_complaint}</p>
         <p>Sistema afectado: {consultation.systems_chief_complaint[0]}</p>

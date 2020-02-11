@@ -13,7 +13,7 @@ import Profile from './components/profile/Profile';
 // import DoctorHome from './components/doctor/DoctorHome';
 // import PatientHome from './components/patient/PatientHome';
 // import Patients from './components/doctor/myPatients/Patients'
-// import Facility from './components/facility/Facility';
+import Study from './components/study/Study';
 import Consultation from './components/consultation/Consultation';
 import Prescription from './components/prescription/Prescription';
 import MedHistory from './components/medHistory/MedHistory';
@@ -51,6 +51,10 @@ const Router = () => {
 
       <Route path="/recetas">
         <Prescription />
+      </Route>
+
+      <Route path="/estudios">
+        <Study />
       </Route>
 
     </Switch>

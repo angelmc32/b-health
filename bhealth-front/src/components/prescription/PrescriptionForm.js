@@ -1,11 +1,6 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { useHistory } from 'react-router-dom';                      // Import useHistory for "redirection"
-import { AppContext } from '../../AppContext';                      // Import AppContext to use created context
-import useForm from '../../hooks/useForm';                          // Import useForm custom hook
-import UIkit from 'uikit';                                          // Import UIkit for notifications
-import moment from 'moment';                                        // Import momentjs for date formatting
+import React, { useEffect, useState } from 'react';
 
-const PrescriptionForm = ({ handleSubmit, handleInput, handleFileInput, form, isButtonDisabled }) => {
+const PrescriptionForm = ({ handleSubmit, handleInput, handleFileInput, form, isButtonDisabled, objectHandler }) => {
 
   const [ drugFields, setDrugFields ] = useState([]);
   const [ drugQuantity, setDrugQuantity] = useState(0);

@@ -10,19 +10,21 @@ const AppProvider = ({ children }) => {
   const initialUserState = JSON.parse( localStorage.getItem('user') ) || {};
 
   // Declare user state variable and setUser function to update the user state variable
-  const [user, setUser] = useState(initialUserState);
-  const [route, setRoute] = useState("none");
+  const [ user, setUser ] = useState(initialUserState);
+  const [ route, setRoute ] = useState("none");
+  const [ objectHandler, setObjectHandler ] = useState({});
   
   // Declare resetUserContext function that will allow us to reset the user context
   const resetUserContext = () => {
 
     setUser({});    // Sets user context to an empty object 
     setRoute("none");
+    setObjectHandler({});
 
   };
 
   // Create the context objects to be passed as props in the Provider, with our created state and functions
-  const userContext = { user, setUser, route, setRoute, resetUserContext };
+  const userContext = { user, setUser, route, setRoute, objectHandler, setObjectHandler, resetUserContext };
 
   // Return a context Provider component, sending the userContext as value prop
   return (
