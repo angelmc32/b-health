@@ -38,7 +38,7 @@ app.use(cookieParser());
 // cors package config to allow requests from the url's in the origin array
 app.use(
   cors({
-    origin: ['https://nubiomed-iron.herokuapp.com', 'http://localhost:3001', 'http://nubiomed-iron.herokuapp.com']
+    origin: ['https://b-health.herokuapp.com', 'http://localhost:3001', 'http://b-health.herokuapp.com']
   })
 );
 
