@@ -8,12 +8,10 @@
 .uk-navbar-nav.menu  {
   font-family: 'Raleway', sans-serif;
   text-decoration: none;
-  color: #F14958;
   margin: 0 10px;
 }
 
 .uk-navbar-nav>li.uk-active>a {
-  color: #D82B39;
   text-transform: none;
 }
 

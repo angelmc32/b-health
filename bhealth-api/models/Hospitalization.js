@@ -8,31 +8,37 @@ const hospitalizationSchema = new Schema(
       required: true,
       ref: 'User'
     },
-    date: {
+    treatment: {
+      type: Schema.Types.ObjectId,
+      ref: 'Treatment'
+    },
+    admission_date: {
       type: Date,
       default: Date.now
     },
-    facility_name: {
-      type: String
+    discharge_date: {
+      type: Date,
     },
-    facility_address: {
-      type: String
-    },
-    facility_coordinates: {
-      type: [Number]
+    length_of_stay: {
+      type: Number,
     },
     chief_complaint: {
       type: String,
       required: true
     },
+    diagnosis: {
+      type: String,
+    },
+    facility_name: {
+      type: String,
+    },
     description: {
       type: String
     },
-    is_emergency: {
+    isSurgery: {
       type: Boolean,
-      required: true
-    },
-    
+      default: false
+    }
   },
   { timestamps: true }
 );

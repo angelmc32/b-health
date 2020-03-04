@@ -8,31 +8,28 @@ const emergencySchema = new Schema(
       required: true,
       ref: 'User'
     },
+    treatment: {
+      type: Schema.Types.ObjectId,
+      ref: 'Treatment',
+      default: null
+    },
     date: {
       type: Date,
       default: Date.now
-    },
-    facility_name: {
-      type: String
-    },
-    facility_address: {
-      type: String
-    },
-    facility_coordinates: {
-      type: [Number]
     },
     chief_complaint: {
       type: String,
       required: true
     },
+    diagnosis: {
+      type: String,
+    },
+    facility_name: {
+      type: String,
+    },
     description: {
       type: String
     },
-    is_emergency: {
-      type: Boolean,
-      required: true
-    },
-
   },
   { timestamps: true }
 );

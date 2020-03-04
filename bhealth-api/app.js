@@ -70,6 +70,7 @@ const hospitalizationRoutes = require('./routes/hospitalization-routes');
 const medicalHistoryRoutes = require('./routes/medhistory-routes');
 const prescriptionRoutes = require('./routes/prescription-routes');
 const studyRoutes = require('./routes/study-routes');
+const vitalSignsRoutes = require('./routes/vitalsigns-routes')
 
 app.use('/api', authRoutes);
 app.use('/api/profile', profileRoutes);
@@ -79,5 +80,6 @@ app.use('/api/hospitalizations', hospitalizationRoutes);
 app.use('/api/medicalhistory', medicalHistoryRoutes);
 app.use('/api/prescriptions', prescriptionRoutes);
 app.use('/api/studies', studyRoutes);
+app.use('/api/vitalsigns', vitalSignsRoutes);
 
 module.exports = app;

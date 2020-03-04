@@ -18,6 +18,10 @@ const studySchema = new Schema (
     doctor: {
       type: String,
     },
+    type: {
+      type: String,
+      enum: ['Laboratory', 'Imaging']
+    },
     image: {
       type: String,
     },

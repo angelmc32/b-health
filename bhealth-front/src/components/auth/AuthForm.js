@@ -6,32 +6,30 @@ import { NavLink } from 'react-router-dom';       // Import NavLink for "navigat
 const AuthForm = ( { submit, action, email = '', password = '', confirm_password = '', handleChange } ) => (
 
 
-  <div>
-  
-    <div className="uk-margin-bottom">
+  <div className="uk-margin-top uk-margin-remove-top@s">
+
+    <div className="uk-margin">
 
       <h2>{action === "signup" ? "Registro" : "Inicia Sesión"}</h2>
   
       { action === "signup" ? (
-        <h5>¿Ya tienes cuenta? 
+        <p>¿Ya tienes cuenta? 
           <NavLink to="/login" className="uk-margin-small-left">
             Accede aquí
           </NavLink>
-        </h5>
+        </p>
         ) : (
-        <h5>¿Primera vez? 
+        <p>¿Primera vez? 
           <NavLink to="/signup" className="uk-margin-small-left">
             Regístrate aquí
           </NavLink>
-        </h5>
+        </p>
         )
       }
-
+    
     </div>
 
-    <div>
-
-      <form className="uk-form-stacked" onSubmit={submit}>
+      <form className="uk-form-stacked uk-margin" onSubmit={submit}>
         
         <div className="uk-margin">
           <label className="uk-form-label">Correo Electrónico:</label>
@@ -39,6 +37,8 @@ const AuthForm = ( { submit, action, email = '', password = '', confirm_password
             <span className="uk-form-icon" uk-icon="icon: user"></span>
             <input onChange={handleChange} name="email" value={email} className="uk-input" type="email" />
           </div>
+        </div>
+        <div className="uk-margin">
           <label className="uk-form-label">Contraseña:</label>
           <div className="uk-inline">
             <span className="uk-form-icon" uk-icon="icon: lock"></span>
@@ -50,8 +50,9 @@ const AuthForm = ( { submit, action, email = '', password = '', confirm_password
               type="password"
             />
           </div>
+        </div>
           { action === "signup" ? (
-          <div>
+          <div className="uk-margin">
             <label className="uk-form-label">Confirma tu contraseña:</label>
             <div className="uk-inline">
               <span className="uk-form-icon" uk-icon="icon: lock"></span>
@@ -65,7 +66,6 @@ const AuthForm = ( { submit, action, email = '', password = '', confirm_password
             </div>
           </div>
           ) : null }
-        </div>
 
         
 
@@ -74,8 +74,6 @@ const AuthForm = ( { submit, action, email = '', password = '', confirm_password
         </button>
 
       </form>
-
-    </div>
   </div>
 );
 

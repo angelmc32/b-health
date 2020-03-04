@@ -8,6 +8,14 @@ const consultationSchema = new Schema(
       required: true,
       ref: 'User'
     },
+    treatment: {
+      type: Schema.Types.ObjectId,
+      ref: 'Prescription'
+    },
+    vitals: {
+      type: Schema.Types.ObjectId,
+      ref: 'VitalSigns'
+    },
     doctor: {
       type: String,
       required: true
@@ -21,39 +29,8 @@ const consultationSchema = new Schema(
       type: String,
       required: true,
     },
-    systems_chief_complaint: {
-      type: [String]
-    },
-    temperature: {
-      type: Number
-    },
-    blood_pressure_sys: {
-      type: Number
-    },
-    blood_pressure_dias: {
-      type: Number
-    },
-    heart_rate: {
-      type: Number
-    },
-    resp_rate: {
-      type: Number
-    },
-    blood_sugar: {
-      type: Number
-    },
-    isFasting: {
-      type: Boolean
-    },
-    height: {
-      type: Number
-    },
-    weight: {
-      type: Number
-    },
-    phys_exam: {
+    description: {
       type: String,
-      default: 'Sin observaciones en el examen físico'
     },
     diagnosis: {
       type: String,

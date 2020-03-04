@@ -8,16 +8,21 @@ import Signup from './components/auth/Signup';
 import Login from './components/auth/Login';
 import Profile from './components/profile/Profile';
 // import Preferences from './components/profile/Preferences';
-// import Doctors from './components/doctor/Doctors';
+import Home from './components/home/Home';
 // import DoctorLanding from './components/doctor/DoctorLanding';
 // import DoctorHome from './components/doctor/DoctorHome';
 // import PatientHome from './components/patient/PatientHome';
 // import Patients from './components/doctor/myPatients/Patients'
 import Study from './components/study/Study';
+import Disease from './components/disease/Disease';
 import Consultation from './components/consultation/Consultation';
 import Prescription from './components/prescription/Prescription';
 import MedHistory from './components/medHistory/MedHistory';
-// import AppLoader from './components/common/Loader';
+// import Disease from './components/disease/Disease'
+import CatalogSearchbar from './components/common/CatalogSearchbar';
+import Hospitalization from './components/hospitalization/Hozpitalization';
+import Emergency from './components/emergency/Emergency'
+import ConsultationFormSpecial from './components/consultation/ConsultationFormSpecial'
 // import Calendar from './components/schedule/Calendar';
 
 const Router = () => {
@@ -37,16 +42,24 @@ const Router = () => {
         <Login />
       </Route>
 
+      <Route path="/home">
+        <Home />
+      </Route>
+
       <Route path="/perfil">
         <Profile />
       </Route>
 
-      <Route path="/historial">
+      <Route path="/antecedentes">
         <MedHistory />
       </Route>
 
       <Route path="/consultas">
         <Consultation />
+      </Route>
+
+      <Route path="/medicamentos">
+        <CatalogSearchbar />
       </Route>
 
       <Route path="/recetas">
@@ -55,6 +68,18 @@ const Router = () => {
 
       <Route path="/estudios">
         <Study />
+      </Route>
+
+      <Route path="/hospitalizaciones">
+        <Hospitalization />
+      </Route>
+
+      <Route path="/urgencias">
+        <Emergency />
+      </Route>
+
+      <Route path="/test">
+        <ConsultationFormSpecial />
       </Route>
 
     </Switch>

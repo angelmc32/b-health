@@ -57,7 +57,7 @@ const useForm = () => {
       }
 
     } else {
-
+      console.log(form)
       // Update the form state without erasing previos values (with prevState)
       setForm( prevState => ({...prevState, [name]: value}) );
 

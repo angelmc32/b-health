@@ -1,23 +1,23 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useHistory, NavLink } from 'react-router-dom';                      // Import useHistory for "redirection"
-import { AppContext } from '../../AppContext';                      // Import AppContext to use created context
-import useForm from '../../hooks/useForm';                          // Import useForm custom hook
-import UIkit from 'uikit';                                          // Import UIkit for notifications
-import moment from 'moment';                                        // Import momentjs for date formatting
+import { useHistory, NavLink } from 'react-router-dom';
+import { AppContext } from '../../AppContext';
+import useForm from '../../hooks/useForm';
+import UIkit from 'uikit';
+import moment from 'moment';
 
-import { getConsultations, createConsultation } from '../../services/consultation-services';
-import ConsultationForm from './ConsultationForm';
-import ConsultationInfo from './ConsultationInfo';
+import { getHospitalizations, getHospitalization, createHospitalization } from '../../services/hospitalization-services';
+import HospitalizationForm from './HospitalizationForm';
+import HospitalizationInfo from './HospitalizationInfo';
 
-const Consultation = () => {
+const Hozpitalization = () => {
 
   // Destructure form state variable, handleInput and handleFileInput functions for form state manipulation
   const { form, handleInput } = useForm();
 
   const { push } = useHistory();                    // Destructure push method from useHistory to "redirect" user
   const { user, route, setRoute, objectHandler, setObjectHandler } = useContext(AppContext);
-  const [consultation, setConsultation] = useState({});
-  const [ consultations, setConsultations ] = useState([]);
+  const [ hospitalization, setHospitalization ] = useState({});
+  const [ hospitalizations, setHospitalizations ] = useState([]);
   const [ isButtonDisabled, setIsButtonDisabled ] = useState(false);
 
   useEffect( () => {
@@ -35,12 +35,12 @@ const Consultation = () => {
 
     };
 
-    getConsultations()
+    getHospitalizations()
     .then( res => {
       
-      const { consultations } = res.data;
-      setConsultations(consultations);
-      setRoute('consultations');
+      const { hospitalizations } = res.data;
+      setHospitalizations(hospitalizations);
+      setRoute('hospitalizations');
 
     })
     
@@ -49,23 +49,22 @@ const Consultation = () => {
   const handleSubmit = (event) => {
 
     event.preventDefault();
-    console.log(form);
     setIsButtonDisabled(true);
+    console.log(form)
 
-    createConsultation(form)
+    createHospitalization(form)
     .then( res => {
 
-      const { consultation } = res.data    // Destructure updated preferences document from response
-      console.log(consultation)
+      const { hospitalization } = res.data    // Destructure updated preferences document from response
 
       // Send UIkit success notification
       UIkit.notification({
-        message: `<span uk-icon='close'></span> '¡La consulta fue creada exitosamente!'`,
+        message: `<span uk-icon='close'></span> '¡La hospitalización fue creada exitosamente!'`,
         pos: 'bottom-center',
         status: 'success'
       });
 
-      setRoute('consultations');
+      setRoute('hospitalizations');
       setIsButtonDisabled(false);
 
     })
@@ -86,61 +85,59 @@ const Consultation = () => {
 
   }
 
-  const toggleButton = () => setIsButtonDisabled(!isButtonDisabled);
+  // const toggleButton = () => setIsButtonDisabled(!isButtonDisabled);
   
-  const loadConsultation = (consultation) => {
-    setConsultation(consultation);
+  const loadHospitalization = (hospitalization) => {
+    setHospitalization(hospitalization);
     setRoute('read');
   }
 
-  const goToPrescription = (event, consultation, newRoute) => {
+  const goToPrescription = (event, hospitalization, newRoute) => {
     event.preventDefault();
-    setConsultation(consultation);
-    setObjectHandler(consultation);
+    setHospitalization(hospitalization);
+    setObjectHandler(hospitalization);
     setRoute(newRoute);
     console.log(objectHandler)
   }
 
-  const goToStudies = (event, consultation, newRoute) => {
+  const goToStudies = (event, hospitalization, newRoute) => {
     event.preventDefault();
-    setObjectHandler(consultation);
+    setObjectHandler(hospitalization);
     setRoute(newRoute);
     console.log(objectHandler);
   }
 
   return (
-
     <div className="content">
       
-        { route === 'consultations' ? (
+        { route === 'hospitalizations' ? (
           <div className="uk-section">
-            <h2>Consultas</h2>
+            <h2>Hospitalizaciones</h2>
             <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin" onClick={event => setRoute('create')} >
-              + Nueva Consulta
+              + Nueva Hospitalización
             </button>
             <div className="uk-overflow-auto">
               <table className="uk-table uk-table-striped uk-table-hover">
                 <thead>
                   <tr>
                     <th className="uk-text-center">Fecha</th>
-                    <th className="uk-text-center uk-visible@s">Motivo de consulta</th>
-                    <th className="uk-text-center uk-visible@s">Diagnostico</th>
-                    <th className="uk-text-center uk-visible@s">Doctor</th>
+                    <th className="uk-text-center">Diagnóstico</th>
+                    <th className="uk-text-center uk-visible@s">Clínica</th>
+                    <th className="uk-text-center uk-visible@s">Estancia</th>
                     <th className="uk-text-center">Detalles</th>
-                    <th></th>
                   </tr>
                 </thead>
                 <tbody>
-                  { consultations ? 
-                      consultations.map( (consultation, index) => 
+                  { hospitalizations ? 
+                      hospitalizations.map( (hospitalization, index) => 
                         <tr key={index} >
-                          <td className="uk-text-center">{moment(consultation.date).locale('es').format('LL')}</td>
-                          <td className="uk-text-center uk-visible@s">{consultation.chief_complaint}</td>
-                          <td className="uk-text-center uk-visible@s">{consultation.diagnosis}</td>
-                          <td className="uk-text-center uk-visible@s">{`Dr. ${consultation.doctor}`}</td>
+                          <td className="uk-text-center">{moment(hospitalization.admission_date).locale('es').format('LL')}</td>
+                          <td className="uk-text-center">{hospitalization.diagnosis}</td>
+                          <td className="uk-text-center uk-visible@s">{hospitalization.facility_name}</td>
+                          <td className="uk-text-center uk-visible@s">{`No disponible`}</td>
                           <td className="uk-text-center">
-                            <button className="uk-button uk-button-default uk-button-small uk-border-pill" onClick={event => loadConsultation({consultation})} >
-                              Ver Consulta
+                            <button className="uk-button uk-button-default uk-button-small uk-border-pill" onClick={event => loadHospitalization({hospitalization})} >
+                              Ver
                             </button>
                           </td>
                           <td>
@@ -151,27 +148,28 @@ const Consultation = () => {
                               <div className="uk-modal-dialog uk-margin-auto-vertical">
                                 <button className="uk-modal-close-default" type="button" uk-close="true" />
                                 <div className="uk-modal-header">
-                                  <h3 className="uk-text-center">Datos de la Consulta</h3>
-                                  <p>Fecha: {moment(consultation.date).locale('es').format('LL')}</p>
-                                  <p>Doctor: {consultation.doctor}</p>
+                                  <h3 className="uk-text-center">Datos de la Hospitalización</h3>
+                                  <p>Fecha: {moment(hospitalization.date).locale('es').format('LL')}</p>
+                                  <p>Clínica: {hospitalization.facility_name}</p>
+                                  <p>Duración de la estancia: {hospitalization.admission_date - hospitalization.discharge_date}</p>
                                 </div>
                                 <div className="uk-modal-body uk-flex uk-flex-column">
-                                  { consultation.prescription ? (
-                                      <button className="uk-button uk-button-default uk-border-pill uk-margin" onClick={event => goToPrescription(event, consultation, 'read')} >
+                                  { hospitalization.treatment ? (
+                                      <button className="uk-button uk-button-default uk-border-pill uk-margin" onClick={event => goToPrescription(event, hospitalization, 'read')} >
                                         <NavLink to="/recetas">Ver Receta</NavLink>
                                       </button>
                                     ) : (
-                                      <button className="uk-button uk-button-default uk-border-pill uk-margin" onClick={event => goToPrescription(event, consultation, 'create')} >
+                                      <button className="uk-button uk-button-default uk-border-pill uk-margin" onClick={event => goToPrescription(event, hospitalization, 'create')} >
                                         <NavLink to="/recetas">Agregar Receta</NavLink>
                                       </button>
                                     )
                                   }
-                                  { consultation.studies ? (
-                                      <button className="uk-button uk-button-default uk-border-pill uk-margin" onClick={event => goToStudies(event, consultation, 'read')} >
+                                  { hospitalization.studies ? (
+                                      <button className="uk-button uk-button-default uk-border-pill uk-margin" onClick={event => goToStudies(event, hospitalization, 'read')} >
                                         <NavLink to="/estudios">Ver Estudios</NavLink>
                                       </button>
                                     ) : (
-                                      <button className="uk-button uk-button-default uk-border-pill uk-margin" onClick={event => goToStudies(event, consultation, 'create')} >
+                                      <button className="uk-button uk-button-default uk-border-pill uk-margin" onClick={event => goToStudies(event, hospitalization, 'create')} >
                                         <NavLink to="/estudios">Agregar Estudios</NavLink>
                                       </button>
                                     )
@@ -198,26 +196,26 @@ const Consultation = () => {
             route === 'create' ? (
               <div className="uk-section">
                 <div className="uk-container">
-                  <h2>Nueva Consulta</h2>
-                  <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin" onClick={event => setRoute('consultations')} >
+                  <h2>Nueva Hospitalización</h2>
+                  <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin" onClick={event => setRoute('hospitalizations')} >
                     Regresar
                   </button>
-                  <ConsultationForm handleSubmit={handleSubmit} handleInput={handleInput} form={form} isButtonDisabled={isButtonDisabled} />
+                  <HospitalizationForm handleSubmit={handleSubmit} handleInput={handleInput} form={form} isButtonDisabled={isButtonDisabled} />
                 </div>
               </div>
             ) : (
               route === 'read' ? (
                 <div className="uk-section">
-                  <h2>Ver Consulta</h2>
-                  <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin" onClick={event => setRoute('consultations')} >
+                  <h2>Ver Hospitalización</h2>
+                  <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin" onClick={event => setRoute('hospitalizations')} >
                     Regresar
                   </button>
-                  <ConsultationInfo {...consultation} />
+                  <HospitalizationInfo {...hospitalization} />
                 </div>
               ) : (
                 <div className="uk-section">
                   <h2>Cargando...</h2>
-                  <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin" onClick={event => setRoute('consultations')} >
+                  <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin" onClick={event => setRoute('hospitalizations')} >
                     Regresar
                   </button>
                 </div> 
@@ -227,8 +225,7 @@ const Consultation = () => {
         }
       
     </div>
-    
   )
 }
 
-export default Consultation
+export default Hozpitalization

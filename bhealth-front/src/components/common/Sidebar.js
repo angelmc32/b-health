@@ -28,10 +28,16 @@ const Sidebar = () => {
           <NavLink to="/home">Mi Salud</NavLink>
         </li>
         <li className="uk-active" onClick={event => handleRoute(event, "none")} >
-          <NavLink to="/historial">Historial</NavLink>
+          <NavLink to="/antecedentes">Antecedentes</NavLink>
+        </li>
+        <li className="uk-active" onClick={event => handleRoute(event, "none")} >
+          <NavLink to="/padecimientos">Padecimientos</NavLink>
         </li>
         <li className="uk-active" onClick={event => handleRoute(event, "none")} >
           <NavLink to="/consultas">Consultas</NavLink>
+        </li>
+        <li className="uk-active" onClick={event => handleRoute(event, "none")} >
+          <NavLink to="/medicamentos">Medicamentos</NavLink>
         </li>
         <li className="uk-active" onClick={event => handleRoute(event, "none")} >
           <NavLink to="/recetas">Recetas</NavLink>

@@ -38,7 +38,7 @@ const Prescription = () => {
     };
 
     if ( route !== 'create' && route !== 'read' ) {
-      console.log(route)
+
       getPrescriptions()
       .then( res => {
       
@@ -115,6 +115,11 @@ const Prescription = () => {
     setRoute('read');
   }
 
+  const deleteConsultationObject = () => {
+    setObjectHandler(null);
+    setRoute('prescriptions');
+  }
+
   return (
 
     <div className="content">
@@ -162,11 +167,11 @@ const Prescription = () => {
               <div className="uk-section">
                 <div className="uk-container">
                   <h2>Nueva Receta</h2>
-                  { objectHandler._id ?
+                  { objectHandler ?
                       <h4>{objectHandler._id}</h4>
                       : null
                   }
-                  <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin" onClick={event => setRoute('prescriptions')} >
+                  <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin" onClick={deleteConsultationObject} >
                     Regresar
                   </button>
                   <PrescriptionForm handleSubmit={handleSubmit} handleInput={handleInput} handleFileInput={handleFileInput} form={form} isButtonDisabled={isButtonDisabled} objectHandler={objectHandler}/>

@@ -55,7 +55,7 @@ const Signup = () => {
   };
 
   return (
-    <div className="uk-section">
+    <div className="uk-section uk-flex uk-flex-center">
       <div className="uk-container uk-flex uk-flex-center">
         <AuthForm
           submit={handleSubmit}
