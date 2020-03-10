@@ -73,10 +73,6 @@ label#nav-menu {
   display: none
 }
 
-.uk-button {
-  background-color: #F14958
-}
-
 @media only screen and (max-width: 479px) {
 
   label#nav-menu {

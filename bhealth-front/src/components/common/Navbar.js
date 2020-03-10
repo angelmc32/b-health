@@ -106,12 +106,12 @@ const Navbar = () => {
                 <li className="uk-active" onClick={event => handleRoute(event, "none")} >
                   <NavLink to="/hospitalizaciones">Hospitalizaciones</NavLink>
                 </li>
-                <li className="uk-active" onClick={event => handleRoute(event, "none")} >
+                {/* <li className="uk-active" onClick={event => handleRoute(event, "none")} >
                   <NavLink to="/agenda">Agenda</NavLink>
                 </li>
                 <li className="uk-active" onClick={event => handleRoute(event, "none")} >
                   <NavLink to="/terapias">Otras Terapias</NavLink>
-                </li>
+                </li> */}
                 <li className="uk-active" onClick={event => handleRoute(event, "none")} >
                   <NavLink to="/tienda">Tienda</NavLink>
                 </li>
