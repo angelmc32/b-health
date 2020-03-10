@@ -18,11 +18,11 @@ import Disease from './components/disease/Disease';
 import Consultation from './components/consultation/Consultation';
 import Prescription from './components/prescription/Prescription';
 import MedHistory from './components/medHistory/MedHistory';
-// import Disease from './components/disease/Disease'
 import CatalogSearchbar from './components/common/CatalogSearchbar';
 import Hospitalization from './components/hospitalization/Hozpitalization';
 import Emergency from './components/emergency/Emergency'
 import ConsultationFormSpecial from './components/consultation/ConsultationFormSpecial'
+import Drug from './components/drug/Drug'
 // import Calendar from './components/schedule/Calendar';
 
 const Router = () => {
@@ -54,12 +54,16 @@ const Router = () => {
         <MedHistory />
       </Route>
 
+      <Route path="/padecimientos">
+        <Disease />
+      </Route>
+
       <Route path="/consultas">
         <Consultation />
       </Route>
 
       <Route path="/medicamentos">
-        <CatalogSearchbar />
+        <Drug />
       </Route>
 
       <Route path="/recetas">

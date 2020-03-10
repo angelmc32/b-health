@@ -4,10 +4,15 @@ import { AppContext } from '../../AppContext';                      // Import Ap
 import useForm from '../../hooks/useForm';                          // Import useForm custom hook
 import UIkit from 'uikit';                                          // Import UIkit for notifications
 import moment from 'moment';                                        // Import momentjs for date formatting
+import 'moment/locale/es'  // without this line it didn't work
 
 import { getConsultations, createConsultation } from '../../services/consultation-services';
+import { createVitalSigns } from '../../services/vitalsigns-services'
 import ConsultationForm from './ConsultationForm';
+import ConsultationFormSpecial from './ConsultationFormSpecial'
 import ConsultationInfo from './ConsultationInfo';
+
+moment.locale('es')
 
 const Consultation = () => {
 
@@ -19,6 +24,7 @@ const Consultation = () => {
   const [consultation, setConsultation] = useState({});
   const [ consultations, setConsultations ] = useState([]);
   const [ isButtonDisabled, setIsButtonDisabled ] = useState(false);
+  const [ vitalsFormValues, setVitalsFormValues ] = useState({temperature: null, blood_pressure_sys: null, blood_pressure_dias: null, blood_sugar: null, heart_rate: null, weight: null});
 
   useEffect( () => {
 
@@ -57,6 +63,25 @@ const Consultation = () => {
 
       const { consultation } = res.data    // Destructure updated preferences document from response
       console.log(consultation)
+
+      vitalsFormValues['consultation'] = consultation._id
+
+      // setVitalsFormValues( currentValues => ({
+      //   ...currentValues,
+      //   [date]: event.target.value
+      // }))
+
+      createVitalSigns(vitalsFormValues)
+      .then( res => {
+
+        const { vitalsigns } = res.data;
+        console.log(vitalsigns)
+
+      })
+      .catch( error => {
+        console.log('error creando signos vitales');
+        console.log(error);
+      })
 
       // Send UIkit success notification
       UIkit.notification({
@@ -119,7 +144,11 @@ const Consultation = () => {
               + Nueva Consulta
             </button>
             <div className="uk-overflow-auto">
-              <table className="uk-table uk-table-striped uk-table-hover">
+              { consultations.length < 1 ? (
+                  <h4 className="uk-text-danger">No has agregado consultas</h4>
+                ) : null
+              }
+              <table className="uk-table uk-table-striped uk-table-hover uk-table-middle">
                 <thead>
                   <tr>
                     <th className="uk-text-center">Fecha</th>
@@ -127,7 +156,6 @@ const Consultation = () => {
                     <th className="uk-text-center uk-visible@s">Diagnostico</th>
                     <th className="uk-text-center uk-visible@s">Doctor</th>
                     <th className="uk-text-center">Detalles</th>
-                    <th></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -183,11 +211,11 @@ const Consultation = () => {
                         </tr>
                       )
                     : <tr>
-                        <td>Cargando</td>
-                        <td>Cargando</td>
-                        <td>Cargando</td>
-                        <td>Cargando</td>
-                        <td>Cargando</td>
+                        <td className="uk-text-center">Cargando</td>
+                        <td className="uk-text-center uk-visible@s">Cargando</td>
+                        <td className="uk-text-center uk-visible@s">Cargando</td>
+                        <td className="uk-text-center uk-visible@s">Cargando</td>
+                        <td className="uk-text-center">Cargando</td>
                       </tr>
                 }
                 </tbody>
@@ -202,7 +230,7 @@ const Consultation = () => {
                   <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin" onClick={event => setRoute('consultations')} >
                     Regresar
                   </button>
-                  <ConsultationForm handleSubmit={handleSubmit} handleInput={handleInput} form={form} isButtonDisabled={isButtonDisabled} />
+                  <ConsultationFormSpecial handleSubmit={handleSubmit} handleInput={handleInput} form={form} isButtonDisabled={isButtonDisabled} setVitalsFormValues={setVitalsFormValues}/>
                 </div>
               </div>
             ) : (

@@ -12,6 +12,13 @@ const drugSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'Prescription'
     },
+    date_added: {
+      type: Date,
+      required: true
+    },
+    date_finished: {
+      type: Date,
+    },
     brand_name: {
       type: String
     },
@@ -24,6 +31,10 @@ const drugSchema = new Schema(
     dosage_form: {
       type: String
     },
+    isCurrent: {
+      type: Boolean,
+      default: true
+    }
   }
 );
 

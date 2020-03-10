@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import CatalogSearchbar from '../common/CatalogSearchbar'
 import VitalSignsForm from '../vitalsigns/VitalSignsForm'
 
-const ConsultationForm = ({ handleSubmit, handleInput, form, isButtonDisabled }) => {
+const ConsultationForm = ({ handleSubmit, handleInput, form, isButtonDisabled, setVitalsFormValues }) => {
 
   const [ showVitalsForm, setShowVitalsForm ] = useState(false);
 
@@ -12,10 +12,9 @@ const ConsultationForm = ({ handleSubmit, handleInput, form, isButtonDisabled })
   }
 
   return (
-    <div className="content">
+    <div>
       {
         !showVitalsForm ? (
-          <div className="uk-section">
             <form onSubmit={handleSubmit} className="uk-form-stacked uk-text-left">
               <div className="uk-margin">
                 <label className="uk-form-label" htmlFor="date">Fecha de consulta</label>
@@ -32,31 +31,35 @@ const ConsultationForm = ({ handleSubmit, handleInput, form, isButtonDisabled })
                 </div>
                 <label className="uk-form-label" htmlFor="form-stacked-text">Diagnóstico</label>
                 <div className="uk-form-controls">
-                  <CatalogSearchbar type="drugs" form={form} handleFormInput={handleInput}/>
+                  <CatalogSearchbar type="diagnosis" form={form} handleFormInput={handleInput}/>
                 </div>
               </div>
               <div className="uk-width-1-1 uk-flex uk-flex-center uk-margin">
                 {
                   showVitalsForm ? (
-                    <button type="submit" className="uk-button uk-button-secondary uk-button-small uk-border-pill uk-width-2-3 uk-width-1-4@m" onClick={toggleVitalsForm} >
+                    <button type="submit" className="uk-button uk-button-secondary uk-border-pill uk-width-2-3 uk-width-1-4@m" onClick={toggleVitalsForm} >
                       - Signos Vitales
                     </button>
                   ) : (
-                    <button type="submit" className="uk-button uk-button-secondary uk-button-small uk-border-pill uk-width-2-3 uk-width-1-4@m" onClick={toggleVitalsForm}  >
+                    <button type="submit" className="uk-button uk-button-secondary uk-border-pill uk-width-2-3 uk-width-1-4@m" onClick={toggleVitalsForm}  >
                       + Signos Vitales
                     </button>
                   )
                 }
               </div>
+              <div className="uk-width-1-1 uk-flex uk-flex-center uk-margin">
+                <button type="submit" className="uk-button uk-button-primary uk-button uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin" disabled={isButtonDisabled} >
+                  Crear consulta
+                </button>
+              </div>
             </form>
-          </div>
         ) : (
           <div className="uk-section">
             <h2>Registro de Signos Vitales</h2>
-            <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin" onClick={toggleVitalsForm} >
-              Regresar
+            <button className="uk-button uk-button-secondary uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin" onClick={toggleVitalsForm} >
+              Regresar a Consulta
             </button>
-            <VitalSignsForm type="consultation" setShowVitalsForm={setShowVitalsForm} />
+            <VitalSignsForm type="consultation" setShowVitalsForm={setShowVitalsForm} setVitalsFormValues={setVitalsFormValues}/>
           </div>
         )
       }

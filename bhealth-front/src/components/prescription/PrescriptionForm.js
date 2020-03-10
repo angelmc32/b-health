@@ -1,18 +1,49 @@
 import React, { useEffect, useState } from 'react';
 
-const PrescriptionForm = ({ handleSubmit, handleInput, handleFileInput, form, isButtonDisabled, objectHandler }) => {
+const PrescriptionForm = ({ handleSubmit, handleInput, handleFileInput, form, isButtonDisabled, objectHandler, drugs }) => {
 
   const [ drugFields, setDrugFields ] = useState([]);
   const [ drugQuantity, setDrugQuantity] = useState(0);
+  let drug = {'generic_name': null, 'brand_name': null, 'dosage_form': null, 'dose': null, 'directions': null};
 
   useEffect( () => {
 
   }, [drugQuantity])
+
+  const handleDrugInput = (event, index) => {
+
+    switch (event.target.name) {
+      case 'generic_name':
+        drugs[index].generic_name = event.target.value;
+        // setForm( prevState => ({...prevState, ['drugs']: {[name]:value}}) );
+        break;
+      case 'brand_name':
+        drugs[index].brand_name = event.target.value;
+        // setForm( prevState => ({...prevState, [name]: value}) );
+        break;
+      case 'dosage_form':
+        drugs[index].dosage_form = event.target.value;
+        // setForm( prevState => ({...prevState, [name]: value}) );
+        break;
+      case 'dose':
+        drugs[index].dose = event.target.value;
+        // setForm( prevState => ({...prevState, [name]: value}) );
+        break;
+      case 'directions':
+        drugs[index].directions = event.target.value;
+        // setForm( prevState => ({...prevState, [name]: value}) );
+        break;
+    }
+
+    console.log(drugs);
+
+  }
   
   const addDrugField = (event) => {
 
     event.preventDefault();
     drugFields.push(1)
+    drugs.push(drug);
 
     setDrugFields(drugFields);
     setDrugQuantity(drugQuantity+1)
@@ -25,6 +56,7 @@ const PrescriptionForm = ({ handleSubmit, handleInput, handleFileInput, form, is
 
     event.preventDefault();
     drugFields.pop()
+    drugs.pop();
 
     setDrugFields(drugFields);
     setDrugQuantity(drugQuantity-1)
@@ -58,23 +90,23 @@ const PrescriptionForm = ({ handleSubmit, handleInput, handleFileInput, form, is
               <h4>Medicamento {index+1} <span className="uk-margin-left" uk-icon="minus-circle" onClick={event => deleteDrugField(event)}></span></h4>
               <label className="uk-form-label" htmlFor="form-stacked-text">Nombre Genérico:</label>
               <div className="uk-form-controls">
-                <input className="uk-input" type="text" name="brand_name" onChange={handleInput} placeholder="Nombre genérico del medicamento" />
+                <input className="uk-input" type="text" name="generic_name" onChange={event => handleDrugInput(event, index)} placeholder="Nombre genérico del medicamento" />
               </div>
               <label className="uk-form-label" htmlFor="form-stacked-text">Nombre Comercial:</label>
               <div className="uk-form-controls">
-                <input className="uk-input" type="text" name="generic_name" onChange={handleInput} placeholder="Nombre comercial del medicamento" />
+                <input className="uk-input" type="text" name="brand_name" onChange={event => handleDrugInput(event, index)} placeholder="Nombre comercial del medicamento" />
               </div>
               <label className="uk-form-label" htmlFor="form-stacked-text">Presentación:</label>
               <div className="uk-form-controls">
-                <input className="uk-input" type="text" name="dosage_form" onChange={handleInput} placeholder="Tabletas, jarabe, etc..." />
+                <input className="uk-input" type="text" name="dosage_form" onChange={event => handleDrugInput(event, index)} placeholder="Tabletas, jarabe, etc..." />
               </div>
               <label className="uk-form-label" htmlFor="form-stacked-text">Dosis:</label>
               <div className="uk-form-controls">
-                <input className="uk-input" type="text" name="dose" onChange={handleInput} placeholder="500 mg, 10 ml, etc..." />
+                <input className="uk-input" type="text" name="dose" onChange={event => handleDrugInput(event, index)} placeholder="500 mg, 10 ml, etc..." />
               </div>
               <label className="uk-form-label" htmlFor="form-stacked-text">Indicaciones:</label>
               <div className="uk-form-controls">
-                <input className="uk-input" type="text" name="directions" onChange={handleInput} placeholder="1 tableta c/8 horas, 1 inyección diaria, etc..." />
+                <input className="uk-input" type="text" name="directions" onChange={event => handleDrugInput(event, index)} placeholder="1 tableta c/8 horas, 1 inyección diaria, etc..." />
               </div>
             </div> ) }
         </div>

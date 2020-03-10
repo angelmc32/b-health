@@ -33,7 +33,7 @@ const Signup = () => {
 
       // Send UIkit success notification
       UIkit.notification({
-        message: `<span uk-icon='check'></span> We sent you an e-mail, please verify it to complete the account creation`,
+        message: `<span uk-icon='check'></span> Completa tu registro usando la liga que te enviamos a la dirección de correo electrónico proporcionada`,
         pos: 'bottom-center',
         status: 'success'
       });

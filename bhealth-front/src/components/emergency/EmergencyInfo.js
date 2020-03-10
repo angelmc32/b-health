@@ -1,18 +1,18 @@
 import React from 'react';
 import moment from 'moment';                                        // Import momentjs for date formatting
 
-const HospitalizationInfo = ({ hospitalization }) => {
+const EmergencyInfo = ({ emergency }) => {
   return (
     <div className="uk-container">
       <div className="uk-margin">
-        <p>Fecha de admisión: {moment(hospitalization.admission_date).locale('es').format('LL')}</p>
-        <p>Motivo de visita: {hospitalization.chief_complaint}</p>
-        <p>Diagnóstico: {hospitalization.diagnosis}</p>
-        <p>Clínica: {hospitalization.facility_name}</p>
-        <p>Observaciones y comentarios: {hospitalization.description}</p>
+        <p>Fecha de visita: {moment(emergency.date).locale('es').format('LL')}</p>
+        <p>Motivo de visita: {emergency.chief_complaint}</p>
+        <p>Diagnóstico: {emergency.diagnosis}</p>
+        <p>Clínica: {emergency.facility_name}</p>
+        <p>Observaciones y comentarios: {emergency.description}</p>
       </div>
     </div>
   )
 }
 
-export default HospitalizationInfo
+export default EmergencyInfo

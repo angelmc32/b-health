@@ -15,66 +15,77 @@ import weight_icon from '../../images/icons/weight.svg'
 
 import { getVitalSigns, getOneVitalSigns, createVitalSigns } from '../../services/vitalsigns-services'
 
-const VitalSignsForm = ({ type, setShowVitalsForm, setRoute }) => {
+const VitalSignsForm = ({ type, setShowVitalsForm, setVitalsFormValues, setRoute }) => {
 
-  const [ formValues, setFormValues ] = useState({temperature: null, blood_pressure_sys: null, blood_pressure_dias: null, blood_sugar: null, heart_rate: null, weight: null});
+  // const [ formValues, setFormValues ] = useState({temperature: null, blood_pressure_sys: null, blood_pressure_dias: null, blood_sugar: null, heart_rate: null, weight: null});
   const [ isButtonDisabled, setIsButtonDisabled ] = useState(false);
 
-  const handleSubmit = (event) => {
+  const saveVitalSigns = (event) => {
 
     event.preventDefault();
-    console.log(formValues);
-    setIsButtonDisabled(true);
 
-    createVitalSigns(formValues)
-    .then( res => {
-
-      const { vitalSigns } = res.data    // Destructure updated preferences document from response
-      console.log(vitalSigns)
-
-      // Send UIkit success notification
-      UIkit.notification({
-        message: `<span uk-icon='close'></span> '¡El registro de signos vitales fue creado exitosamente!'`,
-        pos: 'bottom-center',
-        status: 'success'
-      });
-
-      if ( type === 'consultation' )
-        setShowVitalsForm(false)
-      else setRoute('vitalSigns')
-
-      // setRoute('consultations');
-      setIsButtonDisabled(false);
-
-    })
-    .catch( error => {
-
-      console.log(error);
-
-      // Send UIkit error notification
-      UIkit.notification({
-        message: `<span uk-icon='close'></span> ${error}`,
-        pos: 'bottom-center',
-        status: 'danger'
-      });
-      
-      setIsButtonDisabled(false);
-
-    });
+    if ( type === 'consultation' )
+      setShowVitalsForm(false);
+    else 
+      setRoute('vitalSigns');
 
   }
+
+  // const handleSubmit = (event) => {
+
+  //   event.preventDefault();
+  //   console.log(formValues);
+  //   setIsButtonDisabled(true);
+
+  //   createVitalSigns(formValues)
+  //   .then( res => {
+
+  //     const { vitalSigns } = res.data    // Destructure updated preferences document from response
+  //     console.log(vitalSigns)
+
+  //     // Send UIkit success notification
+  //     UIkit.notification({
+  //       message: `<span uk-icon='close'></span> '¡El registro de signos vitales fue creado exitosamente!'`,
+  //       pos: 'bottom-center',
+  //       status: 'success'
+  //     });
+
+  //     if ( type === 'consultation' )
+  //       setShowVitalsForm(false)
+  //     else setRoute('vitalSigns')
+
+  //     // setRoute('consultations');
+  //     setIsButtonDisabled(false);
+
+  //   })
+  //   .catch( error => {
+
+  //     console.log(error);
+
+  //     // Send UIkit error notification
+  //     UIkit.notification({
+  //       message: `<span uk-icon='close'></span> ${error}`,
+  //       pos: 'bottom-center',
+  //       status: 'danger'
+  //     });
+      
+  //     setIsButtonDisabled(false);
+
+  //   });
+
+  // }
 
   const handleInputChange = (event) => {
     event.persist();
     if(event.target.type === 'number') event.target.value = parseInt(event.target.value);
-    setFormValues( currentValues => ({
+    setVitalsFormValues( currentValues => ({
       ...currentValues,
       [event.target.name]: event.target.value
     }))
   }
 
   return (
-    <form onSubmit={handleSubmit} className="uk-form-stacked uk-text-left">
+    <form className="uk-form-stacked uk-text-left">
       <div className="uk-margin">
         <div className="uk-width-1-1 uk-width-1-4@s uk-child-width-1-3 uk-grid uk-grid-collapse uk-grid-match">
           
@@ -112,7 +123,7 @@ const VitalSignsForm = ({ type, setShowVitalsForm, setRoute }) => {
         </div>
       </div>
       <div className="uk-width-1-1 uk-flex uk-flex-center uk-margin">
-        <button type="submit" className="uk-button uk-button-secondary uk-button-small uk-border-pill" disabled={isButtonDisabled} >
+        <button onClick={saveVitalSigns} className="uk-button uk-button-primary uk-border-pill" disabled={isButtonDisabled} >
           Agregar Signos Vitales
         </button>
       </div>     

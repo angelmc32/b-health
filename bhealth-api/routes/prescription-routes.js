@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Prescription = require('../models/Prescription');
+const Drug = require('../models/Drug');
 
 // Import helper for token verification (jwt)
 const { verifyToken } = require('../helpers/auth-helper');
@@ -28,6 +29,7 @@ router.post('/', verifyToken, uploader.single('image'), (req, res, next) => {
 
   const { id } = req.user;
   const body  = req.body;               // Extract body from request
+  const { drugsJSON } = req.body
 
   // If a file is being uploaded, set the secure_url property in the secure_url variable
   if ( req.file ) {
@@ -35,8 +37,18 @@ router.post('/', verifyToken, uploader.single('image'), (req, res, next) => {
     body['image'] = secure_url;
   }
 
-  Prescription.create({ ...req.body, user: id })
+  console.log('REVISAR AQUI!')
+  console.log(req.body)
+  console.log(req.body.drugsJSON)
+  drugArray = JSON.parse(drugsJSON)
+  console.log(drugArray);
+
+  Prescription.create({ drugs: JSON.parse(drugsJSON) , ...req.body, user: id })
   .then( prescription => {
+
+    for ( drug of drugArray ) {
+      Drug.create({ ...drug, user: id, prescription: prescription._id, date_added: prescription.date })
+    }
 
     res.status(200).json({ prescription });
 
@@ -44,6 +56,7 @@ router.post('/', verifyToken, uploader.single('image'), (req, res, next) => {
   .catch( error => {
 
     res.status(500).json({ error, msg: 'Unable to create prescription' }); // Respond 500 status, error and message
+    console.log(error)
 
   });
 

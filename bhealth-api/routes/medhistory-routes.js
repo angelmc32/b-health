@@ -35,6 +35,8 @@ router.post('/', verifyToken, (req, res, next) => {
   })
   .catch( error => {
 
+    console.log(error)
+    console.log(req.body)
     res.status(500).json({ error, msg: 'Unable to create medicalHistory' }); // Respond 500 status, error and message
 
   });

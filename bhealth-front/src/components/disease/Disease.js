@@ -4,10 +4,12 @@ import { AppContext } from '../../AppContext';                      // Import Ap
 import useForm from '../../hooks/useForm';                          // Import useForm custom hook
 import UIkit from 'uikit';                                          // Import UIkit for notifications
 import moment from 'moment';                                        // Import momentjs for date formatting
-
+import 'moment/locale/es'  // without this line it didn't work
 import { getConsultations } from '../../services/consultation-services';
 import { getEmergencies } from '../../services/emergency-services';
 import { getHospitalizations } from '../../services/hospitalization-services';
+
+moment.locale('es')
 
 const Disease = () => {
 
@@ -22,6 +24,7 @@ const Disease = () => {
   const [ emergencies, setEmergencies ] = useState([]);
   const [ hospitalizations, setHospitalizations ] = useState([]);
   const [ isButtonDisabled, setIsButtonDisabled ] = useState(false);
+  let diseasesHandler = []
 
   useEffect( () => {
 
@@ -45,7 +48,7 @@ const Disease = () => {
       setConsultations(consultations);
 
       for ( let i = 0 ; i < consultations.length ; i++ ) {
-        disease.push(consultations.diagnosis)
+        diseasesHandler.push(consultations[i].diagnosis)
       }
 
     })
@@ -57,7 +60,7 @@ const Disease = () => {
       setEmergencies(emergencies);
 
       for ( let i = 0 ; i < emergencies.length ; i++ ) {
-        disease.push(emergencies.diagnosis)
+        diseasesHandler.push(emergencies[i].diagnosis)
       }
 
     })
@@ -69,12 +72,18 @@ const Disease = () => {
       setHospitalizations(hospitalizations);
 
       for ( let i = 0 ; i < hospitalizations.length ; i++ ) {
-        disease.push(hospitalizations.diagnosis)
+        diseasesHandler.push(hospitalizations[i].diagnosis)
       }
 
+      setDiseases(diseasesHandler);
+      setRoute('diseases')
+
     })
+
+    console.log(diseasesHandler)
+    console.log(diseases)
     
-  }, [isButtonDisabled]);
+  }, [route]);
 
   // const handleSubmit = (event) => {
 
@@ -141,9 +150,92 @@ const Disease = () => {
   return (
 
     <div className="content">
-      
-        <h2>Padecimientos</h2>
-      
+      { route === 'diseases' ? (
+          <div className="uk-section">
+            <h2>Mis Padecimientos</h2>
+            {/* <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin" onClick={event => setRoute('create')} >
+              + Nuevo Padecimiento
+            </button> */}
+            <div className="uk-overflow-auto">
+              <table className="uk-table uk-table-striped uk-table-hover uk-table-middle">
+                <thead>
+                  <tr>
+                    <th className="uk-text-center">Diagnóstico</th>
+                    <th className="uk-text-center">Detalles</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  { diseases ? 
+                      diseases.map( (disease, index) => 
+                        <tr key={index} >
+                          <td className="uk-text-center">{disease ? disease : 'No definida'}</td>
+                          <td className="uk-text-center">
+                            <button className="uk-button uk-button-default uk-button-small uk-border-pill" uk-toggle={`target: #modal-sections-${index}`} >
+                              Ver
+                            </button>
+                            <div id={`modal-sections-${index}`} className="uk-flex-top" uk-modal="true">
+                              <div className="uk-modal-dialog uk-margin-auto-vertical">
+                                <button className="uk-modal-close-default" type="button" uk-close="true" />
+                                <div className="uk-modal-header">
+                                  <h3 className="uk-text-center">Datos del Padecimiento</h3>
+                                  <p>Nombre: {disease}</p>
+                                  <p>Fecha de primer diagnóstico: No disponible</p>
+                                  <p>Doctor o Clínica que realizó diagnóstico: No disponible</p>
+                                  <p>Aquí se presentará un resumen del padecimiento, así como una liga para mayor información</p>
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+                          <td></td>
+                          {/* <td>
+                            <a href={`#modal-sections-${index}`} uk-toggle={`target: #modal-sections-${index}`}>
+                              <span className="uk-margin-small-right" uk-icon="more-vertical"></span>
+                            </a>
+                            
+                          </td> */}
+                        </tr>
+                      )
+                    : <tr>
+                        <td>Cargando</td>
+                        <td>Cargando</td>
+                      </tr>
+                }
+                </tbody>
+              </table>
+            </div>
+          </div>
+          ) : ( null
+            // route === 'create' ? (
+            //   <div className="uk-section">
+            //     <div className="uk-container">
+            //       <h2>Nueva Consulta</h2>
+            //       <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin" onClick={event => setRoute('consultations')} >
+            //         Regresar
+            //       </button>
+            //       <ConsultationFormSpecial handleSubmit={handleSubmit} handleInput={handleInput} form={form} isButtonDisabled={isButtonDisabled} setVitalsFormValues={setVitalsFormValues}/>
+            //     </div>
+            //   </div>
+            // ) : (
+            //   route === 'read' ? (
+            //     <div className="uk-section">
+            //       <h2>Ver Consulta</h2>
+            //       <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin" onClick={event => setRoute('consultations')} >
+            //         Regresar
+            //       </button>
+            //       <ConsultationInfo {...consultation} />
+            //     </div>
+            //   ) : (
+            //     <div className="uk-section">
+            //       <h2>Cargando...</h2>
+            //       <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin" onClick={event => setRoute('consultations')} >
+            //         Regresar
+            //       </button>
+            //     </div> 
+            //   )
+            // )
+          )
+        }
     </div>
     
   )

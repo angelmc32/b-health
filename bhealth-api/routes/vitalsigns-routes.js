@@ -63,6 +63,28 @@ router.get('/:vitalsignsID', verifyToken, (req, res, next) => {
 
 });
 
+router.get('/vitals/:consultationID', verifyToken, (req, res, next) => {
+
+  const { consultationID } = req.params;
+  const { id } = req.user;
+
+  VitalSigns.findOne({consultation: consultationID})
+  .then( vitalsigns => {
+    
+    if ( vitalsigns.user != id )
+      return res.status(401).json({ error, msg: 'You are not authorized to view this vital signs' });
+    else
+      res.status(200).json({ vitalsigns });
+
+  })
+  .catch( error => {
+
+    res.status(500).json({ error, msg: 'Unable to retrieve data' }); // Respond 500 status, error and message
+
+  });
+
+});
+
 router.patch('/:vitalsignsID', verifyToken, (req, res, next) => {
 
   const { vitalsignsID } = req.params;

@@ -8,9 +8,9 @@ const vitalsSchema = new Schema(
       required: true,
       ref: 'User'
     },
-    prescription: {
+    consultation: {
       type: Schema.Types.ObjectId,
-      ref: 'Prescription'
+      ref: 'Consultation'
     },
     date: {
       type: Date,

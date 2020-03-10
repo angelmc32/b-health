@@ -117,7 +117,11 @@ const Hozpitalization = () => {
               + Nueva Hospitalización
             </button>
             <div className="uk-overflow-auto">
-              <table className="uk-table uk-table-striped uk-table-hover">
+              { hospitalizations.length < 1 ? (
+                  <h4 className="uk-text-danger">No has agregado hospitalizaciones</h4>
+                ) : null
+              }
+              <table className="uk-table uk-table-striped uk-table-hover uk-table-middle">
                 <thead>
                   <tr>
                     <th className="uk-text-center">Fecha</th>
@@ -132,51 +136,13 @@ const Hozpitalization = () => {
                       hospitalizations.map( (hospitalization, index) => 
                         <tr key={index} >
                           <td className="uk-text-center">{moment(hospitalization.admission_date).locale('es').format('LL')}</td>
-                          <td className="uk-text-center">{hospitalization.diagnosis}</td>
+                          <td className="uk-text-center">{hospitalization.diagnosis ? hospitalization.diagnosis : 'No definido'}</td>
                           <td className="uk-text-center uk-visible@s">{hospitalization.facility_name}</td>
                           <td className="uk-text-center uk-visible@s">{`No disponible`}</td>
                           <td className="uk-text-center">
                             <button className="uk-button uk-button-default uk-button-small uk-border-pill" onClick={event => loadHospitalization({hospitalization})} >
                               Ver
                             </button>
-                          </td>
-                          <td>
-                            <a href={`#modal-sections-${index}`} uk-toggle={`target: #modal-sections-${index}`}>
-                              <span className="uk-margin-small-right" uk-icon="more-vertical"></span>
-                            </a>
-                            <div id={`modal-sections-${index}`} className="uk-flex-top" uk-modal="true">
-                              <div className="uk-modal-dialog uk-margin-auto-vertical">
-                                <button className="uk-modal-close-default" type="button" uk-close="true" />
-                                <div className="uk-modal-header">
-                                  <h3 className="uk-text-center">Datos de la Hospitalización</h3>
-                                  <p>Fecha: {moment(hospitalization.date).locale('es').format('LL')}</p>
-                                  <p>Clínica: {hospitalization.facility_name}</p>
-                                  <p>Duración de la estancia: {hospitalization.admission_date - hospitalization.discharge_date}</p>
-                                </div>
-                                <div className="uk-modal-body uk-flex uk-flex-column">
-                                  { hospitalization.treatment ? (
-                                      <button className="uk-button uk-button-default uk-border-pill uk-margin" onClick={event => goToPrescription(event, hospitalization, 'read')} >
-                                        <NavLink to="/recetas">Ver Receta</NavLink>
-                                      </button>
-                                    ) : (
-                                      <button className="uk-button uk-button-default uk-border-pill uk-margin" onClick={event => goToPrescription(event, hospitalization, 'create')} >
-                                        <NavLink to="/recetas">Agregar Receta</NavLink>
-                                      </button>
-                                    )
-                                  }
-                                  { hospitalization.studies ? (
-                                      <button className="uk-button uk-button-default uk-border-pill uk-margin" onClick={event => goToStudies(event, hospitalization, 'read')} >
-                                        <NavLink to="/estudios">Ver Estudios</NavLink>
-                                      </button>
-                                    ) : (
-                                      <button className="uk-button uk-button-default uk-border-pill uk-margin" onClick={event => goToStudies(event, hospitalization, 'create')} >
-                                        <NavLink to="/estudios">Agregar Estudios</NavLink>
-                                      </button>
-                                    )
-                                  }
-                                </div>
-                              </div>
-                            </div>
                           </td>
                         </tr>
                       )

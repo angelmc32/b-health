@@ -2,10 +2,10 @@ import axios from 'axios';                      // Import axios to enable API ca
 
 // Set URL according to environment
 const isProduction = process.env.NODE_ENV === 'production';
-const base_url = isProduction ? 'https://b-health.herokuapp.com/api/vitalsigns' : 'http://localhost:3000/api/vitalsigns';
+const base_url = isProduction ? 'https://b-health.herokuapp.com/api/drugs' : 'http://localhost:3000/api/drugs';
 
 // Export get function to retrieve all prescriptions of the current logged in user
-export const getVitalSigns = () => {
+export const getDrugs = () => {
 
   const token = localStorage.getItem('token');  // Get token from localStorage
 
@@ -18,7 +18,7 @@ export const getVitalSigns = () => {
 };
 
 // Export create facility function, which receives data as parameters to enable prescription creation
-export const createVitalSigns = (data) => {
+export const createDrug = (data) => {
 
   const token = localStorage.getItem('token');  // Get token from localStorage
 
@@ -31,11 +31,11 @@ export const createVitalSigns = (data) => {
 
 };
 
-export const getOneVitalSigns = (vitalSignsID) => {
+export const getDrug = (drugID) => {
 
   const token = localStorage.getItem('token');  // Get token from localStorage
 
-  return axios.get(`${base_url}/${vitalSignsID}`, {
+  return axios.get(`${base_url}/${drugID}`, {
     headers: {
       Authorization: token,                     // Send token in request headers (check api/helpers/auth-helper)
     }
@@ -43,23 +43,11 @@ export const getOneVitalSigns = (vitalSignsID) => {
 
 };
 
-export const getOneVitalSignsConsultation = (consultationID) => {
+export const editDrug = (drugID, data) => {
 
   const token = localStorage.getItem('token');  // Get token from localStorage
 
-  return axios.get(`${base_url}/vitals/${consultationID}`, {
-    headers: {
-      Authorization: token,                     // Send token in request headers (check api/helpers/auth-helper)
-    }
-  });
-
-};
-
-export const editVitalSigns = (vitalSignsID, data) => {
-
-  const token = localStorage.getItem('token');  // Get token from localStorage
-
-  return axios.patch(`${base_url}/${vitalSignsID}`, data, {
+  return axios.patch(`${base_url}/${drugID}`, data, {
     headers: {
       Authorization: token,                     // Send token in request headers (check api/helpers/auth-helper)
     }

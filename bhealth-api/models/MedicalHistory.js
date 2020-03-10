@@ -9,19 +9,19 @@ const historySchema = new Schema(
       ref: 'User'
     },
     family_history: {
-      type: [String],
+      type: Object,
     },
     health_history: {
-      type: [String],
+      type: Object,
     },
     weekly_exercise_hours: {
       type: Number
     },
     addictions: {
-      type: [String],
+      type: Object,
     },
     allergies: {
-      type: [String],
+      type: Object,
     }
   },
   { timestamps: true }

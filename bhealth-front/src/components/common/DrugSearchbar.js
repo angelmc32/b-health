@@ -57,8 +57,8 @@ const CatalogSearchbar = ({type, form, handleFormInput}) => {
           />
         </div>
         { showDrop ? (
-            <select className="uk-select" name={type} onChange={handleFormInput}>
-              {searchResults.map( (disease, index) => <option key={index} value={disease.NOMBRE} >{disease.NOMBRE}</option> )}
+            <select className="uk-select" name="generic_name" onChange={handleFormInput}>
+              {searchResults.map( (drug, index) => <option key={index} value={drug.generic_name} >{drug.generic_name}</option> )}
             </select>
           ) : null 
         }

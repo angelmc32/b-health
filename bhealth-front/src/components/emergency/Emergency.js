@@ -117,7 +117,11 @@ const Emergency = () => {
               + Nueva Urgencia
             </button>
             <div className="uk-overflow-auto">
-              <table className="uk-table uk-table-striped uk-table-hover">
+              { emergencies.length < 1 ? (
+                  <h4 className="uk-text-danger">No has agregado urgencias</h4>
+                ) : null
+              }
+              <table className="uk-table uk-table-striped uk-table-hover uk-table-middle">
                 <thead>
                   <tr>
                     <th className="uk-text-center">Fecha</th>

@@ -22,21 +22,28 @@ const prescriptionSchema = new Schema (
       type: String,
       default: 'Sin imagen registrada'
     },
-    brand_name: {
-      type: [String]
-    },
-    generic_name: {
-      type: [String]
-    },
-    dose: {
-      type: [String]
-    },
-    dosage_form: {
-      type: [String]
-    },
-    directions: {
-      type: [String]
-    }
+    drugs: [{
+      brand_name: String,
+      generic_name: String,
+      dose: String,
+      dosage_form: String,
+      directions: String
+    }],
+    // brand_name: {
+    //   type: [String]
+    // },
+    // generic_name: {
+    //   type: [String]
+    // },
+    // dose: {
+    //   type: [String]
+    // },
+    // dosage_form: {
+    //   type: [String]
+    // },
+    // directions: {
+    //   type: [String]
+    // }
   },
   { timestamps: true }
 );

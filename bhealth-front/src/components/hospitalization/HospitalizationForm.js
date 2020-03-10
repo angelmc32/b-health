@@ -5,10 +5,10 @@ const HospitalizationForm = ({ handleSubmit, handleInput, form, isButtonDisabled
   return (
     <form onSubmit={handleSubmit} className="uk-form-stacked uk-text-left">
       <div className="uk-margin">
-      <label className="uk-form-label" htmlFor="form-stacked-text">¿Entró ud. al quirófano?</label>
+      <label className="uk-form-label" htmlFor="form-stacked-text">¿Ingresó usted al quirófano?</label>
         <div className="uk-margin uk-flex uk-flex-around">
-          <label><input onChange={handleInput} className="uk-radio" type="radio" name="gender" value={false} />No</label>
-          <label><input onChange={handleInput} className="uk-radio" type="radio" name="gender" value={true} />Sí</label>
+          <label><input onChange={handleInput} className="uk-radio" type="radio" name="isSurgery" value={false} />No</label>
+          <label><input onChange={handleInput} className="uk-radio" type="radio" name="isSurgery" value={true} />Sí</label>
         </div>
         <label className="uk-form-label" htmlFor="date">Fecha de admisión:</label>
         <div className="uk-form-controls">

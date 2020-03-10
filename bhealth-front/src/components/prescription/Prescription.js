@@ -1,18 +1,20 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';                      // Import useHistory for "redirection"
 import { AppContext } from '../../AppContext';                      // Import AppContext to use created context
-import useForm from '../../hooks/useForm';                          // Import useForm custom hook
+import useDrugsForm from '../../hooks/useDrugsForm';                          // Import useForm custom hook
 import UIkit from 'uikit';                                          // Import UIkit for notifications
 import moment from 'moment';                                        // Import momentjs for date formatting
 
 import { getPrescriptions, createPrescription, getPrescription, editPrescription } from '../../services/prescription-services';
+import { createDrug } from '../../services/drug-services';
+
 import PrescriptionForm from './PrescriptionForm';
 import PrescriptionInfo from './PrescriptionInfo';
 
 const Prescription = () => {
 
   // Destructure form state variable, handleInput and handleFileInput functions for form state manipulation
-  const { form, handleInput, handleFileInput } = useForm();
+  const { form, handleInput, handleFileInput } = useDrugsForm();
 
   const { push } = useHistory();                    // Destructure push method from useHistory to "redirect" user
   const { user, route, setRoute, objectHandler, setObjectHandler } = useContext(AppContext);
@@ -21,6 +23,7 @@ const Prescription = () => {
   const [ showForm, setShowForm ] = useState(false);
   const [ showConsultation, setShowConsultation ] = useState(false);
   const [ isButtonDisabled, setIsButtonDisabled ] = useState(false);
+  let drugs = [/*{'generic_name': null, brand_name: null, dosage_form: null, dose: null, indications: null}]*/];
 
   useEffect( () => {
 
@@ -61,7 +64,13 @@ const Prescription = () => {
     const formData = new FormData();      // Declare formData as new instance of FormData class
     const { image } = form;     // Destructure profile_picture from form
 
+    console.log(drugs)
+    form.drugsJSON = JSON.stringify(drugs);
     console.log(form)
+
+    // LearningCenterObject.observations = myArray;
+    // form.drugs = drugsArray
+    // console.log
 
     // Iterate through every key in form object and append name:value to formData
     for (let key in form) {
@@ -81,7 +90,7 @@ const Prescription = () => {
 
       // Send UIkit success notification
       UIkit.notification({
-        message: `<span uk-icon='close'></span> '¡Tu perfil fue actualizado exitosamente!'`,
+        message: `<span uk-icon='close'></span> '¡Tu receta fue creada exitosamente!'`,
         pos: 'bottom-center',
         status: 'success'
       });
@@ -89,6 +98,8 @@ const Prescription = () => {
       setRoute('prescriptions');
       setIsButtonDisabled(false);
       setObjectHandler({});
+
+      // Save drug information
 
     })
     .catch( error => {
@@ -131,7 +142,11 @@ const Prescription = () => {
               + Nueva Receta
             </button>
             <div className="uk-overflow-auto">
-              <table className="uk-table uk-table-striped uk-table-hover">
+              { prescriptions.length < 1 ? (
+                  <h4 className="uk-text-danger">No has agregado recetas</h4>
+                ) : null
+              }
+              <table className="uk-table uk-table-striped uk-table-hover uk-table-middle">
                 <thead>
                   <tr>
                     <th className="uk-text-center">Fecha</th>
@@ -174,7 +189,7 @@ const Prescription = () => {
                   <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin" onClick={deleteConsultationObject} >
                     Regresar
                   </button>
-                  <PrescriptionForm handleSubmit={handleSubmit} handleInput={handleInput} handleFileInput={handleFileInput} form={form} isButtonDisabled={isButtonDisabled} objectHandler={objectHandler}/>
+                  <PrescriptionForm handleSubmit={handleSubmit} handleInput={handleInput} handleFileInput={handleFileInput} form={form} isButtonDisabled={isButtonDisabled} objectHandler={objectHandler} drugs={drugs}/>
                 </div>
               </div>
             ) : (

@@ -8,6 +8,7 @@ import VitalSignsForm from '../vitalsigns/VitalSignsForm'
 
 import happy_img from '../../images/icons/happy-face.svg'
 import sad_img from '../../images/icons/sad-face.svg'
+import sick_img from '../../images/icons/sick-face.svg'
 import add_vitals_icon from '../../images/icons/add-vitals.svg'
 import blood_pressure_icon from '../../images/icons/blood-pressure.svg'
 import blood_sugar_icon from '../../images/icons/blood-sugar.svg'
@@ -41,7 +42,8 @@ const Home = () => {
   return (
     <div className="content">
       <div className="uk-section">
-        <h2>Hola {user.first_name}</h2>
+        <h2 className="uk-margin-small-top">Hola {user.first_name === "Nombres" ? "Usuario" : user.first_name}</h2>
+        <p>{moment(Date.now()).locale('es').format('LL')}</p>
         <div className="uk-container uk-overflow-auto">
           <div className="uk-grid uk-grid-collapse">
             <div className="uk-visible@s uk-width-1-3@s uk-grid uk-grid-collapse">
@@ -54,13 +56,16 @@ const Home = () => {
             </div>
             <div className="uk-width-1-1 uk-width-1-3@s uk-grid uk-grid-collapse">
               <div className="uk-width-1-1">
-                <h5>¿Cómo te sientes hoy?</h5>
+                <h4>¿Cómo te sientes?</h4>
               </div>
-              <div className="uk-width-1-2 uk-card-hover uk-padding">
+              <div className="uk-width-1-3 uk-card-hover uk-padding">
                 <img src={happy_img} alt=""/>
               </div>
-              <div className="uk-width-1-2 uk-card-hover uk-padding uk-light">
+              <div className="uk-width-1-3 uk-card-hover uk-padding uk-light">
                 <img src={sad_img} alt=""/>
+              </div>
+              <div className="uk-width-1-3 uk-card-hover uk-padding uk-light">
+                <img src={sick_img} alt=""/>
               </div>
             </div>
             <div className="uk-width-1-1 uk-grid uk-grid-collapse">
