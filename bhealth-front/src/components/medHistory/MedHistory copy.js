@@ -374,22 +374,36 @@ const MedHistory = () => {
                         Object.entries(medHistory.family_history).slice(0,6).map( (entry, index) => (
                           <label key={index}>
                             <input className="uk-checkbox" type="checkbox" name="family_history" defaultValue={entry[0]} defaultChecked={entry[1]} onChange={handleMedHistoryInput} />
-                            {" " + entry[0]}
+                            {entry[0]}
                           </label>
                           )
                         )
                       }
+                      {/* <label><input className="uk-checkbox" type="checkbox" name="family_history" value="Ninguno" defaultChecked={true} onChange={handleMedHistoryInput} /> Ninguno</label>
+                      <label><input className="uk-checkbox" type="checkbox" name="family_history" value="Convulsiones" onChange={handleMedHistoryInput} /> Convulsiones</label>
+                      <label><input className="uk-checkbox" type="checkbox" name="family_history" value="Cáncer" onChange={handleMedHistoryInput} /> Cáncer</label>
+                      <label><input className="uk-checkbox" type="checkbox" name="family_history" value="Diabetes" onChange={handleMedHistoryInput} /> Diabetes</label>
+                      <label><input className="uk-checkbox" type="checkbox" name="family_history" value="Dislipidemia" onChange={handleMedHistoryInput} /> Dislipidemia</label>
+                      <label><input className="uk-checkbox" type="checkbox" name="family_history" value="Eclampsia" onChange={handleMedHistoryInput} /> Eclampsia</label> */}
                     </div>
                     <div className="uk-width-1-2 uk-flex uk-flex-column">
                       {
                         Object.entries(medHistory.family_history).slice(6).map( (entry, index) => (
                           <label key={index}>
                             <input className="uk-checkbox" type="checkbox" name="family_history" defaultValue={entry[0]} defaultChecked={entry[1]} onChange={handleMedHistoryInput} />
-                            {" " + entry[0]}
+                            {entry[0]}
                           </label>
                           )
                         )
                       }
+                      {/* 
+                      <label><input className="uk-checkbox" type="checkbox" name="family_history" value="Autoinmunes" onChange={handleMedHistoryInput} /> Autoinmunes</label>
+                      <label><input className="uk-checkbox" type="checkbox" name="family_history" value="Cardiacas" onChange={handleMedHistoryInput} /> Cardiacas</label>
+                      <label><input className="uk-checkbox" type="checkbox" name="family_history" value="Psiquiátricas" onChange={handleMedHistoryInput} /> Psiquiátricas</label>
+                      <label><input className="uk-checkbox" type="checkbox" name="family_history" value="Tiroideas" onChange={handleMedHistoryInput} /> Tiroideas</label>
+                      <label><input className="uk-checkbox" type="checkbox" name="family_history" value="Hipertensión" onChange={handleMedHistoryInput} /> Hipertensión</label>
+                      <label><input className="uk-checkbox" type="checkbox" name="family_history" value="Tuberculosis" onChange={handleMedHistoryInput} /> Tuberculosis</label>
+                     */}
                     </div>
                   </div>
                 </div>
@@ -398,26 +412,24 @@ const MedHistory = () => {
                   <div className="uk-form-label">Sistemas o Aparatos:</div>
                   <div className="uk-form-controls uk-flex">
                     <div className="uk-width-1-2 uk-flex uk-flex-column">
-                      {
-                        Object.entries(medHistory.health_history).slice(0,8).map( (entry, index) => (
-                          <label key={index}>
-                            <input className="uk-checkbox" type="checkbox" name="health_history" defaultValue={entry[0]} defaultChecked={entry[1]} onChange={handleMedHistoryInput} />
-                            {" " + entry[0]}
-                          </label>
-                          )
-                        )
-                      }
+                      <label><input className="uk-checkbox" type="checkbox" name="health_history" value="Ninguno" defaultChecked={true} onChange={handleMedHistoryInput} /> Ninguno</label>
+                      <label><input className="uk-checkbox" type="checkbox" name="health_history" value="Cardiovascular" onChange={handleMedHistoryInput} /> Cardiovascular</label>
+                      <label><input className="uk-checkbox" type="checkbox" name="health_history" value="Gastrointestinal" onChange={handleMedHistoryInput} /> Gastrointestinal</label>
+                      <label><input className="uk-checkbox" type="checkbox" name="health_history" value="Músculo-Esquelético" onChange={handleMedHistoryInput} /> Músculo-esquelético</label>
+                      <label><input className="uk-checkbox" type="checkbox" name="health_history" value="Dolor" onChange={handleMedHistoryInput} /> Dolor</label>
+                      <label><input className="uk-checkbox" type="checkbox" name="health_history" value="Génito-Urinario" onChange={handleMedHistoryInput} /> Génito-Urinario</label>
+                      <label><input className="uk-checkbox" type="checkbox" name="health_history" value="Respiratorio" onChange={handleMedHistoryInput} /> Respiratorio</label>
+                      <label><input className="uk-checkbox" type="checkbox" name="health_history" value="Psiquiátrico" onChange={handleMedHistoryInput} /> Psiquiátrico</label>
                     </div>
                     <div className="uk-width-1-2 uk-flex uk-flex-column">
-                      {
-                        Object.entries(medHistory.health_history).slice(8).map( (entry, index) => (
-                          <label key={index}>
-                            <input className="uk-checkbox" type="checkbox" name="health_history" defaultValue={entry[0]} defaultChecked={entry[1]} onChange={handleMedHistoryInput} />
-                            {" " + entry[0]}
-                          </label>
-                          )
-                        )
-                      }
+                      <label><input className="uk-checkbox" type="checkbox" name="health_history" value="Órganos de los Sentidos" onChange={handleMedHistoryInput} /> Órganos de Sentidos</label>
+                      <label><input className="uk-checkbox" type="checkbox" name="health_history" value="Otros" onChange={handleMedHistoryInput} /> Otros</label>
+                      <label><input className="uk-checkbox" type="checkbox" name="health_history" value="Dermatológico" onChange={handleMedHistoryInput} /> Dermatológico</label>
+                      <label><input className="uk-checkbox" type="checkbox" name="health_history" value="Síntomas Generales" onChange={handleMedHistoryInput} /> Síntomas Generales</label>
+                      <label><input className="uk-checkbox" type="checkbox" name="health_history" value="Endócrino" onChange={handleMedHistoryInput} /> Endócrino</label>
+                      <label><input className="uk-checkbox" type="checkbox" name="health_history" value="Hemato-Linfático" onChange={handleMedHistoryInput} /> Hemato-Linfático</label>
+                      <label><input className="uk-checkbox" type="checkbox" name="health_history" value="Sistema Inmunológico" onChange={handleMedHistoryInput} /> Sist. Inmunológico</label>
+                      <label><input className="uk-checkbox" type="checkbox" name="health_history" value="Sistema Nervioso" onChange={handleMedHistoryInput} /> Sist. Nervioso</label>
                     </div>
                   </div>
                 </div>
@@ -426,7 +438,7 @@ const MedHistory = () => {
                   <div className="uk-form-controls">
                     <label className="uk-form-label" htmlFor="date">Horas de Actividad Física a la Semana:</label>
                     <div className="uk-form-controls">
-                      <input className="uk-input" type="number" name="weekly_exercise_hours" defaultValue={weekly_exercise_hours} onChange={handleMedHistoryInput} />
+                      <input className="uk-input" type="number" name="weekly_exercise_hours" onChange={handleMedHistoryInput} />
                     </div>
                     <div className="uk-form-label">Adicciones:</div>
                     <div className="uk-flex uk-flex-column">

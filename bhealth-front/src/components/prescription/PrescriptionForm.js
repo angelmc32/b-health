@@ -119,7 +119,7 @@ const PrescriptionForm = ({ handleSubmit, handleInput, handleFileInput, form, is
         
       </div>
       <div className="uk-width-1-1 uk-flex uk-flex-center">
-        <button type="submit" className="uk-button uk-button-primary uk-button-small uk-border-pill" disabled={isButtonDisabled} >
+        <button type="submit" className="uk-button uk-button-primary uk-border-pill uk-width-2-3 uk-width-1-4@m" disabled={isButtonDisabled} >
           Crear receta
         </button>
       </div>

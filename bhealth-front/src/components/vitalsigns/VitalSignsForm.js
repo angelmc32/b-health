@@ -15,7 +15,7 @@ import weight_icon from '../../images/icons/weight.svg'
 
 import { getVitalSigns, getOneVitalSigns, createVitalSigns } from '../../services/vitalsigns-services'
 
-const VitalSignsForm = ({ type, setShowVitalsForm, setVitalsFormValues, setRoute }) => {
+const VitalSignsForm = ({ type, setShowVitalsForm, setVitalsFormValues, setRoute, vitalsFormValues = null }) => {
 
   // const [ formValues, setFormValues ] = useState({temperature: null, blood_pressure_sys: null, blood_pressure_dias: null, blood_sugar: null, heart_rate: null, weight: null});
   const [ isButtonDisabled, setIsButtonDisabled ] = useState(false);
@@ -26,8 +26,37 @@ const VitalSignsForm = ({ type, setShowVitalsForm, setVitalsFormValues, setRoute
 
     if ( type === 'consultation' )
       setShowVitalsForm(false);
-    else 
-      setRoute('vitalSigns');
+    else {
+
+      createVitalSigns(vitalsFormValues)
+      .then( res => {
+
+        const { vitalsigns } = res.data;
+        console.log(vitalsigns)
+
+        // Send UIkit success notification
+        UIkit.notification({
+          message: `<span uk-icon='close'></span> '¡Los signos vitales fueron registrados exitosamente!'`,
+          pos: 'bottom-center',
+          status: 'success'
+        });
+
+      })
+      .catch( error => {
+        console.log('error creando signos vitales');
+        console.log(error);
+
+        // Send UIkit error notification
+        UIkit.notification({
+          message: `<span uk-icon='close'></span> ${error}`,
+          pos: 'bottom-center',
+          status: 'danger'
+        });
+
+      })
+
+    }
+      setRoute(null);
 
   }
 
@@ -77,7 +106,8 @@ const VitalSignsForm = ({ type, setShowVitalsForm, setVitalsFormValues, setRoute
 
   const handleInputChange = (event) => {
     event.persist();
-    if(event.target.type === 'number') event.target.value = parseInt(event.target.value);
+
+    if(event.target.type === 'number') event.target.value = parseFloat(event.target.value);
     setVitalsFormValues( currentValues => ({
       ...currentValues,
       [event.target.name]: event.target.value
@@ -92,34 +122,11 @@ const VitalSignsForm = ({ type, setShowVitalsForm, setVitalsFormValues, setRoute
             <VitalSignsCard vitalsign_name="Temperatura Corporal" vitalsign_icon={temperature_icon} handleInputChange={handleInputChange} form_name="temperature" />
             <VitalSignsCard vitalsign_name="Presión Sistólica" vitalsign_icon={blood_pressure_icon} handleInputChange={handleInputChange} form_name="blood_pressure_sys" />
             <VitalSignsCard vitalsign_name="Glucosa" vitalsign_icon={blood_sugar_icon} handleInputChange={handleInputChange} form_name="blood_sugar" />
-            {/* <label className="uk-form-label" htmlFor="form-stacked-text">Temperatura</label>
-            <div className="uk-form-controls">
-              <input className="uk-input uk-width-4-5" type="number" step=".1" name="temperature" onChange={handleInputChange} />
-            </div>
-            <label className="uk-form-label" htmlFor="form-stacked-text">Presión Sistólica</label>
-            <div className="uk-form-controls">
-              <input className="uk-input uk-width-4-5" type="number" name="blood_pressure_sys" onChange={handleInputChange} />
-            </div>
-            <label className="uk-form-label" htmlFor="form-stacked-text">Glucosa</label>
-            <div className="uk-form-controls">
-              <input className="uk-input uk-width-4-5" type="number" name="blood_sugar" onChange={handleInputChange} />
-            </div> */}
+
             <VitalSignsCard vitalsign_name="Frecuencia Cardiaca" vitalsign_icon={heart_rate_icon} handleInputChange={handleInputChange} form_name="heart_rate" />
             <VitalSignsCard vitalsign_name="Presión Diastólica" vitalsign_icon={blood_pressure_icon} handleInputChange={handleInputChange} form_name="blood_pressure_dias" />
             <VitalSignsCard vitalsign_name="Peso" vitalsign_icon={weight_icon} handleInputChange={handleInputChange} form_name="weight" />
-            {/* <label className="uk-form-label" htmlFor="form-stacked-text">Frecuencia Cardiaca</label>
-            <div className="uk-form-controls">
-              <input className="uk-input uk-width-4-5" type="number" name="heart_rate" onChange={handleInputChange} />
-            </div>
-            <label className="uk-form-label" htmlFor="form-stacked-text">Presión Diastólica</label>
-            <div className="uk-form-controls">
-              <input className="uk-input uk-width-4-5" type="number" name="blood_pressure_dias" onChange={handleInputChange} />
-            </div>
-            
-            <label className="uk-form-label" htmlFor="form-stacked-text">Peso</label>
-            <div className="uk-form-controls">
-              <input className="uk-input uk-width-4-5" type="number" step=".001" name="weight" onChange={handleInputChange} />
-            </div> */}
+
         </div>
       </div>
       <div className="uk-width-1-1 uk-flex uk-flex-center uk-margin">

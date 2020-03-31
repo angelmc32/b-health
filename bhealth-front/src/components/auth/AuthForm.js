@@ -35,7 +35,7 @@ const AuthForm = ( { submit, action, email = '', password = '', confirm_password
           <label className="uk-form-label">Correo Electrónico:</label>
           <div className="uk-inline">
             <span className="uk-form-icon" uk-icon="icon: user"></span>
-            <input onChange={handleChange} name="email" value={email} className="uk-input" type="email" />
+            <input onChange={handleChange} name="email" value={email} className="uk-input uk-border-pill" type="email" />
           </div>
         </div>
         <div className="uk-margin">
@@ -46,7 +46,7 @@ const AuthForm = ( { submit, action, email = '', password = '', confirm_password
               onChange={handleChange}
               name="password"
               value={password}
-              className="uk-input"
+              className="uk-input uk-border-pill"
               type="password"
             />
           </div>
@@ -60,7 +60,7 @@ const AuthForm = ( { submit, action, email = '', password = '', confirm_password
                 onChange={handleChange}
                 name="confirm_password"
                 value={confirm_password}
-                className="uk-input"
+                className="uk-input uk-border-pill"
                 type="password"
               />
             </div>

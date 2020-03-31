@@ -38,8 +38,8 @@ const HospitalizationForm = ({ handleSubmit, handleInput, form, isButtonDisabled
         
       </div>
       <div className="uk-width-1-1 uk-flex uk-flex-center">
-        <button type="submit" className="uk-button uk-button-primary uk-button-small uk-border-pill" disabled={isButtonDisabled} >
-          Crear hospitalización
+        <button type="submit" className="uk-button uk-button-primary uk-border-pill uk-width-2-3 uk-width-1-4@m" disabled={isButtonDisabled} >
+          Crear Visita
         </button>
       </div>
       

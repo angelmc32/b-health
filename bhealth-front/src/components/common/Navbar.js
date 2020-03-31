@@ -3,7 +3,7 @@ import { Link, NavLink } from 'react-router-dom';         // Import NavLink for 
 import { useHistory } from 'react-router-dom';            // Import useHistory for "redirection"
 import { AppContext }  from '../../AppContext';           // Import AppContext to use created context
 import { logout } from '../../services/auth-services';    // Import logout service for logout functionality
-import logo from '../../images/health-check.svg'
+import logo from '../../images/icons/blue-icon.svg'
 
 
 // Declare Nav functional component (Navigation Bar)
@@ -39,7 +39,7 @@ const Navbar = () => {
 
   return (
 
-    <nav className="uk-navbar uk-navbar-container uk-flex uk-flex-between uk-flex-middle uk-flex-wrap">
+    <nav className="uk-navbar uk-navbar-container uk-navbar-transparent uk-flex uk-flex-between uk-flex-middle uk-flex-wrap">
       
       <ul className="uk-navbar-nav uk-height-1-1">
           <li className="uk-active uk-flex uk-flex-middle">
@@ -63,7 +63,7 @@ const Navbar = () => {
           
           { user._id ? 
             <ul className="menu uk-navbar-nav">
-              <li className="uk-active"  onClick={event => handleRoute(event, "none")}>
+              <li className="uk-active" onClick={event => handleRoute(event, "none")}>
                 <NavLink to="/perfil">
                   <div className="uk-width-auto uk-margin-small-right">
                     <img className="uk-border-circle" width={40} height={40} src={user.profile_picture} alt="User profile" />

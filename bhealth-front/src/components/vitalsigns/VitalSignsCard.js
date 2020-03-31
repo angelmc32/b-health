@@ -14,7 +14,7 @@ const VitalSignsCard = ({ vitalsign_name, vitalsign_icon, form_name, handleInput
       </div>
       {
         showInput ? 
-          <input className="uk-input uk-width-4-5" type="number" step=".1" name={form_name} onChange={handleInputChange} />
+          <input className="uk-input uk-width-4-5" type="number" step="any" name={form_name} onChange={handleInputChange} />
         : null
       }
     </div>

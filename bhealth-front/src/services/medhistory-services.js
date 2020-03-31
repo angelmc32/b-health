@@ -43,11 +43,11 @@ export const getMedicalHistory = () => {
 
 };
 
-export const editMedicalHistory = (userID, data) => {
+export const editMedicalHistory = (data) => {
 
   const token = localStorage.getItem('token');  // Get token from localStorage
 
-  return axios.patch(`${base_url}/${userID}`, data, {
+  return axios.patch(`${base_url}/`, data, {
     headers: {
       Authorization: token,                     // Send token in request headers (check api/helpers/auth-helper)
     }

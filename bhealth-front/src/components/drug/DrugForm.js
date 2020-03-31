@@ -28,8 +28,8 @@ const DrugForm = ({ handleSubmit, handleInput, form, isButtonDisabled }) => {
         
       </div>
       <div className="uk-width-1-1 uk-flex uk-flex-center">
-        <button type="submit" className="uk-button uk-button-primary uk-button-small uk-border-pill" disabled={isButtonDisabled} >
-          Agregar Medicamento
+        <button type="submit" className="uk-button uk-button-primary uk-width-2-3 uk-border-pill" disabled={isButtonDisabled} >
+          Agregar
         </button>
       </div>
       
