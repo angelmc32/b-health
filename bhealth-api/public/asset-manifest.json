@@ -1,24 +1,25 @@
 {
   "files": {
-    "main.css": "/static/css/main.93910b81.chunk.css",
-    "main.js": "/static/js/main.8e7ec456.chunk.js",
-    "main.js.map": "/static/js/main.8e7ec456.chunk.js.map",
+    "main.css": "/static/css/main.30dcf0f1.chunk.css",
+    "main.js": "/static/js/main.ed1fc167.chunk.js",
+    "main.js.map": "/static/js/main.ed1fc167.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.599b393c.js",
     "runtime-main.js.map": "/static/js/runtime-main.599b393c.js.map",
     "static/css/2.f785af3a.chunk.css": "/static/css/2.f785af3a.chunk.css",
-    "static/js/2.0f43d1a5.chunk.js": "/static/js/2.0f43d1a5.chunk.js",
-    "static/js/2.0f43d1a5.chunk.js.map": "/static/js/2.0f43d1a5.chunk.js.map",
+    "static/js/2.a94baaf1.chunk.js": "/static/js/2.a94baaf1.chunk.js",
+    "static/js/2.a94baaf1.chunk.js.map": "/static/js/2.a94baaf1.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.501e3c5ff3b25988ffb211a2b4fd5cc2.js": "/precache-manifest.501e3c5ff3b25988ffb211a2b4fd5cc2.js",
+    "precache-manifest.6d44e3aa45b352073959837578e5d48d.js": "/precache-manifest.6d44e3aa45b352073959837578e5d48d.js",
     "service-worker.js": "/service-worker.js",
     "static/css/2.f785af3a.chunk.css.map": "/static/css/2.f785af3a.chunk.css.map",
-    "static/css/main.93910b81.chunk.css.map": "/static/css/main.93910b81.chunk.css.map",
-    "static/js/2.0f43d1a5.chunk.js.LICENSE": "/static/js/2.0f43d1a5.chunk.js.LICENSE",
+    "static/css/main.30dcf0f1.chunk.css.map": "/static/css/main.30dcf0f1.chunk.css.map",
+    "static/js/2.a94baaf1.chunk.js.LICENSE": "/static/js/2.a94baaf1.chunk.js.LICENSE",
     "static/media/add-vitals.svg": "/static/media/add-vitals.77332c1f.svg",
     "static/media/blood-pressure.svg": "/static/media/blood-pressure.cf3aa91f.svg",
     "static/media/blood-sugar.svg": "/static/media/blood-sugar.cac6f5ac.svg",
+    "static/media/blue-icon.svg": "/static/media/blue-icon.233a6f76.svg",
+    "static/media/diamond-icon.svg": "/static/media/diamond-icon.7b010418.svg",
     "static/media/happy-face.svg": "/static/media/happy-face.df981ce0.svg",
-    "static/media/health-check.svg": "/static/media/health-check.b6b6dbc0.svg",
     "static/media/heart-rate.svg": "/static/media/heart-rate.669e9159.svg",
     "static/media/logo.svg": "/static/media/logo.5d5d9eef.svg",
     "static/media/sad-face.svg": "/static/media/sad-face.18bccf67.svg",
@@ -29,8 +30,8 @@
   "entrypoints": [
     "static/js/runtime-main.599b393c.js",
     "static/css/2.f785af3a.chunk.css",
-    "static/js/2.0f43d1a5.chunk.js",
-    "static/css/main.93910b81.chunk.css",
-    "static/js/main.8e7ec456.chunk.js"
+    "static/js/2.a94baaf1.chunk.js",
+    "static/css/main.30dcf0f1.chunk.css",
+    "static/js/main.ed1fc167.chunk.js"
   ]
 }
