@@ -54,13 +54,19 @@ const Signup = () => {
     
   };
 
+  const validateEmail = (email) => {
+    const regEx = /\S+@\S+\.\S+/;
+    return regEx.test(email);
+  }
+
   return (
-    <div className="uk-section uk-flex uk-flex-center">
-      <div className="uk-container uk-flex uk-flex-center">
+    <div className="uk-section">
+      <div className="uk-container">
         <AuthForm
           submit={handleSubmit}
           action="signup"
           handleChange={handleInput}
+          validateEmail={validateEmail}
           {...form}
         />
       </div>

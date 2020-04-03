@@ -3,7 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import { AppContext } from './AppContext';
 
 // Import Components for navigation
-// import Landing from './components/landing/Landing';
+import Landing from './components/landing/Landing';
 import Signup from './components/auth/Signup';
 import Login from './components/auth/Login';
 import Profile from './components/profile/Profile';
@@ -34,12 +34,20 @@ const Router = () => {
   return (
     <Switch>
 
+      <Route exact path="/">
+        <Landing />
+      </Route>
+
       <Route path="/signup">
         <Signup />
       </Route>
       
       <Route path="/login">
         <Login />
+      </Route>
+
+      <Route path="/registro">
+        <Signup />
       </Route>
 
       <Route path="/home">

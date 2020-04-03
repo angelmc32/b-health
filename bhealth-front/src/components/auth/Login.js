@@ -50,7 +50,7 @@ const Login = () => {
   };
 
   return (
-    <div className="uk-section uk-flex uk-flex-center">
+    <div className="uk-section">
       <div className="uk-container">
         <AuthForm
           submit={handleSubmit}

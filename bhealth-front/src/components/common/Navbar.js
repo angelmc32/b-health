@@ -73,7 +73,7 @@ const Navbar = () => {
               </li>
               <li className="uk-active">
                 <NavLink to="/login">
-                  <button className="uk-button uk-button-primary uk-button-small uk-border-pill" onClick={handleLogout} >
+                  <button className="uk-button uk-button-primary uk-border-pill" onClick={handleLogout} >
                     Logout
                   </button>
                 </NavLink>
@@ -119,12 +119,19 @@ const Navbar = () => {
             </ul>
             :
             <ul className="menu uk-navbar-nav">
-              <li className="uk-active uk-width-1-1 uk-flex uk-flex-center uk-flex-middle" onClick={closeMenu} ><Link to="/servicios">Servicios</Link></li>
-              <li className="uk-active uk-width-1-1 uk-flex uk-flex-center uk-flex-middle" onClick={closeMenu} ><Link to="/nosotros">Nosotros</Link></li>
-              <li className="uk-active uk-width-1-1 uk-flex uk-flex-center uk-flex-middle" onClick={closeMenu} >
-                <Link to="/login">
-                  <button className="uk-button uk-button-primary uk-button-small uk-border-pill">
-                    Ingresar
+              <li className="uk-active uk-flex uk-flex-center uk-flex-middle" onClick={closeMenu} ><Link to="/servicios">Servicios</Link></li>
+              <li className="uk-active uk-flex uk-flex-center uk-flex-middle" onClick={closeMenu} ><Link to="/nosotros">Nosotros</Link></li>
+              <li className="uk-active uk-flex uk-flex-center uk-flex-middle" onClick={closeMenu} >
+                <Link to="/login" className="uk-margin-remove uk-padding-remove">
+                  <button className="uk-button uk-button-white uk-border-pill">
+                    Inicia Sesión
+                  </button>
+                </Link>
+              </li>
+              <li className="uk-active uk-flex uk-flex-center uk-flex-middle" onClick={closeMenu} >
+                <Link to="/registro">
+                  <button className="uk-button uk-button-primary uk-border-pill">
+                    Regístrate
                   </button>
                 </Link>
               </li>
