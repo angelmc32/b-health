@@ -163,7 +163,7 @@ const Study = () => {
               <div className="uk-section">
                 <div className="uk-container">
                   <h2>Nuevo Estudio</h2>
-                  { objectHandler._id ?
+                  { objectHandler ?
                       <h4>{objectHandler._id}</h4>
                       : null
                   }

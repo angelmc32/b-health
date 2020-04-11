@@ -39,7 +39,6 @@ const CatalogSearchbar = ({type, form, handleFormInput}) => {
     if ( results.length <= 15 ) {
       setShowDrop(true);
     }
-    console.log(searchResults)
 
   }, [searchValue]);
 
@@ -49,7 +48,7 @@ const CatalogSearchbar = ({type, form, handleFormInput}) => {
         <div className="uk-search uk-search-default uk-width-1-1">
           <span className="uk-search-icon-flip" uk-search-icon="true"></span>
           <input
-            className="uk-search-input uk-text-center"
+            className="uk-search-input uk-text-center uk-border-pill"
             type="search"
             placeholder={ type === 'diagnosis' ? "Busca padecimiento..." : type === 'drugs' ? "Busca por nombre genérico..." : "Busca procedimiento..."}
             value={searchValue}
@@ -57,8 +56,9 @@ const CatalogSearchbar = ({type, form, handleFormInput}) => {
           />
         </div>
         { showDrop ? (
-            <select className="uk-select" name={type} onChange={handleFormInput}>
-              {searchResults.map( (disease, index) => <option key={index} value={disease.NOMBRE} >{disease.NOMBRE}</option> )}
+            <select className="uk-select uk-border-pill" name={type} onChange={handleFormInput}>
+              <option>Selecciona por favor</option>
+              {searchResults.map( (disease, index) => <option key={index} value={ type === "diagnosis" ? disease.NOMBRE : type === "drugs" ? disease.generic_name : disease.PRO_NOMBRE} >{ type === "diagnosis" ? disease.NOMBRE : type === "drugs" ? disease.generic_name : disease.PRO_NOMBRE}</option> )}
             </select>
           ) : null 
         }

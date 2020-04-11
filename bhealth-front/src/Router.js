@@ -23,6 +23,7 @@ import Hospitalization from './components/hospitalization/Hozpitalization';
 import Emergency from './components/emergency/Emergency'
 import ConsultationFormSpecial from './components/consultation/ConsultationFormSpecial'
 import Drug from './components/drug/Drug'
+import Questionnaire from './components/Questionnaire'
 // import Calendar from './components/schedule/Calendar';
 
 const Router = () => {
@@ -91,7 +92,7 @@ const Router = () => {
       </Route>
 
       <Route path="/test">
-        <ConsultationFormSpecial />
+        <Questionnaire />
       </Route>
 
     </Switch>

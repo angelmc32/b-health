@@ -31,6 +31,7 @@ router.patch('/edit', verifyToken, uploader.single('profile_picture'), (req, res
   })
   .catch( error => {
 
+    console.log(error)
     res.status(500).json({ error, msg: 'Unable to update profile' }); // Respond 500 status, error and message
 
   });

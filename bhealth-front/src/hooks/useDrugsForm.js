@@ -26,7 +26,7 @@ const useDrugsForm = (drugsArray) => {
       setForm( prevState => ({...prevState, [name]: array}) );
 
     } else {
-      console.log(form)
+
       // Update the form state without erasing previos values (with prevState)
       setForm( prevState => ({...prevState, [name]: value}) );
 

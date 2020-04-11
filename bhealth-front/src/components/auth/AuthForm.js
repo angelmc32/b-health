@@ -83,32 +83,47 @@ const AuthForm = ( { submit, action, email = '', password = '', confirm_password
       
       </div>
 
-        <form className="uk-form-stacked uk-margin-large" onSubmit={submit}>
+        <form className="uk-form-stacked" onSubmit={submit}>
           
           <div className="uk-margin">
             <label className="uk-form-label">Correo Electrónico:</label>
-            <div className="uk-inline uk-width-4-5">
+            <div className="uk-inline uk-width-4-5 uk-width-1-3@s">
               <span className="uk-form-icon" uk-icon="icon: user"></span>
               <input onChange={event => inputValidation(event)} name="email" value={email} className={emailInputState !== null ? `${emailInputState} uk-input uk-width-1-1 uk-border-pill` : "uk-input uk-width-1-1 uk-border-pill"} type="email" />
             </div>
+            { emailInputState === 'uk-form-danger' ?
+                <div>
+                  <span className="uk-text-danger">Introduce una dirección de correo válida</span>
+                </div>
+              : null 
+            }
           </div>
           <div className="uk-margin">
             <label className="uk-form-label">Contraseña:</label>
-            <div className="uk-inline uk-width-4-5">
+            <div className="uk-inline uk-width-4-5 uk-width-1-3@s">
               <span className="uk-form-icon" uk-icon="icon: lock"></span>
               <input
                 onChange={event => inputValidation(event)}
                 name="password"
                 value={password}
-                className={passwordInputState !== null ? `${passwordInputState} uk-input uk-width-1-1 uk-border-pill` : "uk-input uk-width-1-1 uk-border-pill"}
+                className={
+                  action === 'signup' ?
+                    passwordInputState !== null ? `${passwordInputState} uk-input uk-width-1-1 uk-border-pill` : "uk-input uk-width-1-1 uk-border-pill"
+                  : "uk-input uk-width-1-1 uk-border-pill"}
                 type="password"
               />
             </div>
+            { passwordInputState === 'uk-form-danger' ?
+                <div>
+                  <span className="uk-text-danger">La contraseña debe contener al menos una mayúscula, una minúscula y un número</span>
+                </div>
+              : null 
+            }
           </div>
             { action === "signup" ? (
             <div className="uk-margin">
               <label className="uk-form-label">Confirma tu contraseña:</label>
-              <div className="uk-inline uk-width-4-5">
+              <div className="uk-inline uk-width-4-5 uk-width-1-3@s">
                 <span className="uk-form-icon" uk-icon="icon: lock"></span>
                 <input
                   onChange={event => inputValidation(event)}
@@ -118,12 +133,18 @@ const AuthForm = ( { submit, action, email = '', password = '', confirm_password
                   type="password"
                 />
               </div>
+              { confPasswordInputState === 'uk-form-danger' ?
+                <div>
+                  <span className="uk-text-danger">Asegúrate de introducir la misma contraseña</span>
+                </div>
+              : null 
+            }
             </div>
             ) : null }
 
           
 
-          <button disabled={action === 'signup' ? isButtonDisabled : false} className="uk-button uk-button-primary uk-border-pill uk-width-3-5 uk-margin" type="submit">
+          <button disabled={action === 'signup' ? isButtonDisabled : false} className="uk-button uk-button-primary uk-border-pill uk-width-3-5 uk-width-1-5@s uk-margin" type="submit">
             {action === "signup" ? "Registrar" : "Entrar"}
           </button>
 

@@ -29,6 +29,12 @@ const userSchema = new Schema(
       type: String,
       default: 'Apellido Materno'
     },
+    phone_number: {
+      type: Number,
+    },
+    zip_code: {
+      type: Number
+    },
     curp: {
       type: String,
       default: '',
@@ -46,6 +52,16 @@ const userSchema = new Schema(
     profile_picture: {
       type: String,
       default: 'https://cdn2.iconfinder.com/data/icons/social-media-flat-line/70/user-512.png'
+    },
+    marital_status: {
+      type: String,
+    },
+    education_level: {
+      type: String
+    },
+    isProfileComplete: {
+      type: Boolean,
+      default: false
     },
     isVerified: {
       type: Boolean,

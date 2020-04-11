@@ -15,13 +15,11 @@ const useForm = () => {
 
     // When using checkboxes, store the values in an array
     if ( event.target.type === 'checkbox' ) {
-      
-      array.push(value);
-      setArray(array);
-      setForm( prevState => ({...prevState, [name]: array}) );
+      const { checked } = event.target
+      setForm( prevState => ({...prevState, [name]: checked}) );
 
     } else {
-      console.log(form)
+  
       // Update the form state without erasing previos values (with prevState)
       setForm( prevState => ({...prevState, [name]: value}) );
 

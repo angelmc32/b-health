@@ -128,6 +128,13 @@ span.uk-text-secondary {
   color: #00AAAA!important
 }
 
+.card-section-white {
+  border: #00AAAA 1px solid;
+  border-radius: 15px;
+  padding: 2.5%;
+  margin: 2.5% 0
+}
+
 @media only screen and (max-width: 479px) {
 
   label#nav-menu {

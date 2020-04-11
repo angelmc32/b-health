@@ -21,10 +21,12 @@ const Landing = () => {
               <button className="uk-button uk-button-muted uk-width-2-3 uk-border-pill">
                 Inicia Sesión
               </button>
-            </Link>        
-            <button className="uk-visible@s uk-button uk-button-primary uk-button-large uk-border-pill uk-margin-large">
-              Regístrate Gratis
-            </button>
+            </Link>
+            <Link to="/registro" className="uk-width-1-1 uk-margin-large">
+              <button className="uk-visible@s uk-button uk-button-primary uk-button-large uk-border-pill">
+                Regístrate Gratis
+              </button>
+            </Link>
           </div>
         </div>
       </div>

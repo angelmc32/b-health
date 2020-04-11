@@ -10,7 +10,7 @@ import UIkit from 'uikit';                                // Import UIkit for no
 const Signup = () => {
 
   const { form, handleInput } = useForm();      // Destructure form state variable and handleInput function
-  const { setUser } = useContext(AppContext);   // Destructure setUser function for user state manipulation
+  const { setUser, setRoute } = useContext(AppContext);   // Destructure setUser function for user state manipulation
   const { push } = useHistory();                // Destructure push method from useHistory to "redirect" user
 
   // Declare function for form submit event
@@ -29,7 +29,8 @@ const Signup = () => {
       localStorage.setItem('token', token);
 
       setUser(user);    // Modify user state variable, setting the user data in the state
-      push('/home');    // "Redirect" user to home
+      setRoute('edit');
+      push('/perfil');    // "Redirect" user to home
 
       // Send UIkit success notification
       UIkit.notification({

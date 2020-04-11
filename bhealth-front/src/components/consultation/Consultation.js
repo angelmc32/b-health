@@ -55,14 +55,12 @@ const Consultation = () => {
   const handleSubmit = (event) => {
 
     event.preventDefault();
-    console.log(form);
     setIsButtonDisabled(true);
 
     createConsultation(form)
     .then( res => {
 
       const { consultation } = res.data    // Destructure updated preferences document from response
-      console.log(consultation)
 
       vitalsFormValues['consultation'] = consultation._id
 
@@ -75,7 +73,6 @@ const Consultation = () => {
       .then( res => {
 
         const { vitalsigns } = res.data;
-        console.log(vitalsigns)
 
       })
       .catch( error => {
