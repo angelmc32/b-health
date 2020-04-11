@@ -231,7 +231,7 @@ const Profile = () => {
               </div>
             </div>
           ) : (
-            <Questionnaire title="Mi Perfil" questionnaire={ProfileQuestionnaire} handleSubmit={handleSubmit} form={form} backButton={backButton}/>
+            <Questionnaire title="Mi Perfil" isComplete={true} questionnaire={ProfileQuestionnaire} handleSubmit={handleSubmit} form={form} backButton={backButton}/>
             // <form onSubmit={handleSubmit} className="uk-form-stacked uk-text-left">
             //   <div className="uk-margin">
             //     <label className="uk-form-label" htmlFor="date">Nombres:</label>
