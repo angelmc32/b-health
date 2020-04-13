@@ -86,13 +86,10 @@ const Navbar = () => {
                   <NavLink to="/antecedentes">Antecedentes</NavLink>
                 </li>
                 <li className="uk-active" onClick={event => handleRoute(event, "none")} >
-                  <NavLink to="/padecimientos">Padecimientos</NavLink>
+                  <NavLink to="/signosvitales">Signos Vitales</NavLink>
                 </li>
                 <li className="uk-active" onClick={event => handleRoute(event, "none")} >
                   <NavLink to="/consultas">Consultas</NavLink>
-                </li>
-                <li className="uk-active" onClick={event => handleRoute(event, "none")} >
-                  <NavLink to="/medicamentos">Medicamentos</NavLink>
                 </li>
                 <li className="uk-active" onClick={event => handleRoute(event, "none")} >
                   <NavLink to="/recetas">Recetas</NavLink>
@@ -106,6 +103,12 @@ const Navbar = () => {
                 <li className="uk-active" onClick={event => handleRoute(event, "none")} >
                   <NavLink to="/hospitalizaciones">Hospitalizaciones</NavLink>
                 </li>
+                <li className="uk-active" onClick={event => handleRoute(event, "none")} >
+                  <NavLink to="/padecimientos">Padecimientos</NavLink>
+                </li>
+                <li className="uk-active" onClick={event => handleRoute(event, "none")} >
+                  <NavLink to="/medicamentos">Medicamentos</NavLink>
+                </li>
                 {/* <li className="uk-active" onClick={event => handleRoute(event, "none")} >
                   <NavLink to="/agenda">Agenda</NavLink>
                 </li>
@@ -113,7 +116,7 @@ const Navbar = () => {
                   <NavLink to="/terapias">Otras Terapias</NavLink>
                 </li> */}
                 <li className="uk-active" onClick={event => handleRoute(event, "none")} >
-                  <NavLink to="/tienda">Tienda</NavLink>
+                  <NavLink to="/servicios">Servicios Adicionales</NavLink>
                 </li>
               </div>
             </ul>

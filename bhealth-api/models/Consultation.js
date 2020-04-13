@@ -20,6 +20,14 @@ const consultationSchema = new Schema(
       type: String,
       required: true
     },
+    doctor_specialty: {
+      type: String,
+      required: true
+    },
+    medical_facility: {
+      type: String,
+      required: true
+    },
     date: {
       type: Date,
       default: Date.now,

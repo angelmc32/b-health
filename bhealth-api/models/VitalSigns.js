@@ -18,31 +18,40 @@ const vitalsSchema = new Schema(
       required: true
     },
     temperature: {
-      type: Number
+      type: Number,
+      default: null
     },
     blood_pressure_sys: {
-      type: Number
+      type: Number,
+      default: null
     },
     blood_pressure_dias: {
-      type: Number
+      type: Number,
+      default: null
     },
     heart_rate: {
-      type: Number
+      type: Number,
+      default: null
     },
     resp_rate: {
-      type: Number
+      type: Number,
+      default: null
     },
     blood_sugar: {
-      type: Number
+      type: Number,
+      default: null
     },
     isFasting: {
-      type: Boolean
+      type: Boolean,
+      default: null
     },
     height: {
-      type: Number
+      type: Number,
+      default: null
     },
     weight: {
-      type: Number
+      type: Number,
+      default: null
     },
   },
   { timestamps: true }

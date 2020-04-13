@@ -27,20 +27,17 @@ const Login = () => {
       // Store user and token in localStorage
       localStorage.setItem('user', JSON.stringify(user));
       localStorage.setItem('token', token);
-      console.log(user)
 
       setUser(user);    // Modify user state variable, setting the user data in the state
       setRoute('');
       push('/home');    // "Redirect" user to home
 
     })
-    .catch( res => {
-
-      const { msg } = res.response.data;
+    .catch( error => {
 
       // Send UIkit error notification
       UIkit.notification({
-        message: `<span uk-icon='close'></span> ${msg}`,
+        message: `<span uk-icon='close'></span> ${error}`,
         pos: 'bottom-center',
         status: 'danger'
       });

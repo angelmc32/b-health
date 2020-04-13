@@ -180,7 +180,8 @@ const Profile = () => {
           </div>
           ) : (
             null
-          )}
+          )
+        }
         
         <div className="uk-container uk-margin">
           { route !== 'edit' ? (

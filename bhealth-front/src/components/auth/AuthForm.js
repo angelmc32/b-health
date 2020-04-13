@@ -139,8 +139,14 @@ const AuthForm = ( { submit, action, email = '', password = '', confirm_password
                 </div>
               : null 
             }
+            <div className="uk-width-1-1 uk-margin-top">
+              <input type="checkbox" className="uk-checkbox uk-margin-small-right"/>
+               Estoy de acuerdo con los términos de condiciones
+            </div>
             </div>
             ) : null }
+            
+            
 
           
 

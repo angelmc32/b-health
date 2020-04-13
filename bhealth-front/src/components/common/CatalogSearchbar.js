@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import cie10 from '../../catalogs/cie10.json'
 import procedures from '../../catalogs/procedimientos.json'
 import drugs from '../../catalogs/drugs.json'
+import specialties from '../../catalogs/medspecs.json'
 
 const CatalogSearchbar = ({type, form, handleFormInput}) => {
 
@@ -32,6 +33,11 @@ const CatalogSearchbar = ({type, form, handleFormInput}) => {
         disease.generic_name.toLowerCase().includes(searchValue)
         );
         break;
+
+      case "doctor_specialty": results = specialties.filter( disease =>
+        disease.ESPECIALIDAD.toLowerCase().includes(searchValue)
+        );
+        break;
     }
 
     setSearchResults(results);
@@ -50,7 +56,7 @@ const CatalogSearchbar = ({type, form, handleFormInput}) => {
           <input
             className="uk-search-input uk-text-center uk-border-pill"
             type="search"
-            placeholder={ type === 'diagnosis' ? "Busca padecimiento..." : type === 'drugs' ? "Busca por nombre genérico..." : "Busca procedimiento..."}
+            placeholder={ type === 'diagnosis' ? "Busca padecimiento..." : type === 'drugs' ? "Busca por nombre genérico..." : type === 'procedure' ? "Busca procedimiento..." : "Busca especialidad"}
             value={searchValue}
             onChange={handleInput}
           />
@@ -58,7 +64,7 @@ const CatalogSearchbar = ({type, form, handleFormInput}) => {
         { showDrop ? (
             <select className="uk-select uk-border-pill" name={type} onChange={handleFormInput}>
               <option>Selecciona por favor</option>
-              {searchResults.map( (disease, index) => <option key={index} value={ type === "diagnosis" ? disease.NOMBRE : type === "drugs" ? disease.generic_name : disease.PRO_NOMBRE} >{ type === "diagnosis" ? disease.NOMBRE : type === "drugs" ? disease.generic_name : disease.PRO_NOMBRE}</option> )}
+              {searchResults.map( (disease, index) => <option key={index} value={ type === "diagnosis" ? disease.NOMBRE : type === "drugs" ? disease.generic_name : disease.PRO_NOMBRE} >{ type === "diagnosis" ? disease.NOMBRE : type === "drugs" ? disease.generic_name : type === "procedure" ? disease.PRO_NOMBRE : disease.ESPECIALIDAD}</option> )}
             </select>
           ) : null 
         }

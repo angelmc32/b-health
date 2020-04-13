@@ -54,3 +54,15 @@ export const editMedicalHistory = (data) => {
   });
 
 }
+
+export const createSummary = () => {
+
+  const token = localStorage.getItem('token');  // Get token from localStorage
+
+  return axios.post(`${base_url}/createsummary`, {
+    headers: {
+      Authorization: token,                     // Send token in request headers (check api/helpers/auth-helper)
+    }
+  });
+
+}

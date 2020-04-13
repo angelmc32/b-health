@@ -72,6 +72,7 @@ const prescriptionRoutes = require('./routes/prescription-routes');
 const studyRoutes = require('./routes/study-routes');
 const vitalSignsRoutes = require('./routes/vitalsigns-routes');
 const drugRoutes = require('./routes/drug-routes');
+const pdfRoutes = require('./routes/pdf-routes')
 
 app.use('/api', authRoutes);
 app.use('/api/profile', profileRoutes);
@@ -83,5 +84,6 @@ app.use('/api/prescriptions', prescriptionRoutes);
 app.use('/api/studies', studyRoutes);
 app.use('/api/vitalsigns', vitalSignsRoutes);
 app.use('/api/drugs', drugRoutes);
+app.use('/api/pdf', pdfRoutes);
 
 module.exports = app;

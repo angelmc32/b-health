@@ -129,6 +129,7 @@ const Prescription = () => {
   const deleteConsultationObject = () => {
     setObjectHandler(null);
     setRoute('prescriptions');
+    // console.log('borrando')
   }
 
   return (
@@ -183,7 +184,7 @@ const Prescription = () => {
                 <div className="uk-container">
                   <h2>Nueva Receta</h2>
                   { objectHandler ?
-                      <h4>{objectHandler._id}</h4>
+                      <h4>Corresponde a consulta realizada el {moment(objectHandler.date).format('DD-MM-YY')}</h4>
                       : null
                   }
                   <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin" onClick={deleteConsultationObject} >

@@ -69,16 +69,16 @@ const Consultation = () => {
       //   [date]: event.target.value
       // }))
 
-      createVitalSigns(vitalsFormValues)
-      .then( res => {
+      // createVitalSigns(vitalsFormValues)
+      // .then( res => {
 
-        const { vitalsigns } = res.data;
+      //   const { vitalsigns } = res.data;
 
-      })
-      .catch( error => {
-        console.log('error creando signos vitales');
-        console.log(error);
-      })
+      // })
+      // .catch( error => {
+      //   console.log('error creando signos vitales');
+      //   console.log(error);
+      // })
 
       // Send UIkit success notification
       UIkit.notification({
@@ -237,7 +237,7 @@ const Consultation = () => {
                   <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin" onClick={event => setRoute('consultations')} >
                     Regresar
                   </button>
-                  <ConsultationInfo {...consultation} />
+                  <ConsultationInfo {...consultation} goToPrescription={goToPrescription} />
                 </div>
               ) : (
                 <div className="uk-section">

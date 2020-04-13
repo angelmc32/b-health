@@ -24,6 +24,8 @@ import Emergency from './components/emergency/Emergency'
 import ConsultationFormSpecial from './components/consultation/ConsultationFormSpecial'
 import Drug from './components/drug/Drug'
 import Questionnaire from './components/Questionnaire'
+import VitalSigns from './components/vitalsigns/VitalSigns'
+import Summary from './components/medHistory/Summary'
 // import Calendar from './components/schedule/Calendar';
 
 const Router = () => {
@@ -67,6 +69,10 @@ const Router = () => {
         <Disease />
       </Route>
 
+      <Route path="/signosvitales">
+        <VitalSigns />
+      </Route>
+
       <Route path="/consultas">
         <Consultation />
       </Route>
@@ -91,8 +97,8 @@ const Router = () => {
         <Emergency />
       </Route>
 
-      <Route path="/test">
-        <Questionnaire />
+      <Route path="/resumen">
+        <Summary />
       </Route>
 
     </Switch>

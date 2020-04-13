@@ -46,103 +46,20 @@ const Home = () => {
     <div className="content">
       <div className="uk-section">
         <h2 className="uk-margin-small-top">Hola {user.first_name === "Nombres" ? "Usuario" : user.first_name}</h2>
-        <p>{moment(Date.now()).locale('es').format('LL')}</p>
-        <div className="uk-container uk-overflow-auto">
-          <div className="uk-grid uk-grid-collapse">
-            <div className="uk-width-1-1 uk-width-1-3@s uk-grid uk-grid-collapse">
-              <div className="uk-width-1-1">
-                <h4>¿Cómo te sientes?</h4>
-              </div>
-              <div className="uk-width-1-3 uk-card-hover uk-padding">
-                <img src={happy_img} alt=""/>
-              </div>
-              <div className="uk-width-1-3 uk-card-hover uk-padding uk-light">
-                <img src={sad_img} alt=""/>
-              </div>
-              <div className="uk-width-1-3 uk-card-hover uk-padding uk-light">
-                <img src={sick_img} alt=""/>
-              </div>
+        <h4 className="uk-margin-remove">Hoy es {moment(Date.now()).locale('es').format('LL')}</h4>
+
+        <div className="uk-container uk-overflow-auto uk-margin">
+          <div className="uk-grid uk-grid-collapse uk-child-width-1-1 uk-child-width-1-2@s" uk-grid="true">
+            <div className="card-section-white uk-flex uk-flex-column uk-flex-center uk-flex-middle">
+              Mi Salud
+              <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin">
+                Compartir
+              </button>
             </div>
-            <div className="uk-width-1-1 uk-grid uk-grid-collapse">
-              <ul className="uk-width-1-1 uk-child-width-1-2@s" uk-accordion="true">
-                <li className="uk-open">
-                  <a className="uk-accordion-title" href="#">Mis Medicamentos</a>
-                  <div className="uk-accordion-content">
-                    <table className="uk-table uk-table-hover uk-table-divider uk-margin-small-bottom">
-                      <tbody>
-                        <tr>
-                          <td className="uk-text-center">Medicamento 1</td>
-                          <td>
-                            <span className="uk-margin-small-right" uk-icon="bell"></span>
-                            <span className="uk-margin-small-right" uk-icon="info"></span>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td className="uk-text-center">Medicamento 2</td>
-                          <td>
-                            <span className="uk-margin-small-right" uk-icon="bell"></span>
-                            <span className="uk-margin-small-right" uk-icon="info"></span>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td className="uk-text-center">Medicamento 3</td>
-                          <td>
-                            <span className="uk-margin-small-right" uk-icon="bell"></span>
-                            <span className="uk-margin-small-right" uk-icon="info"></span>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <button className="uk-button uk-button-default uk-border-pill uk-button-small">Agregar Medicamento</button>
-                  </div>
-                </li>
-                <li>
-                  <a className="uk-accordion-title" href="#">Mis Padecimientos</a>
-                  <div className="uk-accordion-content">
-                    <table className="uk-table uk-table-hover uk-table-divider uk-margin-small-bottom">
-                        <tbody>
-                          <tr>
-                            <td className="uk-text-center">
-                              Padecimiento 1
-                              <span className="uk-margin-small-left" uk-icon="info"></span>
-                            </td>
-                            <td>
-                              <button className="uk-button uk-button-default uk-border-pill uk-button-small">+ Consulta</button>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td className="uk-text-center">
-                              Padecimiento 2
-                              <span className="uk-margin-small-left" uk-icon="info"></span>
-                            </td>
-                            <td>
-                              <button className="uk-button uk-button-default uk-border-pill uk-button-small">+ Consulta</button>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td className="uk-text-center">
-                              Padecimiento 3
-                              <span className="uk-margin-small-left" uk-icon="info"></span>
-                            </td>
-                            <td>
-                              <button className="uk-button uk-button-default uk-border-pill uk-button-small">+ Consulta</button>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                      <button className="uk-button uk-button-default uk-border-pill uk-button-small">Agregar Padecimiento</button>
-                  </div>
-                </li>
-                <li>
-                  <a className="uk-accordion-title" href="#">Signos Vitales</a>
-                  <div className="uk-accordion-content">
-                    <VitalSignsForm vitalsFormValues={vitalsFormValues} setVitalsFormValues={setVitalsFormValues} setRoute={setRoute}/>
-                  </div>
-                </li>
-              </ul>
+            <div className="card-section-white">
+              Mis Medicamentos
             </div>
           </div>
-          
         </div>
       </div>
     </div>
