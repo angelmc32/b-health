@@ -34,7 +34,7 @@ router.post('/', verifyToken, (req, res, next) => {
 
   })
   .catch( error => {
-
+    console.log(error)
     res.status(500).json({ error, msg: 'Unable to create emergency' }); // Respond 500 status, error and message
 
   });

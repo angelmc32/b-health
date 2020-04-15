@@ -95,7 +95,10 @@ const Navbar = () => {
                   <NavLink to="/recetas">Recetas</NavLink>
                 </li>
                 <li className="uk-active" onClick={event => handleRoute(event, "none")} >
-                  <NavLink to="/estudios">Estudios</NavLink>
+                  <NavLink to="/laboratorio">Laboratorio</NavLink>
+                </li>
+                <li className="uk-active" onClick={event => handleRoute(event, "none")} >
+                  <NavLink to="/imagenologia">Rayos X e Imagen</NavLink>
                 </li>
                 <li className="uk-active" onClick={event => handleRoute(event, "none")} >
                   <NavLink to="/urgencias">Urgencias</NavLink>

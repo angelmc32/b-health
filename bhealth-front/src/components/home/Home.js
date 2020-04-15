@@ -1,5 +1,5 @@
 import React, { useEffect, useContext, useState } from 'react'
-import { useHistory } from 'react-router-dom';
+import { useHistory, NavLink } from 'react-router-dom';
 import { AppContext } from '../../AppContext';
 import UIkit from 'uikit';
 import moment from 'moment';
@@ -52,9 +52,11 @@ const Home = () => {
           <div className="uk-grid uk-grid-collapse uk-child-width-1-1 uk-child-width-1-2@s" uk-grid="true">
             <div className="card-section-white uk-flex uk-flex-column uk-flex-center uk-flex-middle">
               Mi Salud
-              <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin">
-                Compartir
-              </button>
+              <NavLink className="uk-width-1-1" to="/resumen">
+                <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin">
+                  Compartir
+                </button>
+              </NavLink>
             </div>
             <div className="card-section-white">
               Mis Medicamentos

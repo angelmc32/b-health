@@ -33,6 +33,11 @@ const consultationSchema = new Schema(
       default: Date.now,
       required: true
     },
+    time: {
+      type: Date,
+      default: Date.now,
+      required: true
+    },
     chief_complaint: {
       type: String,
       required: true,

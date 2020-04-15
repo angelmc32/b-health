@@ -188,21 +188,18 @@ const Profile = () => {
             <div>
               <div className="uk-child-width-1-1 uk-hidden@s">
               <div className="card-section-white">
-                  <h4>Información Personal</h4>
                   <p>Nombres: {user.first_name}</p>
                   <p>Apellidos: {user.last_name1} {user.last_name2}</p>
                   <p>Fecha de nacimiento: {moment.utc(user.date_of_birth).format('LL')}</p>
                   <p>Género: {user.gender === 'N' ? 'No definido' : user.gender === 'F' ? 'Femenino' : 'Masculino'}</p>
                 </div>
                 <div className="card-section-white">
-                  <h4>Información Social</h4>
                   <p>CURP: {user.curp ? user.curp : 'Información no registrada'}</p>
                   <p>Estado Civil: {user.marital_status}</p>
                   <p>Código Postal: {user.zip_code}</p>
                   <p>Grado Máximo de Estudios: {user.education_level}</p>
                 </div>
                 <div className="card-section-white">
-                  <h4>Información Plataforma</h4>
                   <p>Teléfono: {user.phone_number ? user.phone_number : "No hay número registrado"}</p>
                   <p>Email: {user.email}</p>
                   <p>Contraseña: *********</p>
@@ -210,21 +207,18 @@ const Profile = () => {
               </div>
               <div className="uk-flex uk-child-width-1-3 uk-visible@s">
                 <div className="card-section-white">
-                  <h4>Información Personal</h4>
                   <p>Nombres: {user.first_name}</p>
                   <p>Apellidos: {user.last_name1} {user.last_name2}</p>
                   <p>Fecha de nacimiento: {moment.utc(user.date_of_birth).format('LL')}</p>
                   <p>Género: {user.gender === 'N' ? 'No definido' : user.gender === 'F' ? 'Femenino' : 'Masculino'}</p>
                 </div>
                 <div className="card-section-white">
-                  <h4>Información Social</h4>
                   <p>CURP: {user.curp ? user.curp : 'Información no registrada'}</p>
                   <p>Estado Civil: {user.marital_status}</p>
                   <p>Código Postal: {user.zip_code}</p>
                   <p>Grado Máximo de Estudios: {user.education_level}</p>
                 </div>
                 <div className="card-section-white">
-                  <h4>Información Plataforma</h4>
                   <p>Teléfono: {user.phone_number ? user.phone_number : "No hay número registrado"}</p>
                   <p>Email: {user.email}</p>
                   <p>Contraseña: *********</p>

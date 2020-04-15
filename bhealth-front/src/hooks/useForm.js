@@ -1,4 +1,7 @@
 import { useState } from 'react';   // Import useState hook to create custom hook
+import moment from 'moment'
+import 'moment/locale/es'  // without this line it didn't work
+moment.locale('es')
 
 // Declare hook as a React functional component
 const useForm = () => {
@@ -17,6 +20,11 @@ const useForm = () => {
     if ( event.target.type === 'checkbox' ) {
       const { checked } = event.target
       setForm( prevState => ({...prevState, [name]: checked}) );
+
+    } else if ( name === 'date' ) {
+      let date = moment(value).format()
+      console.log(date)
+      setForm( prevState => ({...prevState, [name]: date}) );
 
     } else {
   
@@ -38,8 +46,10 @@ const useForm = () => {
 
   };
 
+  const resetForm = () => setForm({});
+
   // Return the form state variable and input handling functions
-  return { form, setForm, handleInput, handleFileInput };
+  return { form, setForm, resetForm, handleInput, handleFileInput };
 
 };
 

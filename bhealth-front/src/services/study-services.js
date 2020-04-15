@@ -5,11 +5,11 @@ const isProduction = process.env.NODE_ENV === 'production';
 const base_url = isProduction ? 'https://b-health.herokuapp.com/api/studies' : 'http://localhost:3000/api/studies';
 
 // Export get function to retrieve all prescriptions of the current logged in user
-export const getStudies = () => {
+export const getStudies = (study_type) => {
 
   const token = localStorage.getItem('token');  // Get token from localStorage
 
-  return axios.get(`${base_url}/`, {
+  return axios.get(`${base_url}/${study_type}`, {
     headers: {
       Authorization: token,                     // Send token in request headers (check api/helpers/auth-helper)
     }

@@ -23,10 +23,11 @@ const prescriptionSchema = new Schema (
       default: 'Sin imagen registrada'
     },
     drugs: [{
-      brand_name: String,
-      generic_name: String,
+      name: String,
       dose: String,
       dosage_form: String,
+      schedule: String,
+      periodicity: String,
       directions: String
     }],
     // brand_name: {

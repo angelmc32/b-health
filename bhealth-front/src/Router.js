@@ -85,8 +85,12 @@ const Router = () => {
         <Prescription />
       </Route>
 
-      <Route path="/estudios">
-        <Study />
+      <Route path="/laboratorio">
+        <Study studyType="lab"/>
+      </Route>
+
+      <Route path="/imagenologia">
+        <Study studyType="xray"/>
       </Route>
 
       <Route path="/hospitalizaciones">

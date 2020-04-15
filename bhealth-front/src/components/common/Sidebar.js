@@ -40,7 +40,10 @@ const Sidebar = () => {
           <NavLink to="/recetas">Recetas</NavLink>
         </li>
         <li className="uk-active" onClick={event => handleRoute(event, "none")} >
-          <NavLink to="/estudios">Estudios</NavLink>
+          <NavLink to="/laboratorio">Laboratorio</NavLink>
+        </li>
+        <li className="uk-active" onClick={event => handleRoute(event, "none")} >
+          <NavLink to="/imagenologia">Rayos X e Imagen</NavLink>
         </li>
         <li className="uk-active" onClick={event => handleRoute(event, "none")} >
           <NavLink to="/urgencias">Urgencias</NavLink>
@@ -49,10 +52,10 @@ const Sidebar = () => {
           <NavLink to="/hospitalizaciones">Hospitalizaciones</NavLink>
         </li>
         <li className="uk-active" onClick={event => handleRoute(event, "none")} >
-          <NavLink to="/padecimientos">Padecimientos</NavLink>
+          <NavLink to="/padecimientos">Resumen Padecimientos</NavLink>
         </li>
         <li className="uk-active" onClick={event => handleRoute(event, "none")} >
-          <NavLink to="/medicamentos">Medicamentos</NavLink>
+          <NavLink to="/medicamentos">Resumen Medicamentos</NavLink>
         </li>
         {/* <li className="uk-active" onClick={event => handleRoute(event, "none")} >
           <NavLink to="/agenda">Agenda</NavLink>

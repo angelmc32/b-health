@@ -205,7 +205,7 @@ const Prescription = () => {
               ) : (
                 <div className="uk-section">
                   <h2>Cargando...</h2>
-                  <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m" onClick={event => setRoute('prescriptions')} >
+                  <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin" onClick={event => setRoute('prescriptions')} >
                     Regresar
                   </button>
                 </div> 

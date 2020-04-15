@@ -24,6 +24,14 @@ const emergencySchema = new Schema(
     diagnosis: {
       type: String,
     },
+    doctor: {
+      type: String,
+      required: true
+    },
+    doctor_specialty: {
+      type: String,
+      required: true
+    },
     facility_name: {
       type: String,
     },

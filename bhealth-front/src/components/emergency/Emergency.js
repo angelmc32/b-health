@@ -50,7 +50,38 @@ const Emergency = () => {
 
     event.preventDefault();
     setIsButtonDisabled(true);
-    console.log(form)
+    
+    let datetime;
+
+    if ( form.timeperiod === 'AM' ) {
+      if ( form['time-hours'] === '12' )
+        datetime = form['only-date']+'T00'+':'+form['time-minutes']+':00';
+      else
+        datetime = form['only-date']+'T'+form['time-hours']+':'+form['time-minutes']+':00';
+    }
+    else {
+      if ( form['time-hours'] === '12' )
+        datetime = form['only-date']+'T12'+':'+form['time-minutes']+':00';
+      else {
+        switch (form['time-hours']) {
+          case '1': datetime = form['only-date']+'T13'+':'+form['time-minutes']+':00'; break;
+          case '2': datetime = form['only-date']+'T14'+':'+form['time-minutes']+':00'; break;
+          case '3': datetime = form['only-date']+'T15'+':'+form['time-minutes']+':00'; break;
+          case '4': datetime = form['only-date']+'T16'+':'+form['time-minutes']+':00'; break;
+          case '5': datetime = form['only-date']+'T17'+':'+form['time-minutes']+':00'; break;
+          case '6': datetime = form['only-date']+'T18'+':'+form['time-minutes']+':00'; break;
+          case '7': datetime = form['only-date']+'T19'+':'+form['time-minutes']+':00'; break;
+          case '8': datetime = form['only-date']+'T20'+':'+form['time-minutes']+':00'; break;
+          case '9': datetime = form['only-date']+'T21'+':'+form['time-minutes']+':00'; break;
+          case '10': datetime = form['only-date']+'T22'+':'+form['time-minutes']+':00'; break;
+          case '11': datetime = form['only-date']+'T23'+':'+form['time-minutes']+':00'; break;
+          default: datetime = form['only-date']+'T12'+':'+form['time-minutes']+':00';
+        }
+      }
+    }
+
+    form['date'] = datetime;
+    console.log(datetime)
 
     createEmergency(form)
     .then( res => {
@@ -125,9 +156,10 @@ const Emergency = () => {
                 <thead>
                   <tr>
                     <th className="uk-text-center">Fecha</th>
+                    <th className="uk-text-center">Hora</th>
                     <th className="uk-text-center uk-visible@s">Motivo de visita</th>
-                    <th className="uk-text-center">Diagnóstico</th>
-                    <th className="uk-text-center uk-visible@s">Clínica</th>
+                    <th className="uk-text-center uk-visible@s">Diagnóstico</th>
+                    <th className="uk-text-center uk-visible@s">Doctor</th>
                     <th className="uk-text-center">Detalles</th>
                   </tr>
                 </thead>
@@ -135,10 +167,11 @@ const Emergency = () => {
                   { emergencies ? 
                       emergencies.map( (emergency, index) => 
                         <tr key={index} >
-                          <td className="uk-text-center">{moment(emergency.date).locale('es').format('LL')}</td>
+                          <td className="uk-text-center">{moment(emergency.date).locale('es').format('l')}</td>
+                          <td className="uk-text-center">{moment(emergency.date).locale('es').format('LT')}</td>
                           <td className="uk-text-center uk-visible@s">{emergency.chief_complaint}</td>
-                          <td className="uk-text-center">{emergency.diagnosis}</td>
-                          <td className="uk-text-center uk-visible@s">{emergency.facility_name}</td>
+                          <td className="uk-text-center uk-visible@s">{emergency.diagnosis}</td>
+                          <td className="uk-text-center uk-visible@s">{`Dr. ${emergency.doctor}`}</td>
                           <td className="uk-text-center">
                             <button className="uk-button uk-button-default uk-button-small uk-border-pill" onClick={event => loadEmergency({emergency})} >
                               Ver

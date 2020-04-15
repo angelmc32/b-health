@@ -4,15 +4,18 @@ import { AppContext } from '../../AppContext';                      // Import Ap
 import useForm from '../../hooks/useForm';                          // Import useForm custom hook
 import UIkit from 'uikit';                                          // Import UIkit for notifications
 import moment from 'moment';                                        // Import momentjs for date formatting
+import 'moment/locale/es'  // without this line it didn't work
 
 import { getStudies, createStudy, getStudy, editStudy } from '../../services/study-services';
 import StudyForm from './StudyForm';
 import StudyInfo from './StudyInfo';
 
-const Study = () => {
+moment.locale('es')
+
+const Study = ({studyType}) => {
 
   // Destructure form state variable, handleInput and handleFileInput functions for form state manipulation
-  const { form, handleInput, handleFileInput } = useForm();
+  const { form, resetForm, handleInput, handleFileInput } = useForm();
 
   const { push } = useHistory();                    // Destructure push method from useHistory to "redirect" user
   const { user, route, setRoute, objectHandler, setObjectHandler } = useContext(AppContext);
@@ -38,7 +41,7 @@ const Study = () => {
     };
 
     if ( route !== 'create' && route !== 'read' ) {
-      getStudies()
+      getStudies(studyType)
       .then( res => {
       
         const { studies } = res.data;
@@ -56,6 +59,9 @@ const Study = () => {
 
     event.preventDefault();               // Prevent page reloading after submit action
     setIsButtonDisabled(true)
+
+    form['study_type'] = studyType;
+    // if ( objectHandler ) form['consultation'] = objectHandler.id;
 
     const formData = new FormData();      // Declare formData as new instance of FormData class
     const { image } = form;     // Destructure profile_picture from form
@@ -85,7 +91,7 @@ const Study = () => {
 
       setRoute('studies');
       setIsButtonDisabled(false);
-      setObjectHandler({});
+      setObjectHandler();
 
     })
     .catch( error => {
@@ -102,6 +108,8 @@ const Study = () => {
       setIsButtonDisabled(false)
 
     });
+
+    resetForm();
     
   };
 
@@ -112,13 +120,20 @@ const Study = () => {
     setRoute('read');
   }
 
+  const backButton = () => {
+    setRoute('studies');
+    resetForm();
+    console.log('back')
+    console.log(form)
+  }
+
   return (
 
     <div className="content">
       
         { route === 'studies' ? (
           <div className="uk-section">
-            <h2>Estudios</h2>
+            <h2>{studyType === 'lab' ? "Laboratorio" : "Rayos X e Imagen"}</h2>
             <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin" onClick={event => setRoute('create')} >
               + Nuevo Estudio
             </button>
@@ -163,21 +178,17 @@ const Study = () => {
               <div className="uk-section">
                 <div className="uk-container">
                   <h2>Nuevo Estudio</h2>
-                  { objectHandler ?
-                      <h4>{objectHandler._id}</h4>
-                      : null
-                  }
-                  <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin" onClick={event => setRoute('studies')} >
+                  <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin" onClick={backButton} >
                     Regresar
                   </button>
-                  <StudyForm handleSubmit={handleSubmit} handleInput={handleInput} handleFileInput={handleFileInput} form={form} isButtonDisabled={isButtonDisabled} objectHandler={objectHandler}/>
+                  <StudyForm studyType={studyType} handleSubmit={handleSubmit} handleInput={handleInput} handleFileInput={handleFileInput} form={form} isButtonDisabled={isButtonDisabled} objectHandler={objectHandler}/>
                 </div>
               </div>
             ) : (
               route === 'read' ? (
                 <div className="uk-section">
                   <h2>Ver Estudio</h2>
-                  <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin" onClick={event => setRoute('studies')} >
+                  <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin" onClick={backButton} >
                     Regresar
                   </button>
                   <StudyInfo {...study} />
@@ -185,7 +196,7 @@ const Study = () => {
               ) : (
                 <div className="uk-section">
                   <h2>Cargando...</h2>
-                  <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m" onClick={event => setRoute('studies')} >
+                  <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin" onClick={backButton} >
                     Regresar
                   </button>
                 </div> 

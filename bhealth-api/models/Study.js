@@ -18,9 +18,8 @@ const studySchema = new Schema (
     doctor: {
       type: String,
     },
-    type: {
+    study_type: {
       type: String,
-      enum: ['Laboratory', 'Imaging']
     },
     image: {
       type: String,

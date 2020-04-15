@@ -25,7 +25,7 @@ const Summary = () => {
 
     createSummary()
     .then( res => {
-      console.log(res)
+      console.log(res.data)
       setPdfFile(res.data)
     })
     .catch( error => {

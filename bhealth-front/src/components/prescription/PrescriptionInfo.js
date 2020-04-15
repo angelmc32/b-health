@@ -16,10 +16,11 @@ const PrescriptionInfo = ({ prescription }) => {
         { prescription.drugs.map( (drug, index) =>
             <div className="uk-margin" key={index}>
               <h4>Medicamento {index+1}</h4>
-              <p>Nombre Genérico : {prescription.drugs[index].generic_name}</p>
-              <p>Nombre Comercial : {prescription.drugs[index].brand_name}</p>
-              <p>Presentación : {prescription.drugs[index].dosage_form}</p>
-              <p>Dosis : {prescription.drugs[index].dose}</p>
+              <p>Nombre: {prescription.drugs[index].name}</p>
+              <p>Presentación: {prescription.drugs[index].dosage_form}</p>
+              <p>Dosis: {prescription.drugs[index].dose}</p>
+              <p>Horario: {prescription.drugs[index].schedule}</p>
+              <p>Número de días: {prescription.drugs[index].periodicity}</p>
               <p>Indicaciones : {prescription.drugs[index].directions}</p>
             </div>
           )

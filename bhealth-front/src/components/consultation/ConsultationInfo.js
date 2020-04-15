@@ -10,17 +10,17 @@ const ConsultationInfo = ({ consultation, goToPrescription }) => {
 
   const [ vitals, setVitals ] = useState({});
 
-  useEffect( () => {
+  // useEffect( () => {
 
-    getOneVitalSignsConsultation(consultation._id)
-    .then( res => {
+  //   getOneVitalSignsConsultation(consultation._id)
+  //   .then( res => {
 
-      const { vitalsigns } = res.data;
-      setVitals(vitalsigns)
+  //     const { vitalsigns } = res.data;
+  //     setVitals(vitalsigns)
       
-    })
+  //   })
 
-  }, [])
+  // }, [])
 
   return (
     <div className="uk-container">
@@ -28,6 +28,7 @@ const ConsultationInfo = ({ consultation, goToPrescription }) => {
         <h4>Motivo de Consulta</h4>
         <p>Síntomas indicados por paciente: {consultation.chief_complaint}</p>
         <p>Fecha de consulta: {moment(consultation.date).locale('es').format('LL')}</p>
+        <p>Hora de consulta:  {moment(consultation.date).format('h')}:{moment(consultation.date).format('mm')}  {moment(consultation.date).format('A')}</p>
         <hr className="uk-divider-icon"></hr>
         <h4>Diagnóstico</h4>
         <p>Diagnóstico: {consultation.diagnosis}</p>

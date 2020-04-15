@@ -57,6 +57,37 @@ const Consultation = () => {
     event.preventDefault();
     setIsButtonDisabled(true);
 
+    let datetime;
+
+    if ( form.timeperiod === 'AM' ) {
+      if ( form['time-hours'] === '12' )
+        datetime = form['only-date']+'T00'+':'+form['time-minutes']+':00';
+      else
+        datetime = form['only-date']+'T'+form['time-hours']+':'+form['time-minutes']+':00';
+    }
+    else {
+      if ( form['time-hours'] === '12' )
+        datetime = form['only-date']+'T12'+':'+form['time-minutes']+':00';
+      else {
+        switch (form['time-hours']) {
+          case '1': datetime = form['only-date']+'T13'+':'+form['time-minutes']+':00'; break;
+          case '2': datetime = form['only-date']+'T14'+':'+form['time-minutes']+':00'; break;
+          case '3': datetime = form['only-date']+'T15'+':'+form['time-minutes']+':00'; break;
+          case '4': datetime = form['only-date']+'T16'+':'+form['time-minutes']+':00'; break;
+          case '5': datetime = form['only-date']+'T17'+':'+form['time-minutes']+':00'; break;
+          case '6': datetime = form['only-date']+'T18'+':'+form['time-minutes']+':00'; break;
+          case '7': datetime = form['only-date']+'T19'+':'+form['time-minutes']+':00'; break;
+          case '8': datetime = form['only-date']+'T20'+':'+form['time-minutes']+':00'; break;
+          case '9': datetime = form['only-date']+'T21'+':'+form['time-minutes']+':00'; break;
+          case '10': datetime = form['only-date']+'T22'+':'+form['time-minutes']+':00'; break;
+          case '11': datetime = form['only-date']+'T23'+':'+form['time-minutes']+':00'; break;
+          default: datetime = form['only-date']+'T12'+':'+form['time-minutes']+':00';
+        }
+      }
+    }
+
+    form['date'] = datetime;
+
     createConsultation(form)
     .then( res => {
 
@@ -149,6 +180,7 @@ const Consultation = () => {
                 <thead>
                   <tr>
                     <th className="uk-text-center">Fecha</th>
+                    <th className="uk-text-center">Hora</th>
                     <th className="uk-text-center uk-visible@s">Motivo de consulta</th>
                     <th className="uk-text-center uk-visible@s">Diagnostico</th>
                     <th className="uk-text-center uk-visible@s">Doctor</th>
@@ -159,13 +191,14 @@ const Consultation = () => {
                   { consultations ? 
                       consultations.map( (consultation, index) => 
                         <tr key={index} >
-                          <td className="uk-text-center">{moment(consultation.date).locale('es').format('LL')}</td>
+                          <td className="uk-text-center">{moment(consultation.date).locale('es').format('l')}</td>
+                          <td className="uk-text-center">{moment(consultation.date).locale('es').format('LT')}</td>
                           <td className="uk-text-center uk-visible@s">{consultation.chief_complaint}</td>
                           <td className="uk-text-center uk-visible@s">{consultation.diagnosis}</td>
                           <td className="uk-text-center uk-visible@s">{`Dr. ${consultation.doctor}`}</td>
                           <td className="uk-text-center">
                             <button className="uk-button uk-button-default uk-button-small uk-border-pill" onClick={event => loadConsultation({consultation})} >
-                              Ver Consulta
+                              Ver
                             </button>
                           </td>
                           <td>

@@ -6,11 +6,12 @@ const Study = require('../models/Study');
 const { verifyToken } = require('../helpers/auth-helper');
 const uploader = require('../helpers/multer-helper');
 
-router.get('/', verifyToken, (req, res, next) => {
+router.get('/:study_type', verifyToken, (req, res, next) => {
 
+  const { study_type } = req.params;
   const { id } = req.user;    // Destructure the user id from the request
 
-  Study.find({ user: id })
+  Study.find({ $and: [{user: id}, {study_type: study_type}] })
   .then( studies => {
 
     res.status(200).json({ studies });
@@ -42,7 +43,7 @@ router.post('/', verifyToken, uploader.single('image'), (req, res, next) => {
 
   })
   .catch( error => {
-
+    console.log(error)
     res.status(500).json({ error, msg: 'Unable to create study' }); // Respond 500 status, error and message
 
   });
