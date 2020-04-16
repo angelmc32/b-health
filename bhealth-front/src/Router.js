@@ -26,6 +26,8 @@ import Drug from './components/drug/Drug'
 import Questionnaire from './components/Questionnaire'
 import VitalSigns from './components/vitalsigns/VitalSigns'
 import Summary from './components/medHistory/Summary'
+import Consent from './components/common/Consent'
+import Benefits from './components/benefits/Benefits';
 // import Calendar from './components/schedule/Calendar';
 
 const Router = () => {
@@ -101,8 +103,16 @@ const Router = () => {
         <Emergency />
       </Route>
 
+      <Route path="/beneficios">
+        <Benefits />
+      </Route>
+
       <Route path="/resumen">
         <Summary />
+      </Route>
+
+      <Route path="/consentimiento">
+        <Consent />
       </Route>
 
     </Switch>

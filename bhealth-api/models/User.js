@@ -67,6 +67,10 @@ const userSchema = new Schema(
       type: Boolean,
       default: false
     },
+    gaveConsent: {
+      type: Boolean,
+      default: false
+    },
     last_login: {
       type: Date,
       default: Date.now

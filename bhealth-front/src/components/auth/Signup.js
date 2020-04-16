@@ -30,12 +30,12 @@ const Signup = () => {
 
       setUser(user);    // Modify user state variable, setting the user data in the state
       setRoute('edit');
-      push('/perfil');    // "Redirect" user to home
+      push('/consentimiento');    // "Redirect" user to home
 
       // Send UIkit success notification
       UIkit.notification({
         message: `<span uk-icon='check'></span> Completa tu registro usando la liga que te enviamos a la dirección de correo electrónico proporcionada`,
-        pos: 'bottom-center',
+        pos: 'top-center',
         status: 'success'
       });
 

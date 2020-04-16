@@ -45,21 +45,52 @@ const Home = () => {
   return (
     <div className="content">
       <div className="uk-section">
-        <h2 className="uk-margin-small-top">Hola {user.first_name === "Nombres" ? "Usuario" : user.first_name}</h2>
+        <h2 className="uk-margin-small-top">¡Bienvenido!</h2>
         <h4 className="uk-margin-remove">Hoy es {moment(Date.now()).locale('es').format('LL')}</h4>
 
-        <div className="uk-container uk-overflow-auto uk-margin">
-          <div className="uk-grid uk-grid-collapse uk-child-width-1-1 uk-child-width-1-2@s" uk-grid="true">
-            <div className="card-section-white uk-flex uk-flex-column uk-flex-center uk-flex-middle">
+        <div className="uk-container uk-margin">
+          <div className="uk-grid uk-grid-collapse uk-child-width-1-1 uk-child-width-1-2@s uk-height-large" uk-grid="true">
+            <div className=" uk-height-1-1 uk-flex uk-flex-column uk-flex-center uk-flex-middle">
+              <h1>La <span className="uk-text-secondary uk-text-bold">salud</span> de tu <span className="uk-text-primary uk-text-bold">familia</span>, <br/> en tus manos.</h1>
+              <h3 className="uk-margin-remove">Tus datos. Tus medicamentos. Tu salud.</h3>
+            </div>
+            <div className="uk-flex uk-flex-center uk-flex-middle uk-flex-column">
+            <div className="uk-width-5-6 card-section-white uk-flex uk-flex-column uk-flex-center uk-flex-middle">
               Mi Salud
-              <NavLink className="uk-width-1-1" to="/resumen">
-                <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin">
+              <NavLink className="uk-width-1-1 uk-margin-top" to="/signosvitales">
+                <button className="uk-button uk-button-primary uk-border-pill uk-width-2-3">
+                  Signos Vitales
+                </button>
+              </NavLink>
+              <NavLink className="uk-width-1-1 uk-margin-small" to="/signosvitales">
+                <button className="uk-button uk-button-primary uk-border-pill uk-width-2-3">
+                  Nueva Consulta
+                </button>
+              </NavLink>
+              <NavLink className="uk-width-1-1 uk-margin-small" to="/resumen">
+                <button className="uk-button uk-button-default uk-border-pill uk-width-2-3">
                   Compartir
                 </button>
               </NavLink>
             </div>
-            <div className="card-section-white">
-              Mis Medicamentos
+            <div className="uk-width-5-6 card-section-white uk-flex uk-flex-column uk-flex-center uk-flex-middle">
+              Cuidar mi salud
+              <NavLink className="uk-width-1-1 uk-margin-top" to="/recetas">
+                <button className="uk-button uk-button-primary uk-border-pill uk-width-2-3">
+                  Mis Recetas
+                </button>
+              </NavLink>
+              <NavLink className="uk-width-1-1 uk-margin-small-top" to="/laboratorio">
+                <button className="uk-button uk-button-primary uk-border-pill uk-width-2-3">
+                  Laboratorio
+                </button>
+              </NavLink>
+              <NavLink className="uk-width-1-1 uk-margin-small-top" to="/imagenologia">
+                <button className="uk-button uk-button-primary uk-border-pill uk-width-2-3">
+                  Rayos X e Imagen
+                </button>
+              </NavLink>
+            </div>
             </div>
           </div>
         </div>

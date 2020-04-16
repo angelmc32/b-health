@@ -172,7 +172,7 @@ router.get('/all', verifyToken, (req, res, next) => {
 
       doc.font('Helvetica')
         .fontSize(12)
-        .text(`Actividad Física Semanal:  ${medhistory_var.weekly_exercise_hours ? medhistory_var.weekly_exercise_hours : 'Sin registro'}`, 100, 660)
+        .text(`Actividad Física Semanal:  ${medhistory_var.weekly_exercise_hours ? `${medhistory_var.weekly_exercise_hours} horas` : '0 horas'}`, 100, 660)
         .text(`Tabaquismo: ${medhistory_var.smoking_status ? medhistory_var.smoking_status : 'Sin registro'}`, 290, 660)
         .text(`Hábitos Alimenticios:  ${medhistory_var.nutritional_status ? medhistory_var.nutritional_status : 'Sin registro'}`, 100, 680)
         .text(`Alcoholismo: ${medhistory_var.alcoholism ? medhistory_var.alcoholism : 'Sin registro'}`, 290, 680)

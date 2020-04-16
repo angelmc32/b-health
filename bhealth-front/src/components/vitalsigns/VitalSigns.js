@@ -6,6 +6,8 @@ import UIkit from 'uikit';                                          // Import UI
 import moment from 'moment';                                        // Import momentjs for date formatting
 import 'moment/locale/es'  // without this line it didn't work
 
+import VitalSignsGraph from './VitalSignsGraph'
+
 import { getVitalSigns, getOneVitalSigns, createVitalSigns } from '../../services/vitalsigns-services'
 
 const VitalSigns = () => {
@@ -66,7 +68,7 @@ const VitalSigns = () => {
                                 break;
             case 'resp_rate' : if ( value !== null ) {respRate += value; repsRateCounter++;}
                                 break;
-            case 'blood_sugar' : if ( value !== null ) {bloodSugar += value; bloodSugCounter++; console.log(bloodSugar, bloodSugCounter)}
+            case 'blood_sugar' : if ( value !== null ) {bloodSugar += value; bloodSugCounter++;}
                                   break;
             case 'height' : if ( value !== null ) {height += value; heightCounter++;}
                             break;
@@ -455,6 +457,7 @@ const VitalSigns = () => {
                 <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin" onClick={event => setRoute('none')} >
                   Regresar
                 </button>
+                <VitalSignsGraph vitalsigns={vitalSigns} />
               </div>
             )
         }

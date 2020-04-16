@@ -64,7 +64,7 @@ const Sidebar = () => {
           <NavLink to="/terapias">Otras Terapias</NavLink>
         </li> */}
         <li className="uk-active" onClick={event => handleRoute(event, "none")} >
-          <NavLink to="/servicios">Servicios Adicionales</NavLink>
+          <NavLink to="/beneficios">Servicios Adicionales</NavLink>
         </li>
       </ul>
     </div>

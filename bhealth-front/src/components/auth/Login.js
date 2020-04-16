@@ -30,7 +30,10 @@ const Login = () => {
 
       setUser(user);    // Modify user state variable, setting the user data in the state
       setRoute('');
-      push('/home');    // "Redirect" user to home
+      if ( user.gaveConsent)
+        push('/home');    // "Redirect" user to home
+      else
+        push('/consentimiento')
 
     })
     .catch( error => {
