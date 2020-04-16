@@ -57,7 +57,10 @@ router.post('/signup', (req, res, next) => {
   })
   .catch( error => {
     
+    if (error.code === 11000)
+      res.status(500).json({ error, msg: 'Ya existe una cuenta asociada al correo electrónico' });
     // Respond with 500 status, the error and a message
+    
     res.status(500).json({ error, msg: 'Error durante la creación del usuario' });
     console.log(error);
   

@@ -107,6 +107,11 @@ label#nav-menu {
   color: #FFFFFF;
 }
 
+.uk-button.uk-button-secondary.selected:focus, .uk-button.uk-button-secondary.selected:hover {
+  background-color: #00AAAA;
+  border: #00AAAA solid 1px;
+}
+
 .uk-button.uk-button-secondary:focus, .uk-button.uk-button-secondary:hover {
   background-color: #00D8D8;
   border: #00D8D8 solid 1px;

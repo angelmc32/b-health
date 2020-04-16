@@ -20,6 +20,7 @@ const VitalSigns = () => {
   const [ isButtonDisabled, setIsButtonDisabled ] = useState(false);
   const [ vitalsFormValues, setVitalsFormValues ] = useState({temperature: null, blood_pressure_sys: null, blood_pressure_dias: null, blood_sugar: null, heart_rate: null, weight: null});
 
+  const [ showDateInput, setShowDateInput ] = useState(false);
   const [ temperatureAvg, setTemperatureAvg ] = useState(null);
   const [ sistPressureAvg, setSistPressureAvg ] = useState(null);
   const [ diasPressureAvg, setDiasPressureAvg ] = useState(null);
@@ -28,14 +29,15 @@ const VitalSigns = () => {
   const [ bloodSugarAvg, setBloodSugarAvg ] = useState(null);
   const [ weightAvg, setWeightAvg ] = useState(null);
   const [ heightAvg, setHeightAvg ] = useState(null);
+  let thisMoment = moment().format();
+  let datetime;
 
   useEffect( () => {
     
     getVitalSigns()
     .then( res => {
       
-      const { vitalsigns } = res.data
-      console.log(vitalsigns)
+      const { vitalsigns } = res.data;
 
       let temperature = 0, tempCounter = 0;
       let sistPressure = 0, sistPressCounter = 0;
@@ -48,6 +50,7 @@ const VitalSigns = () => {
 
       vitalsigns.map( record => {
 
+        setVitalSigns(vitalsigns);
         const entries = Object.entries(record);
 
         for ( const [ vital, value ] of entries ) {
@@ -63,11 +66,11 @@ const VitalSigns = () => {
                                 break;
             case 'resp_rate' : if ( value !== null ) {respRate += value; repsRateCounter++;}
                                 break;
-            case 'blood_sugar' : {bloodSugar += value; bloodSugCounter++;}
+            case 'blood_sugar' : if ( value !== null ) {bloodSugar += value; bloodSugCounter++; console.log(bloodSugar, bloodSugCounter)}
                                   break;
-            case 'height' : if ( value !== null ) {height += value; weightCounter++;}
+            case 'height' : if ( value !== null ) {height += value; heightCounter++;}
                             break;
-            case 'weight' : if ( value !== null ) {weight += value; heightCounter++;}
+            case 'weight' : if ( value !== null ) {weight += value; weightCounter++;}
                             break;
           }
 
@@ -84,19 +87,59 @@ const VitalSigns = () => {
       setWeightAvg(weight/weightCounter);
       setHeightAvg(height/heightCounter);
 
-    })
-  }, [])
+    });
+
+  }, [route, isButtonDisabled])
 
   const handleSubmit = (event) => {
 
     event.preventDefault();
-    setIsButtonDisabled(true);
+    // setIsButtonDisabled(true);
+
+    // if (!showDateInput && form['only-date'] === undefined || form['time-hours'] === undefined || form['time-minutes'] === undefined || form['time-period'] === undefined) {
+    //   setIsButtonDisabled(true);
+
+    // }
+    if (!showDateInput)
+      form['date'] = thisMoment;
+    else {
+      if ( form.timeperiod === 'AM' ) {
+        if ( form['time-hours'] === '12' )
+          datetime = `${form['only-date']}T00:${form['time-minutes']}:00`;
+        else
+          datetime = `${form['only-date']}T${form['time-hours']}:${form['time-minutes']}:00`;
+      }
+      else {
+        if ( form['time-hours'] === '12' )
+          datetime = `${form['only-date']}T12:${form['time-minutes']}:00`;
+        else {
+          switch (form['time-hours']) {
+            case '1': datetime = `${form['only-date']}T13:${form['time-minutes']}:00`; break;
+            case '2': datetime = `${form['only-date']}T14:${form['time-minutes']}:00`; break;
+            case '3': datetime = `${form['only-date']}T15:${form['time-minutes']}:00`; break;
+            case '4': datetime = `${form['only-date']}T16:${form['time-minutes']}:00`; break;
+            case '5': datetime = `${form['only-date']}T17:${form['time-minutes']}:00`; break;
+            case '6': datetime = `${form['only-date']}T18:${form['time-minutes']}:00`; break;
+            case '7': datetime = `${form['only-date']}T19:${form['time-minutes']}:00`; break;
+            case '8': datetime = `${form['only-date']}T20:${form['time-minutes']}:00`; break;
+            case '9': datetime = `${form['only-date']}T21:${form['time-minutes']}:00`; break;
+            case '10': datetime = `${form['only-date']}T22:${form['time-minutes']}:00`; break;
+            case '11': datetime = `${form['only-date']}T23:${form['time-minutes']}:00`; break;
+            default: datetime = `${form['only-date']}T12:${form['time-minutes']}:00`; break;
+          }
+        }
+        form['date'] = datetime;
+      }
+    }
+    
+    console.log(form)
 
     createVitalSigns(form)
     .then( res => {
 
       const { vitalsigns } = res.data;
 
+      setVitalSigns(vitalsigns);
       console.log(vitalsigns)
 
       // Send UIkit success notification
@@ -106,8 +149,9 @@ const VitalSigns = () => {
         status: 'success'
       });
 
-      setRoute('none');
       setIsButtonDisabled(false);
+      setShowDateInput(false);
+      setRoute('none');
 
     })
     .catch( error => {
@@ -123,7 +167,40 @@ const VitalSigns = () => {
       
       setIsButtonDisabled(false);
 
-    })
+    });
+
+    setRoute('none');
+
+  }
+
+  const changeDateInputState = (event, showInputState) => {
+    event.preventDefault();
+    setShowDateInput(showInputState);
+
+    if (showInputState) {
+      form['only-date'] = undefined;
+      form['time-hours'] = undefined;
+      form['time-minutes'] = undefined;
+      form['time-period'] = undefined
+    }
+    
+    if (form['only-date'] === undefined || form['time-hours'] === undefined || form['time-minutes'] === undefined || form['time-period'] === undefined)
+      setIsButtonDisabled(true)
+    console.log(showInputState)
+    console.log(thisMoment)
+    console.log(form)
+  }
+
+  const dateValidation = (event) => {
+    
+    const { name, value } = event.target;
+
+    if (name !== 'time-hours') form['time-hours'] = '12'
+    if (name !== 'time-minutes') form['time-minutes'] = '00'
+    if (name !== 'time-period') form['time-period'] = 'PM'
+    handleInput(event);
+    if (form['only-date'] !== undefined && form['time-hours'] !== undefined && form['time-minutes'] !== undefined && form['time-period'] !== undefined)
+      setIsButtonDisabled(false)
   }
 
   return (
@@ -132,57 +209,96 @@ const VitalSigns = () => {
         { route === 'none' ? (
             <div>
               <h2>Signos Vitales</h2>
-              <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin" onClick={event => setRoute('create')} >
+              <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin-small" onClick={event => setRoute('create')} >
                 + Nuevo Registro
               </button>
+              <button className="uk-button uk-button-primary uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin-small" onClick={event => setRoute('graph')} >
+                Ver Gráfica
+              </button>
               <div className="uk-margin">
+                { vitalSigns.length < 1 ? (
+                    <h4 className="uk-text-danger">No has realizado ningún registro</h4>
+                  ) : null
+                }
                 <div className="uk-child-width-1-3@m uk-child-width-1-2 uk-grid-small uk-grid-match" uk-grid="true">
                   <div>
                     <div className="uk-card uk-card-hover uk-card-body uk-padding-small">
                       <h5>Temperatura</h5>
-                      <p>{temperatureAvg ? temperatureAvg.toFixed(1) : null} °C</p>
+                      { temperatureAvg ? 
+                        <p>{temperatureAvg.toFixed(1)} °C</p>
+                        :
+                        <p className="uk-text-danger">Sin registros</p>
+                      }
                     </div>
                   </div>
                   <div>
                     <div className="uk-card uk-card-hover uk-card-body uk-padding-small">
                       <h5>Presión Arterial</h5>
-                      <p>{sistPressureAvg}/{diasPressureAvg} mmHg</p>
+                      { sistPressureAvg && diasPressureAvg ?
+                        <p>{sistPressureAvg}/{diasPressureAvg} mmHg</p>
+                        :
+                        <p className="uk-text-danger">Sin registros</p>
+                      }
                     </div>
                   </div>
                   <div>
                     <div className="uk-card uk-card-hover uk-card-body uk-padding-small">
                       <h5>Frecuencia Cardiaca</h5>
-                      <p>{heartRateAvg} lpm</p>
+                      { heartRateAvg ? 
+                        <p>{heartRateAvg} lpm</p>
+                        :
+                        <p className="uk-text-danger">Sin registros</p>
+                      }
                     </div>
                   </div>
                   <div>
                     <div className="uk-card uk-card-hover uk-card-body uk-padding-small">
                       <h5>Frecuencia Respiratoria</h5>
-                      <p>{respRateAvg} rpm</p>
+                      { respRateAvg ?
+                        <p>{respRateAvg} rpm</p>
+                        :
+                        <p className="uk-text-danger">Sin registros</p>
+                      }
                     </div>
                   </div>
                   <div>
                     <div className="uk-card uk-card-hover uk-card-body uk-padding-small">
                       <h5>Glucosa</h5>
-                      <p>{bloodSugarAvg} mg/dl</p>
+                      { bloodSugarAvg ?
+                        <p>{bloodSugarAvg} mg/dl</p>
+                        :
+                        <p className="uk-text-danger">Sin registros</p>
+                      }
                     </div>
                   </div>
                   <div>
                     <div className="uk-card uk-card-hover uk-card-body uk-padding-small">
                       <h5>Peso</h5>
-                      <p>{weightAvg} kg</p>
+                      { weightAvg ?
+                        <p>{weightAvg.toFixed(2)} kg</p>
+                        :
+                        <p className="uk-text-danger">Sin registros</p>
+                      }
                     </div>
                   </div>
                   <div>
                     <div className="uk-card uk-card-hover uk-card-body uk-padding-small">
                       <h5>Talla</h5>
-                      <p>{heightAvg} cm</p>
+                      { heightAvg ?
+                        <p>{heightAvg} cm</p>
+                        :
+                        <p className="uk-text-danger">Sin registros</p>
+                      }
                     </div>
                   </div>
                   <div>
                     <div className="uk-card uk-card-hover uk-card-body uk-padding-small">
                       <h5>IMC</h5>
-                      <p>{weightAvg && heightAvg ?  (weightAvg/(heightAvg*heightAvg/10000)).toFixed(2) : null}</p>
+                      { weightAvg && heightAvg ?
+                        <p>{(weightAvg/(heightAvg*heightAvg/10000)).toFixed(2)}</p>
+                        :
+                        <p className="uk-text-danger">Sin registros</p>
+                      }
                     </div>
                   </div>
                 </div>
@@ -238,7 +354,95 @@ const VitalSigns = () => {
                       <input name="height" className="uk-input uk-border-pill" type="number" onChange={handleInput} />
                     </div>
                   </div>
-                  <div className="uk-margin-small uk-width-1-1 uk-flex uk-flex-center uk-flex-middle">
+                  <div className="uk-margin-small uk-flex uk-flex-column uk-flex-center uk-flex-middle">
+                    <div className="uk-flex uk-flex-column uk-flex-middle uk-width-1-1">
+                      <div className="uk-margin-small-bottom uk-text-bold">{moment(datetime).format('LLL')} {moment(datetime).format('a')}</div>
+                    </div>
+                    <div className="uk-margin-small-bottom uk-flex uk-flex-middle uk-width-1-1 uk-child-width-1-2">
+                      <label>Usar fecha y hora actual:</label>
+                      <div className="uk-flex uk-flex-around uk-child-width-1-2">
+                        <button className={ !showDateInput ? "uk-button uk-button-secondary uk-border-pill selected" : "uk-button uk-button-default uk-border-pill"} onClick={event => changeDateInputState(event, false)}>
+                          Sí
+                        </button>
+                        <button className={ showDateInput ? "uk-button uk-button-secondary uk-border-pill selected" : "uk-button uk-button-default uk-border-pill"} onClick={event => changeDateInputState(event, true)} >
+                          No
+                        </button>
+                      </div>
+                    </div>
+                    
+                  </div>
+                  { showDateInput ? 
+                    <div>
+                      <div className="uk-margin-small-bottom uk-flex uk-flex-middle uk-width-1-1 uk-child-width-1-2 uk-hidden@s">
+                        <label>Fecha y hora del registro:</label>
+                        <input className="uk-input uk-border-pill" type="date" name="only-date" onChange={dateValidation} />
+                      </div>
+                    
+                      <div className="uk-margin-small-bottom uk-flex uk-flex-middle uk-width-1-1 uk-child-width-1-2 uk-visible@s">
+                        <label>Fecha y hora del registro:</label>
+                        <div className="uk-flex uk-flex-around uk-child-width-1-5">
+                          <input className="uk-input uk-border-pill uk-width-1-3" type="date" name="only-date" onChange={dateValidation} />
+                          <select name="time-hours" onChange={dateValidation} className="uk-select uk-border-pill" defaultValue="Hora">
+                            <option disabled={true}>Hora</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                            <option>6</option>
+                            <option>7</option>
+                            <option>8</option>
+                            <option>9</option>
+                            <option>10</option>
+                            <option>11</option>
+                            <option>12</option>
+                          </select>
+                          <input name="time-minutes" className="uk-input uk-border-pill" type="number" onChange={dateValidation} placeholder="Minutos" />
+                          <select name="time-period" onChange={handleInput} className="uk-select uk-border-pill uk-width-1-5" defaultValue="PM">
+                            <option>AM</option>
+                            <option>PM</option>
+                          </select>
+                        </div>
+                        
+                      </div>
+                      <div className="uk-width-1-1 uk-width-1-2@s uk-flex uk-flex-around uk-hidden@s">
+                        <select name="time-hours" onChange={dateValidation} className="uk-select uk-border-pill uk-width-1-3" defaultValue="12">
+                          <option disabled={true}>12</option>
+                          <option>1</option>
+                          <option>2</option>
+                          <option>3</option>
+                          <option>4</option>
+                          <option>5</option>
+                          <option>6</option>
+                          <option>7</option>
+                          <option>8</option>
+                          <option>9</option>
+                          <option>10</option>
+                          <option>11</option>
+                          <option>12</option>
+                        </select>
+                        <select name="time-minutes" onChange={dateValidation} className="uk-select uk-border-pill uk-width-1-3" defaultValue="00">
+                          <option disabled={true}>00</option>
+                          <option>00</option>
+                          <option>15</option>
+                          <option>30</option>
+                          <option>45</option>
+                        </select>
+                        <select name="time-period" onChange={dateValidation} className="uk-select uk-border-pill uk-width-1-4" defaultValue="PM">
+                          <option>AM</option>
+                          <option>PM</option>
+                        </select>
+                      </div>
+                    </div>
+                    : null
+                  }
+
+                  { isButtonDisabled && showDateInput ?
+                      <p className="uk-text-danger uk-margin-small">Selecciona una fecha y hora por favor</p>
+                      : null
+                  }
+
+                  <div className="uk-margin uk-width-1-1 uk-flex uk-flex-center uk-flex-middle">
                     <button type="submit" className="uk-button uk-button-primary uk-button uk-border-pill uk-width-2-3 uk-width-1-4@m" disabled={isButtonDisabled} >
                       Crear registro
                     </button>
@@ -246,7 +450,12 @@ const VitalSigns = () => {
                 </form>
               </div>
             ) : (
-              null
+              <div>
+                <h2>Mis Signos Vitales</h2>
+                <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin" onClick={event => setRoute('none')} >
+                  Regresar
+                </button>
+              </div>
             )
         }
         

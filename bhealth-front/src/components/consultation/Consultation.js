@@ -7,8 +7,8 @@ import moment from 'moment';                                        // Import mo
 import 'moment/locale/es'  // without this line it didn't work
 
 import { getConsultations, createConsultation } from '../../services/consultation-services';
-import { createVitalSigns } from '../../services/vitalsigns-services'
-import ConsultationForm from './ConsultationForm';
+// import { createVitalSigns } from '../../services/vitalsigns-services'
+// import ConsultationForm from './ConsultationForm';
 import ConsultationFormSpecial from './ConsultationFormSpecial'
 import ConsultationInfo from './ConsultationInfo';
 
@@ -61,27 +61,27 @@ const Consultation = () => {
 
     if ( form.timeperiod === 'AM' ) {
       if ( form['time-hours'] === '12' )
-        datetime = form['only-date']+'T00'+':'+form['time-minutes']+':00';
+        datetime = `${form['only-date']}T00:${form['time-minutes']}:00`;
       else
-        datetime = form['only-date']+'T'+form['time-hours']+':'+form['time-minutes']+':00';
+        datetime = `${form['only-date']}T${form['time-hours']}:${form['time-minutes']}:00`;
     }
     else {
       if ( form['time-hours'] === '12' )
-        datetime = form['only-date']+'T12'+':'+form['time-minutes']+':00';
+      datetime = `${form['only-date']}T12:${form['time-minutes']}:00`;
       else {
         switch (form['time-hours']) {
-          case '1': datetime = form['only-date']+'T13'+':'+form['time-minutes']+':00'; break;
-          case '2': datetime = form['only-date']+'T14'+':'+form['time-minutes']+':00'; break;
-          case '3': datetime = form['only-date']+'T15'+':'+form['time-minutes']+':00'; break;
-          case '4': datetime = form['only-date']+'T16'+':'+form['time-minutes']+':00'; break;
-          case '5': datetime = form['only-date']+'T17'+':'+form['time-minutes']+':00'; break;
-          case '6': datetime = form['only-date']+'T18'+':'+form['time-minutes']+':00'; break;
-          case '7': datetime = form['only-date']+'T19'+':'+form['time-minutes']+':00'; break;
-          case '8': datetime = form['only-date']+'T20'+':'+form['time-minutes']+':00'; break;
-          case '9': datetime = form['only-date']+'T21'+':'+form['time-minutes']+':00'; break;
-          case '10': datetime = form['only-date']+'T22'+':'+form['time-minutes']+':00'; break;
-          case '11': datetime = form['only-date']+'T23'+':'+form['time-minutes']+':00'; break;
-          default: datetime = form['only-date']+'T12'+':'+form['time-minutes']+':00';
+          case '1': datetime = `${form['only-date']}T13:${form['time-minutes']}:00`; break;
+          case '2': datetime = `${form['only-date']}T14:${form['time-minutes']}:00`; break;
+          case '3': datetime = `${form['only-date']}T15:${form['time-minutes']}:00`; break;
+          case '4': datetime = `${form['only-date']}T16:${form['time-minutes']}:00`; break;
+          case '5': datetime = `${form['only-date']}T17:${form['time-minutes']}:00`; break;
+          case '6': datetime = `${form['only-date']}T18:${form['time-minutes']}:00`; break;
+          case '7': datetime = `${form['only-date']}T19:${form['time-minutes']}:00`; break;
+          case '8': datetime = `${form['only-date']}T20:${form['time-minutes']}:00`; break;
+          case '9': datetime = `${form['only-date']}T21:${form['time-minutes']}:00`; break;
+          case '10': datetime = `${form['only-date']}T22:${form['time-minutes']}:00`; break;
+          case '11': datetime = `${form['only-date']}T23:${form['time-minutes']}:00`; break;
+          default: datetime = `${form['only-date']}T12:${form['time-minutes']}:00`; break;
         }
       }
     }

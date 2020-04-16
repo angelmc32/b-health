@@ -43,6 +43,7 @@ const AuthForm = ( { submit, action, email = '', password = '', confirm_password
         break;
       }
       case 'password': {
+        if ( action === 'login' ) return null
         if (  validatePassword(value) )
           setPasswordInputState('uk-form-success');
         else

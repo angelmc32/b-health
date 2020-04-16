@@ -24,7 +24,7 @@ const MedHistory = () => {
     "Enfermedades del Hígado": false,
     "Enfermedades del Riñón": false,
     "Enfermedades Endócrinas": false,
-    "Enfermedades del Sist. Digestivo": false,
+    "Enfermedades del Sistema Digestivo": false,
     "Enfermedades Mentales": false,
     "Cáncer": false,
     "Otras": false
@@ -42,7 +42,7 @@ const MedHistory = () => {
     "Enfermedades del Hígado": false,
     "Enfermedades del Riñón": false,
     "Enfermedades Endócrinas": false,
-    "Enfermedades del Sist. Digestivo": false,
+    "Enfermedades del Sistema Digestivo": false,
     "Enfermedades Mentales": false,
     "Cáncer": false,
     "Otras": false
