@@ -25,4 +25,5 @@ exports.verifyToken = require = (req, res, next) => {
     });
     
   });
+  
 };

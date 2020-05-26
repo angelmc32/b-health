@@ -36,11 +36,13 @@ const Login = () => {
         push('/consentimiento')
 
     })
-    .catch( error => {
+    .catch( res => {
+
+      const { msg } = res.response.data;
 
       // Send UIkit error notification
       UIkit.notification({
-        message: `<span uk-icon='close'></span> ${error}`,
+        message: `<span uk-icon='close'></span> ${msg}`,
         pos: 'bottom-center',
         status: 'danger'
       });

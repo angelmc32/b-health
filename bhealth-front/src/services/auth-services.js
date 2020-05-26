@@ -12,6 +12,14 @@ export const signup = (data) => {
 
 };
 
+// Export activate account function, which receives data as parameters to activate account
+export const activate = (data) => {
+  
+  // Return a call to our /signup route, while sending the parameters obtained from the form/front-end
+  return axios.post(`${base_url}/activate/${data}`);
+
+};
+
 // Export login function, which receives data as parameters to enable login
 export const login = (data) => {
 

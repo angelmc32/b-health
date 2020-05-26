@@ -5,6 +5,8 @@ import { AppContext } from './AppContext';
 // Import Components for navigation
 import Landing from './components/landing/Landing';
 import Signup from './components/auth/Signup';
+import Registration from './components/auth/Registration'
+import Activation from './components/auth/Activation'
 import Login from './components/auth/Login';
 import Profile from './components/profile/Profile';
 // import Preferences from './components/profile/Preferences';
@@ -43,8 +45,8 @@ const Router = () => {
         <Landing />
       </Route>
 
-      <Route path="/signup">
-        <Signup />
+      <Route path="/registrar">
+        <Registration />
       </Route>
       
       <Route path="/login">
@@ -53,6 +55,10 @@ const Router = () => {
 
       <Route path="/registro">
         <Signup />
+      </Route>
+
+      <Route path="/activate/:activationToken">
+        <Activation />
       </Route>
 
       <Route path="/home">

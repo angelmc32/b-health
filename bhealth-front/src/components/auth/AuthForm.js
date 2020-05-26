@@ -10,6 +10,7 @@ const AuthForm = ( { submit, action, email = '', password = '', confirm_password
   const [ passwordInputState, setPasswordInputState ] = useState(null)
   const [ confPasswordInputState, setConfPasswordInputState ] = useState(null)
   const [ isButtonDisabled, setIsButtonDisabled ] = useState(true)
+  const [ passwordValidationObj, setPasswordValidationObj ] = useState({minLength: false, oneCap: false, oneLow: false, oneNumber: false})
 
   useEffect( () => {
     if ( emailInputState === 'uk-form-success' && passwordInputState === 'uk-form-success' && confPasswordInputState === 'uk-form-success' )
@@ -25,6 +26,14 @@ const AuthForm = ( { submit, action, email = '', password = '', confirm_password
 
   const validatePassword = (password) => {
     const regEx = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+    const regEXlowcase = /^(?=.*[a-z])/
+    const regEXuppercase = /^(?=.*[A-Z])/
+    const regEXnumber = /^(?=.*\d)/
+    const regEXminlength = /[a-zA-Z\d]{8,}$/
+    setPasswordValidationObj( prevState => ({...prevState, oneLow: regEXlowcase.test(password)}) )
+    setPasswordValidationObj( prevState => ({...prevState, oneCap: regEXuppercase.test(password)}) )
+    setPasswordValidationObj( prevState => ({...prevState, oneNumber: regEXnumber.test(password)}) )
+    setPasswordValidationObj( prevState => ({...prevState, minLength: regEXminlength.test(password)}) )
     return regEx.test(password);
   }
 
@@ -75,7 +84,7 @@ const AuthForm = ( { submit, action, email = '', password = '', confirm_password
           </p>
           ) : (
           <p>¿No tienes cuenta? 
-            <NavLink to="/signup" className="uk-margin-small-left">
+            <NavLink to="/registro" className="uk-margin-small-left">
               Regístrate aquí
             </NavLink>
           </p>
@@ -114,13 +123,54 @@ const AuthForm = ( { submit, action, email = '', password = '', confirm_password
                 type="password"
               />
             </div>
-            { passwordInputState === 'uk-form-danger' ?
-                <div>
-                  <span className="uk-text-danger">La contraseña debe contener al menos una mayúscula, una minúscula y un número</span>
-                </div>
-              : null 
-            }
-          </div>
+            <div className="uk-margin uk-flex uk-flex-center">
+              { action === 'signup' ?
+                <div className="uk-width-1-2@s uk-flex uk-flex-column">
+                  <div className="uk-width-1-1 uk-flex">
+                      { passwordValidationObj.oneCap ?
+                        <div className="uk-width-1-2 uk-flex uk-flex-center@s uk-flex-middle uk-text-success">
+                          <span uk-icon="check"></span> Una letra mayúscula
+                        </div>
+                        : 
+                        <div className="uk-width-1-2 uk-flex uk-flex-center@s uk-flex-middle">
+                          <span uk-icon="warning"></span>  Una letra mayúscula
+                        </div>
+                      }
+                      { passwordValidationObj.oneNumber ?
+                        <div className="uk-width-1-2 uk-flex uk-flex-left uk-flex-middle uk-text-success">
+                          <span uk-icon="check"></span> Un número
+                        </div>
+                        : 
+                        <div className="uk-width-1-2 uk-flex uk-flex-left uk-flex-middle">
+                          <span uk-icon="warning"></span>  Un número
+                        </div>
+                      }
+                      
+                  </div>
+                  <div className="uk-width-1-1 uk-flex">
+                    { passwordValidationObj.oneLow ?
+                      <div className="uk-width-1-2 uk-flex uk-flex-center@s uk-flex-middle uk-text-success">
+                        <span uk-icon="check"></span> Una letra minúscula
+                      </div>
+                      : 
+                      <div className="uk-width-1-2 uk-flex uk-flex-center@s uk-flex-middle">
+                        <span uk-icon="warning"></span>  Una letra minúscula
+                      </div>
+                    }
+                    { passwordValidationObj.minLength ?
+                      <div className="uk-width-1-2 uk-flex uk-flex-left uk-flex-middle uk-text-success">
+                        <span uk-icon="check"></span> Mínimo 8 caracteres
+                      </div>
+                      : 
+                      <div className="uk-width-1-2 uk-flex uk-flex-left uk-flex-middle">
+                        <span uk-icon="warning"></span> Mínimo 8 caracteres
+                      </div>
+                    }
+                  </div>
+                </div> : null
+              }
+            </div>
+            </div>
             { action === "signup" ? (
             <div className="uk-margin">
               <label className="uk-form-label">Confirma tu contraseña:</label>

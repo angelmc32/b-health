@@ -6,7 +6,6 @@ import Chart from 'chart.js';
 const VitalSignsGraph = ({vitalsigns}) => {
 
   const chartRef = createRef();
-  console.log(vitalsigns.map( record => record.date))
 
   const chartColors = {
     white: 'rgb(255,255,255)',

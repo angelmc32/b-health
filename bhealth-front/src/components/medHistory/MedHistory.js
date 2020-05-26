@@ -4,6 +4,7 @@ import { AppContext } from '../../AppContext';                  // Import AppCon
 import useForm from '../../hooks/useForm';                      // Import useForm custom hook
 import UIkit from 'uikit';                                      // Import UIkit for notifications
 import moment from 'moment';                                    // Import momentjs for date formatting
+import Stepper from 'react-stepper-horizontal'
 
 import { getMedicalHistory, createMedicalHistory, editMedicalHistory } from '../../services/medhistory-services';  // Import edit API call
 
@@ -522,7 +523,7 @@ const MedHistory = () => {
 
   const backButton = (event) => setRoute('none')
 
-  const [ step, setStep ] = useState(1);
+  const [ step, setStep ] = useState(0);
 
   const changeStep = (index) => {
     setStep(index)
@@ -534,7 +535,7 @@ const MedHistory = () => {
       { route === 'none' && !medHistory ? (
           <div className="uk-section">
             <div className="uk-container uk-overflow-auto">
-              <Questionnaire title="Registra tus Antecedentes" questionnaire={medHistoryQuestionnaire} handleSubmit={handleSubmit} form={form} backButton={backButton} isComplete={false}/>
+              <Questionnaire title="Registra tus Antecedentes" questionnaire={medHistoryQuestionnaire} handleSubmit={handleSubmit} form={form} backButton={backButton} isComplete={false} stepsQty={3}/>
             </div>
           </div>
         ) : route === 'none' ? (
@@ -545,14 +546,38 @@ const MedHistory = () => {
             </button>
             <div className="uk-container uk-overflow-auto">
               <div className="uk-flex uk-flex-center">
-                <ul className="uk-dotnav">
-                  <li onClick={() => changeStep(1)} key="1" className={ step === 1 ? "uk-active" : null }><a href="#">1</a></li>
-                  <li onClick={() => changeStep(2)} key="2" className={ step === 2 ? "uk-active" : null }><a href="#">2</a></li>
-                  <li onClick={() => changeStep(3)} key="3" className={ step === 3 ? "uk-active" : null }><a href="#">3</a></li>
-                </ul>
+              <Stepper 
+                steps={ 
+                  [
+                    {
+                      title: 'Heredo-Familiares',
+                      onClick: (event) => {
+                        event.preventDefault()
+                        changeStep(0)
+                      }
+                    },
+                    {
+                      title: 'Personales Patológicos',
+                      onClick: (event) => {
+                        event.preventDefault()
+                        changeStep(1)
+                      }
+                    },
+                    {
+                      title: 'Personales No Patológicos',
+                      onClick: (event) => {
+                        event.preventDefault()
+                        changeStep(2)
+                      }
+                    }
+                  ]
+                } 
+                activeStep={step}
+                activeColor={'#4F39BF'}
+                completeColor={'#4F39BF'} />
               </div>
-              <div className={ step === 1 ? "uk-visible" : "uk-hidden" }>
-                <h4 className="uk-margin">Antecedentes Heredo-Familiares</h4>
+              <div className={ step === 0 ? "uk-visible" : "uk-hidden" }>
+                <h4 className="uk-margin-large-top">Antecedentes Heredo-Familiares</h4>
                 <div className="uk-width-1-1 uk-flex uk-flex-column">
                   <div className="uk-flex uk-flex-middle uk-width-1-1 uk-child-width-1-2">
                     <label> Diabetes: {medHistory ? medHistory.family_diabetes : "Negativo"}</label>
@@ -650,8 +675,8 @@ const MedHistory = () => {
                   </div>
                 </div>
               </div>
-              <div className={ step === 2 ? "uk-visible" : "uk-hidden" }>
-                <h4 className="uk-margin">Antecedentes Personales Patológicos</h4>
+              <div className={ step === 1 ? "uk-visible" : "uk-hidden" }>
+                <h4 className="uk-margin-large-top">Antecedentes Personales Patológicos</h4>
                 <h5>Enfermedades Actuales</h5>
                 <ul className="uk-list">
                   { medHistory.health_history ? Object.entries(medHistory.health_history).map( (entry, index) => {
@@ -698,8 +723,8 @@ const MedHistory = () => {
                   </div>
                 </div>
               </div>
-              <div className={ step === 3 ? "uk-visible" : "uk-hidden" }>
-                <h4 className="uk-margin">Antecedentes Personales No Patológicos</h4>
+              <div className={ step === 2 ? "uk-visible" : "uk-hidden" }>
+                <h4 className="uk-margin-large-top">Antecedentes Personales No Patológicos</h4>
                 <p>Horas de actividad física a la semana: {medHistory.weekly_exercise_hours}</p>
                 <div className="uk-margin">
                   <label className="uk-form-label" htmlFor="form-stacked-text">Tabaquismo:</label>
@@ -732,12 +757,22 @@ const MedHistory = () => {
                   </div>
                 </div>
               </div>
+              <div className="uk-width-1-1 uk-flex uk-flex-center uk-margin-large-top">
+                <div className="uk-width-3-5@s uk-width-1-3@m uk-flex uk-flex-between">
+                  <button className="uk-button uk-button-default uk-border-pill uk-width-1-2 uk-width-1-3@s" disabled={ step === 0 ? true : false } onClick={ (event) => {event.preventDefault(); changeStep(step-1)}} >
+                    <span uk-icon="arrow-left"></span>
+                  </button>
+                  <button className="uk-button uk-button-default uk-border-pill uk-width-1-2 uk-width-1-3@s" disabled={ step === 2 ? true : false } onClick={ (event) => {event.preventDefault(); changeStep(step+1)}} >
+                    <span uk-icon="arrow-right"></span>
+                  </button>
+                </div>
+              </div>
           </div>
         </div>
         ) : (
           <div className="uk-section">
           <div className="uk-container uk-overflow-auto">
-            <Questionnaire title="Editar mis Antecedentes" questionnaire={medHistoryQuestionnaire} handleSubmit={handleSubmit} form={form} backButton={backButton} isComplete={true}/>
+            <Questionnaire title="Editar Mis Antecedentes" questionnaire={medHistoryQuestionnaire} handleSubmit={handleSubmit} form={form} backButton={backButton} isComplete={true} stepsQty={3}/>
           </div>
             
           </div>

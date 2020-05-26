@@ -21,21 +21,23 @@ const Signup = () => {
     // Call signup service with form state variable as parameter, which includes form data for e-mail and password
     signup(form)
     .then( res => {
-      
-      const { user, token } = res.data;         // Destructure user and token from response, sent by API
-      
-      // Store user and token in localStorage
-      localStorage.setItem('user', JSON.stringify(user));
-      localStorage.setItem('token', token);
 
-      setUser(user);    // Modify user state variable, setting the user data in the state
-      setRoute('edit');
-      push('/consentimiento');    // "Redirect" user to home
+      const { msg } = res.data;
+      
+      //const { user, token } = res.data;         // Destructure user and token from response, sent by API
+      
+      // // Store user and token in localStorage
+      // localStorage.setItem('user', JSON.stringify(user));
+      // localStorage.setItem('token', token);
+
+      // setUser(user);    // Modify user state variable, setting the user data in the state
+      // setRoute('none');
+      push('/registrar');    // "Redirect" user to home
 
       // Send UIkit success notification
       UIkit.notification({
-        message: `<span uk-icon='check'></span> Completa tu registro usando la liga que te enviamos a la dirección de correo electrónico proporcionada`,
-        pos: 'top-center',
+        message: `<span uk-icon='check'></span> ${msg}`,
+        pos: 'bottom-center',
         status: 'success'
       });
 
