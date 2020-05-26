@@ -2,7 +2,7 @@ import axios from 'axios';                      // Import axios to enable API ca
 
 // Set URL according to environment
 const isProduction = process.env.NODE_ENV === 'production';
-const base_url = isProduction ? 'https://b-health.herokuapp.com/api/emergencies' : 'http://localhost:3000/api/emergencies';
+const base_url = isProduction ? 'http://54.163.77.88/api/emergencies' : 'http://localhost:3000/api/emergencies';
 
 // Export get function to retrieve all emergencies of the current logged in user
 export const getEmergencies = () => {
