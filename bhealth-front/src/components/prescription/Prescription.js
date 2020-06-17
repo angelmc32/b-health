@@ -219,11 +219,11 @@ const Prescription = () => {
                                 <div className="uk-modal-body uk-flex uk-flex-column uk-flex-middle">
                                   { prescription.image === 'Sin imagen registrada' ? (
                                       <button className="uk-modal-close uk-button uk-button-default uk-border-pill uk-margin-small uk-width-1-2@s" onClick={event => console.log('ADD IMAGE')} >
-                                        <NavLink to="/recetas">Agregar Imagen</NavLink>
+                                        Agregar Imagen
                                       </button>
                                     ) : (
                                       <button className="uk-modal-close uk-button uk-button-default uk-border-pill uk-margin-small uk-width-1-2@s" onClick={event => console.log('VIEW IMAGE')} >
-                                        <NavLink to="/recetas">Ver Imagen</NavLink>
+                                        Ver Imagen
                                       </button>
                                     )
                                   }

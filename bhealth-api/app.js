@@ -38,7 +38,7 @@ app.use(cookieParser());
 // cors package config to allow requests from the url's in the origin array
 app.use(
   cors({
-    origin: ['https://b-health.herokuapp.com', 'http://localhost:3001', 'http://b-health.herokuapp.com']
+    origin: ['http://beesalud.com', 'http://localhost:3001']
   })
 );
 
