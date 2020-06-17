@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';              // Import React and useContext hook
+import React, { useContext, useEffect } from 'react';              // Import React and useContext hook
 import { useHistory } from 'react-router-dom';          // Import useHistory for "redirection"
 import { AppContext } from '../../AppContext';          // Import AppContext to use created context
 import { login } from '../../services/auth-services';   // Import login service for API call
@@ -10,8 +10,17 @@ import UIkit from 'uikit';                              // Import UIkit for noti
 const Login = () => {
 
   const { form, handleInput } = useForm();                // Destructure form state variable and handleInput function
-  const { setUser, setRoute } = useContext(AppContext);   // Destructure setUser function for user state manipulation
+  const { user, setUser, setRoute } = useContext(AppContext);   // Destructure setUser function for user state manipulation
   const { push } = useHistory();                          // Destructure push method from useHistory to "redirect" user
+
+  useEffect( () => {
+
+    if ( user._id ) {    // If there is no user logged in, send a notification and "redirect" to login
+      
+      return push('/home');         // If not logged in, "redirect" user to login
+
+    };
+  })
 
   // Declare function for form submit event
   const handleSubmit = (event) => {

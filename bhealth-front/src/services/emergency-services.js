@@ -2,7 +2,7 @@ import axios from 'axios';                      // Import axios to enable API ca
 
 // Set URL according to environment
 const isProduction = process.env.NODE_ENV === 'production';
-const base_url = isProduction ? 'http://54.163.77.88/api/emergencies' : 'http://localhost:3000/api/emergencies';
+const base_url = isProduction ? 'http://54.163.77.88/api/emergencies' : `${process.env.REACT_APP_API_URL}/emergencies`;
 
 // Export get function to retrieve all emergencies of the current logged in user
 export const getEmergencies = () => {
@@ -48,6 +48,18 @@ export const editEmergency = (emergencyID, data) => {
   const token = localStorage.getItem('token');  // Get token from localStorage
 
   return axios.patch(`${base_url}/${emergencyID}`, data, {
+    headers: {
+      Authorization: token,                     // Send token in request headers (check api/helpers/auth-helper)
+    }
+  });
+
+}
+
+export const deleteEmergency = (emergencyID) => {
+
+  const token = localStorage.getItem('token');  // Get token from localStorage
+
+  return axios.delete(`${base_url}/${emergencyID}`, {
     headers: {
       Authorization: token,                     // Send token in request headers (check api/helpers/auth-helper)
     }

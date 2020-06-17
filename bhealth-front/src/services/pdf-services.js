@@ -2,7 +2,7 @@ import axios from 'axios';                      // Import axios to enable API ca
 
 // Set URL according to environment
 const isProduction = process.env.NODE_ENV === 'production';
-const base_url = isProduction ? 'http://54.163.77.88/api/pdf' : 'http://localhost:3000/api/pdf';
+const base_url = isProduction ? 'http://54.163.77.88/api/pdf' : `${process.env.REACT_APP_API_URL}/pdf`;
 
 export const createSummary = () => {
 

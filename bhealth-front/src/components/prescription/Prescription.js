@@ -1,15 +1,20 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useHistory } from 'react-router-dom';                      // Import useHistory for "redirection"
+import { NavLink, useHistory } from 'react-router-dom';                      // Import useHistory for "redirection"
 import { AppContext } from '../../AppContext';                      // Import AppContext to use created context
 import useDrugsForm from '../../hooks/useDrugsForm';                          // Import useForm custom hook
 import UIkit from 'uikit';                                          // Import UIkit for notifications
+import Icons from 'uikit/dist/js/uikit-icons';
 import moment from 'moment';                                        // Import momentjs for date formatting
+import 'moment/locale/es'  // without this line it didn't work
 
-import { getPrescriptions, createPrescription, getPrescription, editPrescription } from '../../services/prescription-services';
+import { getPrescriptions, createPrescription, getPrescription, editPrescription, deletePrescription } from '../../services/prescription-services';
 import { createDrug } from '../../services/drug-services';
 
 import PrescriptionForm from './PrescriptionForm';
 import PrescriptionInfo from './PrescriptionInfo';
+
+moment.locale('es')
+UIkit.use(Icons);   // Execute to allow icon use
 
 const Prescription = () => {
 
@@ -17,7 +22,7 @@ const Prescription = () => {
   const { form, handleInput, handleFileInput } = useDrugsForm();
 
   const { push } = useHistory();                    // Destructure push method from useHistory to "redirect" user
-  const { user, route, setRoute, objectHandler, setObjectHandler } = useContext(AppContext);
+  const { user, route, setRoute, objectHandler, setObjectHandler, resetUserContext } = useContext(AppContext);
   const [ prescription, setPrescription] = useState({});
   const [ prescriptions, setPrescriptions ] = useState([]);
   const [ showForm, setShowForm ] = useState(false);
@@ -49,12 +54,19 @@ const Prescription = () => {
         setPrescriptions(prescriptions);
         setRoute('prescriptions');
 
+      })
+      .catch( error => {
+        if (error.response.status === 401) {
+          localStorage.clear();
+          resetUserContext();
+          push('/login');
+        }
       });
     }
 
     
     
-  }, [route]);
+  }, [isButtonDisabled]);
 
   const handleSubmit = (event) => {
 
@@ -121,9 +133,9 @@ const Prescription = () => {
 
   const toggleButton = () => setIsButtonDisabled(!isButtonDisabled);
   
-  const loadPrescription = (prescription) => {
-    setPrescription(prescription);
-    setRoute('read');
+  const loadPrescription = (prescriptionData, newRoute) => {
+    setPrescription(prescriptionData);
+    setRoute(newRoute);
   }
 
   const deleteConsultationObject = () => {
@@ -132,11 +144,36 @@ const Prescription = () => {
     // console.log('borrando')
   }
 
+  const deletePrescriptionBtn = (prescriptionID) => {
+
+    setIsButtonDisabled(true)
+
+    deletePrescription(prescriptionID)
+    .then( prescription => {
+      setIsButtonDisabled(false)
+      // Send UIkit success notification
+      UIkit.notification({
+        message: `<span uk-icon='close'></span> Se ha eliminado la receta exitosamente`,
+        pos: 'bottom-center',
+        status: 'success'
+      });
+    })
+    .catch( res => {
+      // Send UIkit error notification
+      UIkit.notification({
+        message: `<span uk-icon='close'></span> No se ha podido eliminar la receta`,
+        pos: 'bottom-center',
+        status: 'danger'
+      });
+    })
+
+  }
+
   return (
 
     <div className="content">
       
-        { route === 'prescriptions' ? (
+        { route === 'prescriptions' || route === 'none' ? (
           <div className="uk-section">
             <h2>Recetas</h2>
             <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin" onClick={event => setRoute('create')} >
@@ -151,8 +188,9 @@ const Prescription = () => {
                 <thead>
                   <tr>
                     <th className="uk-text-center">Fecha</th>
-                    <th className="uk-text-center uk-visible">Doctor</th>
+                    <th className="uk-text-center">Doctor</th>
                     <th className="uk-text-center">Detalles</th>
+                    <th className="uk-text-center uk-visible@s">Modificar</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -160,11 +198,44 @@ const Prescription = () => {
                       prescriptions.map( (prescription, index) => 
                         <tr key={index}>
                           <td className="uk-text-center">{moment(prescription.date).locale('es').format('LL')}</td>
-                          <td className="uk-text-center uk-visible">{`Dr. ${prescription.doctor}`}</td>
+                          <td className="uk-text-center">{`Dr. ${prescription.doctor}`}</td>
                           <td className="uk-text-center">
-                            <button className="uk-button uk-button-default uk-button-small uk-border-pill" onClick={event => loadPrescription({prescription})} >
+                            <button className="uk-button uk-button-default uk-button-small uk-border-pill" onClick={event => loadPrescription({prescription}, 'read')} >
                               Ver
                             </button>
+                          </td>
+                          <td className="uk-width-1-6">
+                            <a href={`#modal-sections-${index}`} uk-toggle={`target: #modal-sections-${index}`}>
+                              <span className="uk-margin-small-right" uk-icon="more-vertical"></span>
+                            </a>
+                            <div id={`modal-sections-${index}`} className="uk-flex-top" uk-modal="true">
+                              <div className="uk-modal-dialog uk-margin-auto-vertical">
+                                <button className="uk-modal-close-default" type="button" uk-close="true" />
+                                <div className="uk-modal-header">
+                                  <h3 className="uk-text-center">Datos de la Receta</h3>
+                                  <p className="uk-text-center">Fecha: {moment(prescription.date).locale('es').format('LL')}</p>
+                                  <p className="uk-text-center">Doctor: {prescription.doctor}</p>
+                                </div>
+                                <div className="uk-modal-body uk-flex uk-flex-column uk-flex-middle">
+                                  { prescription.image === 'Sin imagen registrada' ? (
+                                      <button className="uk-modal-close uk-button uk-button-default uk-border-pill uk-margin-small uk-width-1-2@s" onClick={event => console.log('ADD IMAGE')} >
+                                        <NavLink to="/recetas">Agregar Imagen</NavLink>
+                                      </button>
+                                    ) : (
+                                      <button className="uk-modal-close uk-button uk-button-default uk-border-pill uk-margin-small uk-width-1-2@s" onClick={event => console.log('VIEW IMAGE')} >
+                                        <NavLink to="/recetas">Ver Imagen</NavLink>
+                                      </button>
+                                    )
+                                  }
+                                  <button className="uk-modal-close uk-button uk-button-primary uk-border-pill uk-margin-small uk-width-1-2@s"  onClick={event => console.log('EDIT PRESCRIPTION')} >
+                                    Modificar Receta
+                                  </button>
+                                  <button className="uk-modal-close uk-button uk-button-danger uk-border-pill uk-margin-small uk-width-1-2@s" onClick={event => loadPrescription({prescription}, 'delete')} >
+                                    Eliminar Receta
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
                           </td>
                         </tr>
                       )
@@ -194,12 +265,28 @@ const Prescription = () => {
                 </div>
               </div>
             ) : (
-              route === 'read' ? (
+              route === 'read' || route === 'delete' ? (
                 <div className="uk-section">
-                  <h2>Ver Receta</h2>
-                  <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin" onClick={event => setRoute('prescriptions')} >
-                    Regresar
-                  </button>
+                  <h2>{route === 'read' ? 'Ver Receta' : 'Eliminar Receta'}</h2>
+                  { route === 'read' ? 
+                      <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin" onClick={event => setRoute('prescriptions')} >
+                        Regresar
+                      </button>
+                    : 
+                    <div className="uk-width-1-1 uk-flex uk-flex-column uk-flex-middle uk-margin-large-bottom">
+                      <div className="uk-width-1-1">
+                        <p>¿Estás seguro que deseas eliminar la siguiente receta?</p>
+                      </div>
+                      <div className="uk-width-4-5 uk-flex uk-flex-around">
+                        <button className="uk-button uk-button-danger uk-border-pill uk-width-1-3" onClick={event=> deletePrescriptionBtn(prescription.prescription._id)} disabled={isButtonDisabled}>
+                          Sí
+                        </button>
+                        <button className="uk-button uk-button-default uk-border-pill uk-width-1-3" onClick={event => setRoute('prescriptions')} >
+                          No
+                        </button>
+                      </div>
+                    </div>
+                  }
                   <PrescriptionInfo {...prescription} />
                 </div>
               ) : (

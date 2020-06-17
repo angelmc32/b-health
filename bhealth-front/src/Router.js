@@ -30,6 +30,7 @@ import VitalSigns from './components/vitalsigns/VitalSigns'
 import Summary from './components/medHistory/Summary'
 import Consent from './components/common/Consent'
 import Benefits from './components/benefits/Benefits';
+import CatalogAutoComplete from './components/common/CatalogAutoComplete'
 // import Calendar from './components/schedule/Calendar';
 
 const Router = () => {
@@ -120,7 +121,7 @@ const Router = () => {
       <Route path="/consentimiento">
         <Consent />
       </Route>
-
+      
     </Switch>
   )
 };

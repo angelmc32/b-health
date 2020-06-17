@@ -50,7 +50,7 @@ const Home = () => {
 
         <div className="uk-container uk-margin">
           <div className="uk-grid uk-grid-collapse uk-child-width-1-1 uk-child-width-1-2@s uk-height-large" uk-grid="true">
-            <div className=" uk-height-1-1 uk-flex uk-flex-column uk-flex-center uk-flex-middle">
+            <div className=" uk-height-1-1@s uk-flex uk-flex-column uk-flex-center uk-flex-middle">
               <h1>La <span className="uk-text-secondary uk-text-bold">salud</span> de tu <span className="uk-text-primary uk-text-bold">familia</span>, <br/> en tus manos.</h1>
               <h3 className="uk-margin-remove">Tus datos. Tus medicamentos. Tu salud.</h3>
             </div>
@@ -62,8 +62,8 @@ const Home = () => {
                   Signos Vitales
                 </button>
               </NavLink>
-              <NavLink className="uk-width-1-1 uk-margin-small" to="/signosvitales">
-                <button className="uk-button uk-button-primary uk-border-pill uk-width-2-3">
+              <NavLink className="uk-width-1-1 uk-margin-small" to="/consultas">
+                <button className="uk-button uk-button-primary uk-border-pill uk-width-2-3" onClick={setRoute("none")}>
                   Nueva Consulta
                 </button>
               </NavLink>

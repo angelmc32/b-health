@@ -42,7 +42,7 @@ const CatalogSearchbar = ({type, form, handleFormInput}) => {
 
     setSearchResults(results);
 
-    if ( results.length <= 15 ) {
+    if ( results.length <= 100 ) {
       setShowDrop(true);
     }
 
@@ -62,8 +62,8 @@ const CatalogSearchbar = ({type, form, handleFormInput}) => {
           />
         </div>
         { showDrop ? (
-            <select className="uk-select uk-border-pill" name={type} onChange={handleFormInput}>
-              <option>Selecciona por favor</option>
+            <select className="uk-select uk-border-pill" name={type} onChange={handleFormInput} defaultValue="" required={true} >
+              <option value="">Selecciona por favor</option>
               {searchResults.map( (disease, index) => <option key={index} value={ type === "diagnosis" ? disease.NOMBRE : type === "drugs" ? disease.generic_name : disease.PRO_NOMBRE} >{ type === "diagnosis" ? disease.NOMBRE : type === "drugs" ? disease.generic_name : type === "procedure" ? disease.PRO_NOMBRE : disease.ESPECIALIDAD}</option> )}
             </select>
           ) : null 

@@ -18,7 +18,7 @@ const Study = ({studyType}) => {
   const { form, resetForm, handleInput, handleFileInput } = useForm();
 
   const { push } = useHistory();                    // Destructure push method from useHistory to "redirect" user
-  const { user, route, setRoute, objectHandler, setObjectHandler } = useContext(AppContext);
+  const { user, route, setRoute, objectHandler, setObjectHandler, resetUserContext } = useContext(AppContext);
   const [ study, setStudy] = useState({});
   const [ studies, setStudies ] = useState([]);
   const [ showForm, setShowForm ] = useState(false);
@@ -48,6 +48,13 @@ const Study = ({studyType}) => {
         setStudies(studies);
         setRoute('studies');
 
+      })
+      .catch( error => {
+        if (error.response.status === 401) {
+          localStorage.clear();
+          resetUserContext();
+          push('/login');
+        }
       });
     }
 
@@ -131,7 +138,7 @@ const Study = ({studyType}) => {
 
     <div className="content">
       
-        { route === 'studies' ? (
+        { route === 'studies' || route === 'none' ? (
           <div className="uk-section">
             <h2>{studyType === 'lab' ? "Laboratorio" : "Rayos X e Imagen"}</h2>
             <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin" onClick={event => setRoute('create')} >

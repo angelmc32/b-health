@@ -2,7 +2,7 @@ import axios from 'axios';                      // Import axios to enable API ca
 
 // Set URL according to environment
 const isProduction = process.env.NODE_ENV === 'production';
-const base_url = isProduction ? 'http://54.163.77.88/api/hospitalizations' : 'http://localhost:3000/api/hospitalizations';
+const base_url = isProduction ? 'http://54.163.77.88/api/hospitalizations' : `${process.env.REACT_APP_API_URL}/hospitalizations`;
 
 // Export get function to retrieve all hospitalizations of the current logged in user
 export const getHospitalizations = () => {
@@ -48,6 +48,18 @@ export const editHospitalization = (hospitalizationID, data) => {
   const token = localStorage.getItem('token');  // Get token from localStorage
 
   return axios.patch(`${base_url}/${hospitalizationID}`, data, {
+    headers: {
+      Authorization: token,                     // Send token in request headers (check api/helpers/auth-helper)
+    }
+  });
+
+}
+
+export const deleteHospitalization = (hospitalizationID) => {
+
+  const token = localStorage.getItem('token');  // Get token from localStorage
+
+  return axios.delete(`${base_url}/${hospitalizationID}`, {
     headers: {
       Authorization: token,                     // Send token in request headers (check api/helpers/auth-helper)
     }

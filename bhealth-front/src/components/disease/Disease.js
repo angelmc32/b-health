@@ -17,7 +17,7 @@ const Disease = () => {
   const { form, handleInput } = useForm();
 
   const { push } = useHistory();                    // Destructure push method from useHistory to "redirect" user
-  const { user, route, setRoute, objectHandler, setObjectHandler } = useContext(AppContext);
+  const { user, route, setRoute, objectHandler, setObjectHandler, resetUserContext } = useContext(AppContext);
   const [ disease, setDisease] = useState({});
   const [ diseases, setDiseases ] = useState([]);
   const [ consultations, setConsultations ] = useState([]);
@@ -51,6 +51,13 @@ const Disease = () => {
         diseasesHandler.push(consultations[i].diagnosis)
       }
 
+    })
+    .catch( error => {
+      if (error.response.status === 401) {
+        localStorage.clear();
+        resetUserContext();
+        push('/login');
+      }
     })
 
     getEmergencies()

@@ -192,8 +192,31 @@ const AuthForm = ( { submit, action, email = '', password = '', confirm_password
             }
             <div className="uk-width-1-1 uk-margin-top">
               <input type="checkbox" className="uk-checkbox uk-margin-small-right"/>
-               Estoy de acuerdo con los términos de condiciones
+               Estoy de acuerdo con los <a href={`#modal-sections-0`} uk-toggle={`target: #modal-sections-0`}>términos y condiciones</a>
             </div>
+            <div id={`modal-sections-0`} uk-modal="true">
+              <div className="uk-modal-dialog uk-modal-body">
+              <button className="uk-modal-close-default" type="button" uk-close="true" />
+                <h2 className="uk-modal-title uk-text-center">Consentimiento Informado</h2>
+                  <h6 className="uk-text-center">A fin de dar cumplimiento a la Ley de Protección de Datos Personales se dispone establecer la siguiente
+                  CLÁUSULA para el <br/>Consentimiento expreso de CESIÓN DE DATOS PERSONALES.</h6>
+                  <p className="uk-text-center">
+                  El USUARIO o su TUTOR LEGAL, queda informado y consciente de forma expresa que los datos personales
+                  que facilite pasan a formar parte de un fichero (Base de Datos) responsabilidad de la Empresa con la finalidad
+                  de llevar a cabo los distintos servicios que forman parte de su labor aquí expuestos. Aquí se incluyen datos
+                  relativos a su persona y familia de carácter personal y de salud. Y autorizando la sesión de sus datos a otras
+                  personas o entidades relacionadas, tales como entidades aseguradoras y prestadoras de servicios que
+                  integrarían la oferta de servicios complementarios que puedan interesarles para su adquisición.
+                  </p>
+                  <p className="uk-text-center">
+                  El USUARIO o su TUTOR LEGAL queda informado de que podrá ejercer los derechos de acceso, rectificación,
+                  oposición y cancelación dirigiéndose a la dirección de la Empresa en el domicilio social..
+                  </p>
+                  <p className="uk-text-center">Doy consentimiento a Registro de Datos Personales; Recibir comunicación vía Correo Electrónico,
+                  WhatsApp, y a través de publicidad selectiva.
+                  </p>
+                </div>
+              </div>
             </div>
             ) : null }
             

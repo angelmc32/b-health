@@ -16,7 +16,7 @@ const Drug = () => {
   const { form, handleInput, handleFileInput } = useForm();
 
   const { push } = useHistory();                    // Destructure push method from useHistory to "redirect" user
-  const { user, route, setRoute, objectHandler, setObjectHandler } = useContext(AppContext);
+  const { user, route, setRoute, objectHandler, setObjectHandler, resetUserContext } = useContext(AppContext);
   const [ drug, setDrug] = useState({});
   const [ drugs, setDrugs ] = useState([]);
   const [ showForm, setShowForm ] = useState(false);
@@ -47,6 +47,13 @@ const Drug = () => {
         setDrugs(drugs);
         setRoute('drugs');
 
+      })
+      .catch( error => {
+        if (error.response.status === 401) {
+          localStorage.clear();
+          resetUserContext();
+          push('/login');
+        }
       });
     }
 

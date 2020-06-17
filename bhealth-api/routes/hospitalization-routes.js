@@ -81,4 +81,22 @@ router.patch('/:hospitalizationID', verifyToken, (req, res, next) => {
 
 });
 
+router.delete('/:hospitalizationID', verifyToken, (req, res, next) => {
+
+  const { hospitalizationID } = req.params;
+
+  Hospitalization.findByIdAndDelete(hospitalizationID)
+  .then( hospitalization => {
+
+    res.status(200).json({ hospitalization });
+
+  })
+  .catch( error => {
+
+    res.status(500).json({ error, msg: 'Unable to delete hospitalization' }); // Respond 500 status, error and message
+
+  });
+
+});
+
 module.exports = router;

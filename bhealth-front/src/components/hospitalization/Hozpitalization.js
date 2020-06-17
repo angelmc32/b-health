@@ -15,7 +15,7 @@ const Hozpitalization = () => {
   const { form, handleInput } = useForm();
 
   const { push } = useHistory();                    // Destructure push method from useHistory to "redirect" user
-  const { user, route, setRoute, objectHandler, setObjectHandler } = useContext(AppContext);
+  const { user, route, setRoute, objectHandler, setObjectHandler, resetUserContext } = useContext(AppContext);
   const [ hospitalization, setHospitalization ] = useState({});
   const [ hospitalizations, setHospitalizations ] = useState([]);
   const [ isButtonDisabled, setIsButtonDisabled ] = useState(false);
@@ -42,6 +42,13 @@ const Hozpitalization = () => {
       setHospitalizations(hospitalizations);
       setRoute('hospitalizations');
 
+    })
+    .catch( error => {
+      if (error.response.status === 401) {
+        localStorage.clear();
+        resetUserContext();
+        push('/login');
+      }
     })
     
   }, [isButtonDisabled]);

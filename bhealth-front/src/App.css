@@ -111,8 +111,14 @@ label#nav-menu {
   border: #00D8D8 solid 1px;
 }
 
-button.uk-button.uk-button-primary.uk-button-large>h4 {
+button.uk-button.uk-button-primary.uk-button-large>h4, button.uk-button.uk-button-primary.uk-border-pill>a, button.uk-button.uk-button-danger.uk-border-pill>a {
   color: #FFFFFF;
+  text-decoration: none;
+}
+
+button.uk-button.uk-button-default.uk-border-pill>a {
+  color: #333;
+  text-decoration: none;
 }
 
 .uk-link, a {

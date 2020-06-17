@@ -81,4 +81,22 @@ router.patch('/:emergencyID', verifyToken, (req, res, next) => {
 
 });
 
+router.delete('/:emergencyID', verifyToken, (req, res, next) => {
+
+  const { emergencyID } = req.params;
+
+  Emergency.findByIdAndDelete(consultationID)
+  .then( emergency => {
+
+    res.status(200).json({ emergency });
+
+  })
+  .catch( error => {
+
+    res.status(500).json({ error, msg: 'Unable to delete emergency' }); // Respond 500 status, error and message
+
+  });
+
+});
+
 module.exports = router;

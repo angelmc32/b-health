@@ -81,4 +81,22 @@ router.patch('/:consultationID', verifyToken, (req, res, next) => {
 
 });
 
+router.delete('/:consultationID', verifyToken, (req, res, next) => {
+
+  const { consultationID } = req.params;
+
+  Consultation.findByIdAndDelete(consultationID)
+  .then( consultation => {
+
+    res.status(200).json({ consultation });
+
+  })
+  .catch( error => {
+
+    res.status(500).json({ error, msg: 'Unable to delete consultation' }); // Respond 500 status, error and message
+
+  });
+
+});
+
 module.exports = router;

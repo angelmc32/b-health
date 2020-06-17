@@ -220,7 +220,7 @@ router.post('/login', (req, res, next) => {
 
     // Create a token with jwt: first parameter is data to be serialized into the token, second parameter
     // is app secret (used as key to create a token signature), third is a callback that passes the error or token
-    jwt.sign({ id: user._id }, process.env.SECRET, {expiresIn: '1d'}, (error, token) => {
+    jwt.sign({ id: user._id }, process.env.SECRET, {expiresIn: '10m'}, (error, token) => {
 
       // Delete the password from the user document (returned by mongoose) before sending to front-end
       delete user._doc.password;

@@ -102,4 +102,22 @@ router.patch('/:prescriptionID', verifyToken, (req, res, next) => {
 
 });
 
+router.delete('/:prescriptionID', verifyToken, (req, res, next) => {
+
+  const { prescriptionID } = req.params;
+
+  Prescription.findByIdAndDelete(prescriptionID)
+  .then( prescription => {
+
+    res.status(200).json({ prescription });
+
+  })
+  .catch( error => {
+
+    res.status(500).json({ error, msg: 'Unable to delete prescription' }); // Respond 500 status, error and message
+
+  });
+
+});
+
 module.exports = router;

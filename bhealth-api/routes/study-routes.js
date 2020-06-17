@@ -90,4 +90,22 @@ router.patch('/:studyID', verifyToken, (req, res, next) => {
 
 });
 
+router.delete('/:studyID', verifyToken, (req, res, next) => {
+
+  const { studyID } = req.params;
+
+  Study.findByIdAndDelete(studyID)
+  .then( study => {
+
+    res.status(200).json({ study });
+
+  })
+  .catch( error => {
+
+    res.status(500).json({ error, msg: 'Unable to delete study' }); // Respond 500 status, error and message
+
+  });
+
+});
+
 module.exports = router;

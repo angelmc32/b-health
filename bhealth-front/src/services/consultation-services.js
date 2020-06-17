@@ -2,7 +2,7 @@ import axios from 'axios';                      // Import axios to enable API ca
 
 // Set URL according to environment
 const isProduction = process.env.NODE_ENV === 'production';
-const base_url = isProduction ? 'http://54.163.77.88/api/consultations' : 'http://localhost:3000/api/consultations';
+const base_url = isProduction ? 'http://54.163.77.88/api/consultations' : `${process.env.REACT_APP_API_URL}/consultations`;
 
 // Export get function to retrieve all consultations of the current logged in user
 export const getConsultations = () => {
@@ -48,6 +48,18 @@ export const editConsultation = (consultationID, data) => {
   const token = localStorage.getItem('token');  // Get token from localStorage
 
   return axios.patch(`${base_url}/${consultationID}`, data, {
+    headers: {
+      Authorization: token,                     // Send token in request headers (check api/helpers/auth-helper)
+    }
+  });
+
+}
+
+export const deleteConsultation = (consultationID) => {
+
+  const token = localStorage.getItem('token');  // Get token from localStorage
+
+  return axios.delete(`${base_url}/${consultationID}`, {
     headers: {
       Authorization: token,                     // Send token in request headers (check api/helpers/auth-helper)
     }

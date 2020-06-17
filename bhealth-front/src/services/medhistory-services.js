@@ -2,7 +2,7 @@ import axios from 'axios';                      // Import axios to enable API ca
 
 // Set URL according to environment
 const isProduction = process.env.NODE_ENV === 'production';
-const base_url = isProduction ? 'http://54.163.77.88/api/medicalhistory' : 'http://localhost:3000/api/medicalhistory';
+const base_url = isProduction ? 'http://54.163.77.88/api/medicalhistory' : `${process.env.REACT_APP_API_URL}/medicalhistory`;
 
 // Export get function to retrieve all emergencies of the current logged in user
 export const getMedicalHistories = () => {

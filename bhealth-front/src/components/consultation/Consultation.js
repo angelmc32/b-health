@@ -6,7 +6,8 @@ import UIkit from 'uikit';                                          // Import UI
 import moment from 'moment';                                        // Import momentjs for date formatting
 import 'moment/locale/es'  // without this line it didn't work
 
-import { getConsultations, createConsultation } from '../../services/consultation-services';
+import { getConsultations, createConsultation, deleteConsultation } from '../../services/consultation-services';
+
 // import { createVitalSigns } from '../../services/vitalsigns-services'
 // import ConsultationForm from './ConsultationForm';
 import ConsultationFormSpecial from './ConsultationFormSpecial'
@@ -20,7 +21,7 @@ const Consultation = () => {
   const { form, handleInput } = useForm();
 
   const { push } = useHistory();                    // Destructure push method from useHistory to "redirect" user
-  const { user, route, setRoute, objectHandler, setObjectHandler } = useContext(AppContext);
+  const { user, route, setRoute, objectHandler, setObjectHandler, resetUserContext } = useContext(AppContext);
   const [consultation, setConsultation] = useState({});
   const [ consultations, setConsultations ] = useState([]);
   const [ isButtonDisabled, setIsButtonDisabled ] = useState(false);
@@ -48,6 +49,13 @@ const Consultation = () => {
       setConsultations(consultations);
       setRoute('consultations');
 
+    })
+    .catch( error => {
+      if (error.response.status === 401) {
+        localStorage.clear();
+        resetUserContext();
+        push('/login');
+      }
     })
     
   }, [isButtonDisabled]);
@@ -141,23 +149,51 @@ const Consultation = () => {
 
   const toggleButton = () => setIsButtonDisabled(!isButtonDisabled);
   
-  const loadConsultation = (consultation) => {
-    setConsultation(consultation);
-    setRoute('read');
+  const loadConsultation = (consultationData, newRoute) => {
+    setConsultation(consultationData);
+    setRoute(newRoute);
   }
 
-  const goToPrescription = (event, consultation, newRoute) => {
+  const deleteConsultationBtn = (consultationID) => {
+
+    setIsButtonDisabled(true)
+
+    deleteConsultation(consultationID)
+    .then( consultation => {
+      setIsButtonDisabled(false)
+      // Send UIkit success notification
+      UIkit.notification({
+        message: `<span uk-icon='close'></span> Se ha eliminado la consulta exitosamente`,
+        pos: 'bottom-center',
+        status: 'success'
+      });
+    })
+    .catch( res => {
+      // Send UIkit error notification
+      UIkit.notification({
+        message: `<span uk-icon='close'></span> No se ha podido eliminar la consulta`,
+        pos: 'bottom-center',
+        status: 'danger'
+      });
+    })
+
+  }
+
+  const goToPrescription = (event, consultationData, newRoute) => {
     event.preventDefault();
-    setConsultation(consultation);
-    setObjectHandler(consultation);
+    setConsultation(consultationData);
+    setObjectHandler(consultationData);
     setRoute(newRoute);
+    push('/recetas')
     console.log(objectHandler)
   }
 
-  const goToStudies = (event, consultation, newRoute) => {
+  const goToStudies = (event, consultationData, newRoute) => {
     event.preventDefault();
-    setObjectHandler(consultation);
+    setConsultation(consultationData);
+    setObjectHandler(consultationData);
     setRoute(newRoute);
+    push('/estudios')
     console.log(objectHandler);
   }
 
@@ -165,7 +201,7 @@ const Consultation = () => {
 
     <div className="content">
       
-        { route === 'consultations' ? (
+        { route === 'consultations' || route === 'none' ? (
           <div className="uk-section">
             <h2>Consultas</h2>
             <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin" onClick={event => setRoute('create')} >
@@ -185,23 +221,24 @@ const Consultation = () => {
                     <th className="uk-text-center uk-visible@s">Diagnostico</th>
                     <th className="uk-text-center uk-visible@s">Doctor</th>
                     <th className="uk-text-center">Detalles</th>
+                    <th className="uk-text-center uk-visible@s">Modificar</th>
                   </tr>
                 </thead>
                 <tbody>
                   { consultations ? 
                       consultations.map( (consultation, index) => 
                         <tr key={index} >
-                          <td className="uk-text-center">{moment(consultation.date).locale('es').format('l')}</td>
+                          <td className="uk-text-center">{moment(consultation.date).locale('es').format('LL')}</td>
                           <td className="uk-text-center">{moment(consultation.date).locale('es').format('LT')}</td>
                           <td className="uk-text-center uk-visible@s">{consultation.chief_complaint}</td>
                           <td className="uk-text-center uk-visible@s">{consultation.diagnosis}</td>
                           <td className="uk-text-center uk-visible@s">{`Dr. ${consultation.doctor}`}</td>
                           <td className="uk-text-center">
-                            <button className="uk-button uk-button-default uk-button-small uk-border-pill" onClick={event => loadConsultation({consultation})} >
+                            <button className="uk-button uk-button-default uk-button-small uk-border-pill" onClick={event => loadConsultation({consultation}, 'read')} >
                               Ver
                             </button>
                           </td>
-                          <td>
+                          <td className="uk-width-1-6">
                             <a href={`#modal-sections-${index}`} uk-toggle={`target: #modal-sections-${index}`}>
                               <span className="uk-margin-small-right" uk-icon="more-vertical"></span>
                             </a>
@@ -210,30 +247,36 @@ const Consultation = () => {
                                 <button className="uk-modal-close-default" type="button" uk-close="true" />
                                 <div className="uk-modal-header">
                                   <h3 className="uk-text-center">Datos de la Consulta</h3>
-                                  <p>Fecha: {moment(consultation.date).locale('es').format('LL')}</p>
-                                  <p>Doctor: {consultation.doctor}</p>
+                                  <p className="uk-text-center">Fecha: {moment(consultation.date).locale('es').format('LL')}</p>
+                                  <p className="uk-text-center">Doctor: {consultation.doctor}</p>
                                 </div>
-                                <div className="uk-modal-body uk-flex uk-flex-column">
+                                <div className="uk-modal-body uk-flex uk-flex-column uk-flex-middle">
                                   { consultation.prescription ? (
-                                      <button className="uk-button uk-button-default uk-border-pill uk-margin" onClick={event => goToPrescription(event, consultation, 'read')} >
+                                      <button className="uk-modal-close uk-button uk-button-default uk-border-pill uk-margin-small uk-width-1-2@s" onClick={event => goToPrescription(event, consultation, 'read')} >
                                         <NavLink to="/recetas">Ver Receta</NavLink>
                                       </button>
                                     ) : (
-                                      <button className="uk-button uk-button-default uk-border-pill uk-margin" onClick={event => goToPrescription(event, consultation, 'create')} >
+                                      <button className="uk-modal-close uk-button uk-button-default uk-border-pill uk-margin-small uk-width-1-2@s" onClick={event => goToPrescription(event, consultation, 'create')} >
                                         <NavLink to="/recetas">Agregar Receta</NavLink>
                                       </button>
                                     )
                                   }
                                   { consultation.studies ? (
-                                      <button className="uk-button uk-button-default uk-border-pill uk-margin" onClick={event => goToStudies(event, consultation, 'read')} >
+                                      <button className="uk-modal-close uk-button uk-button-default uk-border-pill uk-margin-small uk-width-1-2@s" onClick={event => goToStudies(event, consultation, 'read')} >
                                         <NavLink to="/estudios">Ver Estudios</NavLink>
                                       </button>
                                     ) : (
-                                      <button className="uk-button uk-button-default uk-border-pill uk-margin" onClick={event => goToStudies(event, consultation, 'create')} >
+                                      <button className="uk-modal-close uk-button uk-button-default uk-border-pill uk-margin-small uk-width-1-2@s" onClick={event => goToStudies(event, consultation, 'create')} >
                                         <NavLink to="/estudios">Agregar Estudios</NavLink>
                                       </button>
                                     )
                                   }
+                                  <button className="uk-modal-close uk-button uk-button-primary uk-border-pill uk-margin-small uk-width-1-2@s"  onClick={event => loadConsultation({consultation}, 'update')} >
+                                    Modificar Consulta
+                                  </button>
+                                  <button className="uk-modal-close uk-button uk-button-danger uk-border-pill uk-margin-small uk-width-1-2@s" onClick={event => loadConsultation({consultation}, 'delete')} >
+                                    Eliminar Consulta
+                                  </button>
                                 </div>
                               </div>
                             </div>
@@ -264,13 +307,39 @@ const Consultation = () => {
                 </div>
               </div>
             ) : (
-              route === 'read' ? (
+              route === 'read' || route === 'delete' ? (
                 <div className="uk-section">
-                  <h2>Ver Consulta</h2>
-                  <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin" onClick={event => setRoute('consultations')} >
-                    Regresar
-                  </button>
+                  <h2>{route === 'read' ? 'Ver Consulta' : 'Eliminar Consulta'}</h2>
+                  { route === 'read' ? 
+                      <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin" onClick={event => setRoute('consultations')} >
+                        Regresar
+                      </button>
+                    : 
+                    <div className="uk-width-1-1 uk-flex uk-flex-column uk-flex-middle uk-margin-large-bottom">
+                      <div className="uk-width-1-1">
+                        <p>¿Estás seguro que deseas eliminar la siguiente consulta?</p>
+                      </div>
+                      <div className="uk-width-4-5 uk-flex uk-flex-around">
+                        <button className="uk-button uk-button-danger uk-border-pill uk-width-1-3" onClick={event=> deleteConsultationBtn(consultation.consultation._id)} disabled={isButtonDisabled}>
+                          Sí
+                        </button>
+                        <button className="uk-button uk-button-default uk-border-pill uk-width-1-3" onClick={event => setRoute('consultations')} >
+                          No
+                        </button>
+                      </div>
+                    </div>
+                  }
                   <ConsultationInfo {...consultation} goToPrescription={goToPrescription} />
+                </div>
+              ) : ( route === 'update' ? (
+                <div className="uk-section">
+                  <div className="uk-container">
+                    <h2>Editar Consulta</h2>
+                    <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin" onClick={event => setRoute('consultations')} >
+                      Regresar
+                    </button>
+                    <ConsultationFormSpecial handleSubmit={handleSubmit} handleInput={handleInput} form={form} isButtonDisabled={isButtonDisabled} setVitalsFormValues={setVitalsFormValues} {...consultation}/>
+                  </div>
                 </div>
               ) : (
                 <div className="uk-section">
@@ -281,6 +350,7 @@ const Consultation = () => {
                 </div> 
               )
             )
+          )
           )
         }
       

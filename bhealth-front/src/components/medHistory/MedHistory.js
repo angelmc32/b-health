@@ -778,7 +778,7 @@ const MedHistory = () => {
           </div>
         )
       }
-      </div>)
+    </div>)
 
 }
 
