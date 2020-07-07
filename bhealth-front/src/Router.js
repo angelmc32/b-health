@@ -32,7 +32,6 @@ import VitalSigns from './components/vitalsigns/VitalSigns'
 import Summary from './components/medHistory/Summary'
 import Consent from './components/common/Consent'
 import Benefits from './components/benefits/Benefits';
-import ImgUploader from './components/common/ImgUploader';
 // import Calendar from './components/schedule/Calendar';
 
 const Router = () => {
@@ -130,10 +129,6 @@ const Router = () => {
 
       <Route path="/consentimiento">
         <Consent />
-      </Route>
-
-      <Route path="/test">
-        <ImgUploader />
       </Route>
       
     </Switch>
