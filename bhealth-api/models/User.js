@@ -75,6 +75,10 @@ const userSchema = new Schema(
       type: Date,
       default: Date.now
     },
+    resetPasswordLink: {
+      type: String,
+      default: ''
+    },
   },
   { timestamps: true }
 );

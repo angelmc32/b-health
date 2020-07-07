@@ -12,6 +12,7 @@ router.get('/:study_type', verifyToken, (req, res, next) => {
   const { id } = req.user;    // Destructure the user id from the request
 
   Study.find({ $and: [{user: id}, {study_type: study_type}] })
+  .sort({date: -1})
   .then( studies => {
 
     res.status(200).json({ studies });

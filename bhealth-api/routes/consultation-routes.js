@@ -10,6 +10,7 @@ router.get('/', verifyToken, (req, res, next) => {
   const { id } = req.user;    // Destructure the user id from the request
 
   Consultation.find({ user: id })
+  .sort({date: -1})
   .then( consultations => {
 
     res.status(200).json({ consultations });
@@ -34,6 +35,7 @@ router.post('/', verifyToken, (req, res, next) => {
 
   })
   .catch( error => {
+    console.log(error)
 
     res.status(500).json({ error, msg: 'Unable to create consultation' }); // Respond 500 status, error and message
 

@@ -63,7 +63,7 @@ const Home = () => {
                 </button>
               </NavLink>
               <NavLink className="uk-width-1-1 uk-margin-small" to="/consultas">
-                <button className="uk-button uk-button-primary uk-border-pill uk-width-2-3" onClick={setRoute("none")}>
+                <button className="uk-button uk-button-primary uk-border-pill uk-width-2-3" onClick={setRoute("create")}>
                   Nueva Consulta
                 </button>
               </NavLink>

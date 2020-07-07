@@ -6,9 +6,9 @@ import specialties from '../../catalogs/medspecs.json'
 
 const CatalogSearchbar = ({type, form, handleFormInput}) => {
 
-  const [ searchResults, setSearchResults ] = useState('');
+  const [ searchResults, setSearchResults ] = useState([]);
   const [ searchValue, setSearchValue ] = useState('');
-  const [ showDrop, setShowDrop ] = useState(false);
+  const [ showDrop, setShowDrop ] = useState(true);
 
   const handleInput = (event) => {
     setSearchValue(event.target.value);
@@ -46,12 +46,12 @@ const CatalogSearchbar = ({type, form, handleFormInput}) => {
       setShowDrop(true);
     }
 
-  }, [searchValue]);
+  }, []);
 
 
   return (
       <div className="uk-margin uk-width-1-1">
-        <div className="uk-search uk-search-default uk-width-1-1">
+        {/* <div className="uk-search uk-search-default uk-width-1-1">
           <span className="uk-search-icon-flip" uk-search-icon="true"></span>
           <input
             className="uk-search-input uk-text-center uk-border-pill"
@@ -60,7 +60,7 @@ const CatalogSearchbar = ({type, form, handleFormInput}) => {
             value={searchValue}
             onChange={handleInput}
           />
-        </div>
+        </div> */}
         { showDrop ? (
             <select className="uk-select uk-border-pill" name={type} onChange={handleFormInput} defaultValue="" required={true} >
               <option value="">Selecciona por favor</option>

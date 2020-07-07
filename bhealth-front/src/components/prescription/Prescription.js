@@ -8,6 +8,7 @@ import moment from 'moment';                                        // Import mo
 import 'moment/locale/es'  // without this line it didn't work
 
 import { getPrescriptions, createPrescription, getPrescription, editPrescription, deletePrescription } from '../../services/prescription-services';
+import { editConsultation, getConsultation } from '../../services/consultation-services';
 import { createDrug } from '../../services/drug-services';
 
 import PrescriptionForm from './PrescriptionForm';
@@ -36,7 +37,7 @@ const Prescription = () => {
 
       // Send UIkit warning notification: User must log in
       UIkit.notification({
-        message: `<span uk-icon='close'></span> Por favor inicia sesión.`,
+        message: `<p className='uk-text-center'>Por favor inicia sesión.</p>`,
         pos: 'bottom-center',
         status: 'warning'
       });
@@ -45,7 +46,9 @@ const Prescription = () => {
 
     };
 
-    if ( route !== 'create' && route !== 'read' ) {
+    if ( route === 'prescriptions' || route === 'none' ) {
+
+      setObjectHandler(null)
 
       getPrescriptions()
       .then( res => {
@@ -62,11 +65,30 @@ const Prescription = () => {
           push('/login');
         }
       });
+
     }
 
+    if ( route === 'special' ) {
+      getPrescription(objectHandler.treatment)
+      .then( res => {
+      
+        const { prescription } = res.data;
+        loadPrescription({prescription}, 'read')
+        // setPrescription(prescription);
+        // setRoute('read')
+
+      })
+      .catch( error => {
+        console.log(error)
+        // if (error.response.status === 401) {
+        //   localStorage.clear();
+        //   resetUserContext();
+        //   push('/login');
+        // }
+      });
+    }
     
-    
-  }, [isButtonDisabled]);
+  }, [isButtonDisabled, route]);
 
   const handleSubmit = (event) => {
 
@@ -76,13 +98,13 @@ const Prescription = () => {
     const formData = new FormData();      // Declare formData as new instance of FormData class
     const { image } = form;     // Destructure profile_picture from form
 
-    console.log(drugs)
     form.drugsJSON = JSON.stringify(drugs);
-    console.log(form)
 
-    // LearningCenterObject.observations = myArray;
-    // form.drugs = drugsArray
-    // console.log
+    if ( objectHandler ) {
+      form['date'] = objectHandler.date
+      form['doctor'] = objectHandler.doctor
+      form['consultation'] = objectHandler._id
+    }
 
     // Iterate through every key in form object and append name:value to formData
     for (let key in form) {
@@ -100,18 +122,41 @@ const Prescription = () => {
 
       const { prescription } = res.data   // Destructure updated user document from response
 
-      // Send UIkit success notification
-      UIkit.notification({
-        message: `<span uk-icon='close'></span> '¡Tu receta fue creada exitosamente!'`,
-        pos: 'bottom-center',
-        status: 'success'
-      });
+      if ( objectHandler ) {
+        editConsultation(objectHandler._id, {treatment: prescription._id})
+        .then( res => {
 
-      setRoute('prescriptions');
-      setIsButtonDisabled(false);
-      setObjectHandler({});
+          const { consultation } = res.data   // Destructure updated user document from response
+          // Send UIkit success notification
+          UIkit.notification({
+            message: `<p className='uk-text-center'>¡Tu receta fue creada exitosamente!</p>`,
+            pos: 'bottom-center',
+            status: 'success'
+          });
 
-      // Save drug information
+          setRoute('prescriptions');
+          setIsButtonDisabled(false);
+          setObjectHandler({});
+        })
+        .catch( res => {
+
+          const { msg } = res.response.data;
+
+          // Send UIkit error notification
+          UIkit.notification({
+            message: `<p class="uk-text-center">${msg}</p>`,
+            pos: 'bottom-center',
+            status: 'danger'
+          });
+
+          setIsButtonDisabled(false)
+        });
+      }
+      else {
+        setRoute('prescriptions');
+        setIsButtonDisabled(false);
+        setObjectHandler({});
+      }
 
     })
     .catch( error => {
@@ -138,10 +183,15 @@ const Prescription = () => {
     setRoute(newRoute);
   }
 
+  const loadConsultation = (consultationID) => {
+    setObjectHandler(consultationID);
+    setRoute('special');
+    push('/consultas')
+  }
+
   const deleteConsultationObject = () => {
     setObjectHandler(null);
     setRoute('prescriptions');
-    // console.log('borrando')
   }
 
   const deletePrescriptionBtn = (prescriptionID) => {
@@ -149,22 +199,56 @@ const Prescription = () => {
     setIsButtonDisabled(true)
 
     deletePrescription(prescriptionID)
-    .then( prescription => {
-      setIsButtonDisabled(false)
-      // Send UIkit success notification
-      UIkit.notification({
-        message: `<span uk-icon='close'></span> Se ha eliminado la receta exitosamente`,
-        pos: 'bottom-center',
-        status: 'success'
-      });
+    .then( res => {
+
+      const { prescription } = res.data
+
+      if ( prescription.consultation ) {
+        editConsultation(prescription.consultation, {treatment: null})
+        .then( res => {
+          const { consultation } = res.data
+          setIsButtonDisabled(false)
+          // Send UIkit success notification
+          UIkit.notification({
+            message: `<p className='uk-text-center'>Se ha eliminado la receta exitosamente</p>`,
+            pos: 'bottom-center',
+            status: 'success'
+          });
+          setRoute('prescriptions');
+        })
+        .catch( res => {
+
+          const { msg } = res.response.data;
+
+          // Send UIkit error notification
+          UIkit.notification({
+            message: `<span uk-icon='close'></span> ${msg}`,
+            pos: 'bottom-center',
+            status: 'danger'
+          });
+
+          setIsButtonDisabled(false)
+        });
+      }
+      else {
+        setIsButtonDisabled(false)
+        // Send UIkit success notification
+        UIkit.notification({
+          message: `Se ha eliminado la receta exitosamente`,
+          pos: 'bottom-center',
+          status: 'success'
+        });
+        setRoute('prescriptions');
+      }
     })
     .catch( res => {
       // Send UIkit error notification
       UIkit.notification({
-        message: `<span uk-icon='close'></span> No se ha podido eliminar la receta`,
+        message: `No se ha podido eliminar la receta`,
         pos: 'bottom-center',
         status: 'danger'
       });
+      setRoute('prescriptions');
     })
 
   }
@@ -188,7 +272,8 @@ const Prescription = () => {
                 <thead>
                   <tr>
                     <th className="uk-text-center">Fecha</th>
-                    <th className="uk-text-center">Doctor</th>
+                    <th className="uk-text-center">Médico</th>
+                    <th className="uk-text-center uk-visible@s">Consulta</th>
                     <th className="uk-text-center">Detalles</th>
                     <th className="uk-text-center uk-visible@s">Modificar</th>
                   </tr>
@@ -198,7 +283,13 @@ const Prescription = () => {
                       prescriptions.map( (prescription, index) => 
                         <tr key={index}>
                           <td className="uk-text-center">{moment(prescription.date).locale('es').format('LL')}</td>
-                          <td className="uk-text-center">{`Dr. ${prescription.doctor}`}</td>
+                          <td className="uk-text-center">{`${prescription.doctor}`}</td>
+                          <td className="uk-text-center uk-visible@s">{prescription.consultation ? 
+                            <button className="uk-button uk-button-default uk-button-small uk-border-pill" onClick={event => loadConsultation(prescription.consultation)} >
+                              Ver Consulta
+                            </button> 
+                            : '-'}
+                          </td>
                           <td className="uk-text-center">
                             <button className="uk-button uk-button-default uk-button-small uk-border-pill" onClick={event => loadPrescription({prescription}, 'read')} >
                               Ver
@@ -254,10 +345,10 @@ const Prescription = () => {
               <div className="uk-section">
                 <div className="uk-container">
                   <h2>Nueva Receta</h2>
-                  {/* { objectHandler ?
-                      <h4>Corresponde a consulta realizada el {moment(objectHandler.date).format('DD-MM-YY')}</h4>
+                  { objectHandler ?
+                      <h4>Corresponde a consulta realizada el {moment(objectHandler.date).locale('es').format('LL')}</h4>
                       : null
-                  } */}
+                  }
                   <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin" onClick={deleteConsultationObject} >
                     Regresar
                   </button>

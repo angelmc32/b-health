@@ -18,3 +18,17 @@ export const editProfile = (data) => {
   });
 
 };
+
+// Export edit function, which receives data as parameters to enable profile edition
+export const editPassword = (data) => {
+
+  const token = localStorage.getItem('token');  // Get token from localStorage
+
+  // Return a call to our /edit route, while sending the parameters obtained from the form/front-end
+  return axios.patch(`${base_url}/password`, data, {
+    headers: {
+      Authorization: token,                     // Send token in request headers (check api/helpers/auth-helper)
+    }
+  });
+
+};

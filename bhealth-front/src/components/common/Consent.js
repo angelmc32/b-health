@@ -31,21 +31,14 @@ const Consent = () => {
       else
         push('/perfil')
 
-      // Send UIkit success notification
-      UIkit.notification({
-        message: `<span uk-icon='close'></span> '¡Ahora puedes usar la aplicación!'`,
-        pos: 'bottom-center',
-        status: 'success'
-      });
-
     })
-    .catch( error => {
+    .catch( res => {
 
-      console.log(error);
+      const { msg } = res.response.data;
 
       // Send UIkit error notification
       UIkit.notification({
-        message: `<span uk-icon='close'></span> ${error}`,
+        message: `<p class="uk-text-center">${msg}</p>`,
         pos: 'bottom-center',
         status: 'danger'
       });

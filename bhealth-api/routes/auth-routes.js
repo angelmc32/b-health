@@ -6,7 +6,7 @@ const AWS = require('aws-sdk');
 const User = require('../models/User');             // Require the User model to create and find users in database
 
 // Import send method from mailer helper to email verification through sendgrid (config in mailer-helper)
-const { send } = require('../helpers/mailer-helper');
+const { send, sendResetPassword } = require('../helpers/mailer-helper');
 const { registerEmailParams } = require('../helpers/aws-mailer-helper')
 
 AWS.config.update({
@@ -16,6 +16,7 @@ AWS.config.update({
 });
 
 const ses = new AWS.SES({ apiVersion: '2010-12-01' })
+const mailer = 'sendgrid'
 
 router.post('/signup', (req, res, next) => {
 
@@ -24,12 +25,12 @@ router.post('/signup', (req, res, next) => {
 
   // Password length validation, min length 8, if not, respond with a 500 status and error message
   if ( password.length < 8 ) return res.status(500).json({ msg: "La contraseña debe tener al menos 8 caracteres" });
-  if ( password !== confirm_password ) return res.status(500).json({ msg: "Las contraseñas deben ser iguales" });
+  if ( password !== confirm_password ) return res.status(500).json({ msg: "Las contraseñas no coinciden. Intenta de nuevo." });
 
   User.findOne({ email }).exec((error, user) => {
 
     if (user) {
-      return res.status(500).json({ error, msg: 'Ya existe una cuenta asociada al correo electrónico' });
+      return res.status(500).json({ error, msg: 'Ya existe una cuenta asociada a este correo electrónico' });
     }
 
     // Use bcryptjs methods to generate salt and hash password, for storage with an extra level of security
@@ -40,19 +41,47 @@ router.post('/signup', (req, res, next) => {
       expiresIn: '10m'
     })
 
-    const params = registerEmailParams(email, token);
+    if ( mailer === 'aws' ) {
 
-    const sendEmailOnSignup = ses.sendEmail(params).promise()
+      const params = registerEmailParams(email, token);
 
-    sendEmailOnSignup
-    .then( data => {
-      console.log('email submitted to SES', data);
-      return res.status(200).json({ msg: 'Completa tu registro usando la liga que te enviamos a la dirección de correo electrónico proporcionada' })
-    })
-    .catch( error => {
-      console.log('error while sending email', error);
-      return res.status(500).json({ error, msg: 'No fue posible verificar su dirección de correo electrónico' })
-    })
+      const sendEmailOnSignup = ses.sendEmail(params).promise()
+
+      sendEmailOnSignup
+      .then( data => {
+        console.log('email submitted to SES', data);
+        return res.status(200).json({ msg: 'Completa tu registro usando la liga que te enviamos a la dirección de correo electrónico proporcionada' })
+      })
+      .catch( error => {
+        console.log('error while sending email', error);
+        return res.status(500).json({ error, msg: 'No fue posible verificar su dirección de correo electrónico' })
+      })
+
+    } 
+    else {
+
+      // Configure options variable to pass as parameter to the mailer send method
+      const options = {
+        filename: 'signup',
+        email,
+        text: 'Completa tu registro a Beesalud',
+        subject: 'Completa tu registro a Beesalud',
+        token
+      };
+
+      // Call mailer send method with options variable as parameter for e-mail verification
+      send(options)
+      .then( data => {
+        console.log('email submitted to SES', data);
+        return res.status(200).json({ msg: 'Completa tu registro usando la liga que te enviamos a la dirección de correo electrónico proporcionada' })
+      })
+      .catch( error => {
+        console.log('error while sending email');
+        console.log(error)
+        return res.status(500).json({ error, msg: 'No fue posible verificar la dirección de correo electrónico, intentar con otra por favor' })
+      });
+
+    }
 
   })
   
@@ -220,7 +249,7 @@ router.post('/login', (req, res, next) => {
 
     // Create a token with jwt: first parameter is data to be serialized into the token, second parameter
     // is app secret (used as key to create a token signature), third is a callback that passes the error or token
-    jwt.sign({ id: user._id }, process.env.SECRET, {expiresIn: '10m'}, (error, token) => {
+    jwt.sign({ id: user._id }, process.env.SECRET, {expiresIn: '4h'}, (error, token) => {
 
       // Delete the password from the user document (returned by mongoose) before sending to front-end
       delete user._doc.password;
@@ -242,5 +271,112 @@ router.post('/login', (req, res, next) => {
   });
   
 });
+
+router.post('/recover', (req, res, next) => {
+
+  const { email } = req.body;
+
+  User.findOne({ email }).exec((error, user) => {
+
+    if ( error || !user ) 
+      return res.status(400).json({ error, msg: 'No existe una cuenta asociada a este correo electrónico' });
+
+    const { first_name } = user
+    
+    const token = jwt.sign({ first_name, email }, process.env.JWT_RESET_PASSWORD, {
+      expiresIn: '10m'
+    })
+
+    if ( mailer === 'aws' ) {
+
+      const params = registerEmailParams(email, token);
+
+      const sendEmailOnSignup = ses.sendEmail(params).promise()
+
+      sendEmailOnSignup
+      .then( data => {
+        console.log('email submitted to SES', data);
+        return res.status(200).json({ msg: 'Completa tu registro usando la liga que te enviamos a la dirección de correo electrónico proporcionada' })
+      })
+      .catch( error => {
+        console.log('error while sending email', error);
+        return res.status(500).json({ error, msg: 'No fue posible verificar su dirección de correo electrónico' })
+      })
+
+    } 
+    else {
+
+      // Configure options variable to pass as parameter to the mailer send method
+      const options = {
+        filename: 'recover',
+        email,
+        text: 'Restablecer tu contraseña - Beesalud',
+        subject: 'Restablecer tu contraseña - Beesalud',
+        token
+      };
+
+      return user.updateOne({resetPasswordLink: token}, (error, success) => {
+
+        if ( error ) {
+          return res.status(500).json({ error, msg: 'No fue posible restablecer la contraseña. Por favor intenta de nuevo más tarde.'})
+        }
+
+        sendResetPassword(options)
+        .then( data => {
+          console.log('email submitted to SES', data);
+          
+          res.status(200).json({ msg: 'El correo ha sido enviado. Sigue las instrucciones para restablecer tu contraseña.' })
+        })
+        .catch( error => {
+          console.log('error while sending email');
+          console.log(error)
+          return res.status(500).json({ error, msg: 'No fue posible verificar la dirección de correo electrónico. Por favor intenta de nuevo más tarde.' })
+        });
+
+      })
+
+    }
+    
+  });
+});
+
+router.post('/reset', (req, res, next) => {
+
+  const { newPassword, confirm_newPassword, resetPasswordLink } = req.body;
+
+  // Password length validation, min length 8, if not, respond with a 500 status and error message
+  if ( newPassword.length < 8 ) return res.status(400).json({ msg: "La contraseña debe tener al menos 8 caracteres" });
+  if ( newPassword !== confirm_newPassword ) return res.status(400).json({ msg: "Las contraseñas deben ser iguales" });
+
+  jwt.verify(resetPasswordLink, process.env.JWT_RESET_PASSWORD, (error, decoded) => {
+
+    if (error) {
+      console.log('expirado')
+      return res.status(401).json({ error, msg: 'La liga ha expirado. Por favor intenta de nuevo.'})
+    }
+
+    User.findOne({ resetPasswordLink }).exec((error, user) => {
+
+      if ( error || !user ) 
+        return res.status(400).json({ error, msg: 'No fue posible restablecer contraseña. Por favor intenta de nuevo.' });
+  
+      // Use bcryptjs methods to generate salt and hash password, for storage with an extra level of security
+      const salt = bcrypt.genSaltSync(10);
+      const hashedPassword = bcrypt.hashSync(newPassword, salt);
+      
+  
+      return user.updateOne({password: hashedPassword, resetPasswordLink: ''}, (error, success) => {
+
+        if ( error ) {
+          return res.status(500).json({ error, msg: 'No fue posible restablecer la contraseña. Por favor intenta de nuevo más tarde.'})
+        }
+
+        return res.status(200).json({user, msg: 'Se ha restablecido la contraseña correctamente'})
+
+      })
+
+    })
+  });
+})
 
 module.exports = router;

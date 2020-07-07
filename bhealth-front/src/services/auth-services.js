@@ -35,3 +35,17 @@ export const logout = () => {
   localStorage.clear();
 
 };
+
+export const recover = (data) => {
+  
+  // Return a call to our /recover route, while sending the parameters obtained from the form/front-end
+  return axios.post(`${base_url}/recover`, data);
+
+};
+
+export const reset = (data) => {
+  
+  // Return a call to our /recover route, while sending the parameters obtained from the form/front-end
+  return axios.post(`${base_url}/reset`, data);
+
+};

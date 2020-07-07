@@ -6,7 +6,7 @@ import UIkit from 'uikit';                                          // Import UI
 import moment from 'moment';                                        // Import momentjs for date formatting
 import 'moment/locale/es'  // without this line it didn't work
 
-import { getConsultations, createConsultation, deleteConsultation } from '../../services/consultation-services';
+import { getConsultations, getConsultation, createConsultation, deleteConsultation, editConsultation } from '../../services/consultation-services';
 
 // import { createVitalSigns } from '../../services/vitalsigns-services'
 // import ConsultationForm from './ConsultationForm';
@@ -33,7 +33,7 @@ const Consultation = () => {
 
       // Send UIkit warning notification: User must log in
       UIkit.notification({
-        message: `<span uk-icon='close'></span> Por favor inicia sesión.`,
+        message: `<p class="uk-text-center">Por favor inicia sesión.`,
         pos: 'bottom-center',
         status: 'warning'
       });
@@ -42,23 +42,48 @@ const Consultation = () => {
 
     };
 
-    getConsultations()
-    .then( res => {
+    if ( route === 'consultations' || route === 'none' ) {
       
-      const { consultations } = res.data;
-      setConsultations(consultations);
-      setRoute('consultations');
+      getConsultations()
+      .then( res => {
+        
+        const { consultations } = res.data;
+        setConsultations(consultations);
+        setRoute('consultations');
 
-    })
-    .catch( error => {
-      if (error.response.status === 401) {
-        localStorage.clear();
-        resetUserContext();
-        push('/login');
-      }
-    })
+      })
+      .catch( error => {
+        if (error.response.status === 401) {
+          localStorage.clear();
+          resetUserContext();
+          push('/login');
+        }
+      })
+
+    }
+
+    if ( route === 'special' ) {
+      
+      getConsultation(objectHandler)
+      .then( res => {
+        
+        const { consultation } = res.data;
+        loadConsultation({consultation}, 'read')
+        // setConsultation(consultation);
+        // setRoute('consultations');
+
+      })
+      .catch( error => {
+        if (error.response.status === 401) {
+          localStorage.clear();
+          resetUserContext();
+          push('/login');
+        }
+      })
+
+    }
     
-  }, [isButtonDisabled]);
+  }, [isButtonDisabled, route]);
 
   const handleSubmit = (event) => {
 
@@ -67,11 +92,13 @@ const Consultation = () => {
 
     let datetime;
 
-    if ( form.timeperiod === 'AM' ) {
+    if ( form['time-period'] === 'AM' ) {
       if ( form['time-hours'] === '12' )
         datetime = `${form['only-date']}T00:${form['time-minutes']}:00`;
-      else
+      else if ( form['time-hours'] === '11' || form['time-hours'] === '10' )
         datetime = `${form['only-date']}T${form['time-hours']}:${form['time-minutes']}:00`;
+      else
+        datetime = `${form['only-date']}T0${form['time-hours']}:${form['time-minutes']}:00`;
     }
     else {
       if ( form['time-hours'] === '12' )
@@ -125,18 +152,20 @@ const Consultation = () => {
         pos: 'bottom-center',
         status: 'success'
       });
-
-      setRoute('consultations');
       setIsButtonDisabled(false);
+      loadConsultation({consultation}, 'read')
+
+      // setRoute('consultations');
+      // setIsButtonDisabled(false);
 
     })
-    .catch( error => {
+    .catch( res => {
 
-      console.log(error);
+      const { msg } = res.response.data;
 
       // Send UIkit error notification
       UIkit.notification({
-        message: `<span uk-icon='close'></span> ${error}`,
+        message: `<span uk-icon='close'></span> ${msg}`,
         pos: 'bottom-center',
         status: 'danger'
       });
@@ -167,6 +196,7 @@ const Consultation = () => {
         pos: 'bottom-center',
         status: 'success'
       });
+      setRoute('consultations');
     })
     .catch( res => {
       // Send UIkit error notification
@@ -175,7 +205,8 @@ const Consultation = () => {
         pos: 'bottom-center',
         status: 'danger'
       });
-    })
+      setRoute('consultations');
+    });
 
   }
 
@@ -185,7 +216,6 @@ const Consultation = () => {
     setObjectHandler(consultationData);
     setRoute(newRoute);
     push('/recetas')
-    console.log(objectHandler)
   }
 
   const goToStudies = (event, consultationData, newRoute) => {
@@ -219,7 +249,7 @@ const Consultation = () => {
                     <th className="uk-text-center">Hora</th>
                     <th className="uk-text-center uk-visible@s">Motivo de consulta</th>
                     <th className="uk-text-center uk-visible@s">Diagnostico</th>
-                    <th className="uk-text-center uk-visible@s">Doctor</th>
+                    <th className="uk-text-center uk-visible@s">Médico</th>
                     <th className="uk-text-center">Detalles</th>
                     <th className="uk-text-center uk-visible@s">Modificar</th>
                   </tr>
@@ -232,7 +262,7 @@ const Consultation = () => {
                           <td className="uk-text-center">{moment(consultation.date).locale('es').format('LT')}</td>
                           <td className="uk-text-center uk-visible@s">{consultation.chief_complaint}</td>
                           <td className="uk-text-center uk-visible@s">{consultation.diagnosis}</td>
-                          <td className="uk-text-center uk-visible@s">{`Dr. ${consultation.doctor}`}</td>
+                          <td className="uk-text-center uk-visible@s">{`${consultation.doctor}`}</td>
                           <td className="uk-text-center">
                             <button className="uk-button uk-button-default uk-button-small uk-border-pill" onClick={event => loadConsultation({consultation}, 'read')} >
                               Ver
@@ -251,8 +281,8 @@ const Consultation = () => {
                                   <p className="uk-text-center">Doctor: {consultation.doctor}</p>
                                 </div>
                                 <div className="uk-modal-body uk-flex uk-flex-column uk-flex-middle">
-                                  { consultation.prescription ? (
-                                      <button className="uk-modal-close uk-button uk-button-default uk-border-pill uk-margin-small uk-width-1-2@s" onClick={event => goToPrescription(event, consultation, 'read')} >
+                                  { consultation.treatment ? (
+                                      <button className="uk-modal-close uk-button uk-button-default uk-border-pill uk-margin-small uk-width-1-2@s" onClick={event => goToPrescription(event, consultation, 'special')} >
                                         <NavLink to="/recetas">Ver Receta</NavLink>
                                       </button>
                                     ) : (

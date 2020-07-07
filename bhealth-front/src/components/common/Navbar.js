@@ -10,7 +10,7 @@ import logo from '../../images/icons/blue-icon.svg'
 const Navbar = () => {
   
   // Destructure user state variable and resetUserContext function from context
-  const { user, setRoute, resetUserContext } = useContext(AppContext);
+  const { user, route, setRoute, resetUserContext } = useContext(AppContext);
   // Destructure push method from useHistory to "redirect" user
   const { push } = useHistory();
 
@@ -51,7 +51,7 @@ const Navbar = () => {
           </li>
           <li className="uk-active uk-flex uk-flex-middle uk-height-1-1">
               <NavLink to="/">
-                B-Health
+                BEESALUD
               </NavLink>
           </li>
       </ul>

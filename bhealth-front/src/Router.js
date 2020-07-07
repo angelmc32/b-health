@@ -7,6 +7,8 @@ import Landing from './components/landing/Landing';
 import Signup from './components/auth/Signup';
 import Registration from './components/auth/Registration'
 import Activation from './components/auth/Activation'
+import RecoverPassword from './components/auth/RecoverPass'
+import ResetPassword from './components/auth/ResetPassword'
 import Login from './components/auth/Login';
 import Profile from './components/profile/Profile';
 // import Preferences from './components/profile/Preferences';
@@ -30,6 +32,7 @@ import VitalSigns from './components/vitalsigns/VitalSigns'
 import Summary from './components/medHistory/Summary'
 import Consent from './components/common/Consent'
 import Benefits from './components/benefits/Benefits';
+import ImgUploader from './components/common/ImgUploader';
 // import Calendar from './components/schedule/Calendar';
 
 const Router = () => {
@@ -59,6 +62,14 @@ const Router = () => {
 
       <Route path="/activate/:activationToken">
         <Activation />
+      </Route>
+
+      <Route path="/recuperar">
+        <RecoverPassword />
+      </Route>
+
+      <Route path="/restablecer/:resetPasswordLink">
+        <ResetPassword />
       </Route>
 
       <Route path="/home">
@@ -119,6 +130,10 @@ const Router = () => {
 
       <Route path="/consentimiento">
         <Consent />
+      </Route>
+
+      <Route path="/test">
+        <ImgUploader />
       </Route>
       
     </Switch>

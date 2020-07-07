@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from 'react';
+import ImgUploader from '../common/ImgUploader'
 import moment from 'moment';                                        // Import momentjs for date formatting
+import { Document, Page } from '../../../node_modules/react-pdf/dist/entry.webpack';
 
 const PrescriptionForm = ({ handleSubmit, handleInput, handleFileInput, form, isButtonDisabled, objectHandler, drugs }) => {
 
+  const [ imgPreviewState, setImgPreviewState ] = useState({file: '',imagePreviewUrl: ''})
+  const [ showImgPreview, setShowImgPreview ] = useState(false)
   const [ drugFields, setDrugFields ] = useState([]);
   const [ drugQuantity, setDrugQuantity] = useState(0);
   let drug = {'generic_name': null, 'brand_name': null, 'dosage_form': null, 'dose': null, 'directions': null};
 
   useEffect( () => {
 
-    console.log(objectHandler)
-    // console.log(moment(objectHandler.date).format('YYYY-MM-DD') )
-
-  }, [drugQuantity])
+  }, [drugQuantity, showImgPreview])
 
   const handleDrugInput = (event, index) => {
 
@@ -66,6 +67,23 @@ const PrescriptionForm = ({ handleSubmit, handleInput, handleFileInput, form, is
 
   }
 
+  const handleImageChange = (event) => {
+    event.preventDefault();
+
+    let reader = new FileReader();
+    let file = event.target.files[0];
+
+    reader.onloadend = () => {
+      setImgPreviewState({
+        file: file,
+        imagePreviewUrl: reader.result
+      });
+      setShowImgPreview(true)
+    }
+
+    reader.readAsDataURL(file)
+  }
+
   const deleteDrugField = (event) => {
 
     event.preventDefault();
@@ -90,21 +108,13 @@ const PrescriptionForm = ({ handleSubmit, handleInput, handleFileInput, form, is
         <div className="uk-form-controls">
           <input className="uk-input uk-border-pill" type="text" name="doctor" onChange={handleInput} placeholder="Nombre del doctor..." defaultValue={objectHandler ? objectHandler.doctor : null} required={true}/>
         </div>
-        <div className="uk-flex uk-flex-middle uk-flex-around uk-margin">
-          <label className="uk-form-label" htmlFor="form-stacked-text">Imagen de la receta:</label>
-          <div className="js-upload uk" uk-form-custom="true">
-            <input onChange={handleFileInput} name="image" type="file" multiple />
-            <button className="uk-button uk-button-default uk-border-pill" type="button" tabIndex="-1">Seleccionar</button>
-          </div>
-        </div>
-        
         <div id="drugs" className="uk-margin">
           { drugFields.map( (drugField, index) => 
             <div className="uk-margin" key={index}>
               <h4>Medicamento {index+1} <span className="uk-margin-left" uk-icon="minus-circle" onClick={event => deleteDrugField(event)}></span></h4>
               <label className="uk-form-label" htmlFor="form-stacked-text">Nombre:</label>
               <div className="uk-form-controls">
-                <input className="uk-input uk-border-pill" type="text" name="name" onChange={event => handleDrugInput(event, index)} placeholder="Nombre del medicamento" />
+                <input className="uk-input uk-border-pill" type="text" name="name" onChange={event => handleDrugInput(event, index)} placeholder="Nombre del medicamento" required={true} />
               </div>
               {/* <label className="uk-form-label" htmlFor="form-stacked-text">Nombre Genérico:</label>
               <div className="uk-form-controls">
@@ -144,9 +154,31 @@ const PrescriptionForm = ({ handleSubmit, handleInput, handleFileInput, form, is
           </button>
         </div>
         
+        <div className="uk-flex uk-flex-middle uk-flex-center uk-margin">
+          <div className="uk-width-3-5@s uk-flex uk-flex-center uk-flex-middle">
+          <p className="uk-text-middle uk-margin-remove">Imagen de la receta:</p>
+          <div className="js-upload uk" uk-form-custom="true">
+            <input onChange={event => {handleFileInput(event); handleImageChange(event)}} name="image" type="file" accept="image/*,.pdf" multiple />
+            <button className="uk-button uk-button-default uk-border-pill" type="button" tabIndex="-1">{ !showImgPreview ? "Seleccionar" : "Cambiar"}</button>
+          </div>
+          </div>
+        </div>
+        { showImgPreview ?
+            <div className="uk-flex uk-flex-middle uk-flex-center uk-margin">
+              <div className="uk-flex uk-flex-center uk-width-3-5@s">
+                { imgPreviewState.file.name.split('.').pop() !== "pdf" ?
+                    <img src={imgPreviewState.imagePreviewUrl} />
+                  : <Document file={{url: imgPreviewState.imagePreviewUrl}} >
+                      <Page pageNumber={1} width={300} />
+                    </Document> 
+                }
+              </div>
+            </div> 
+          : null
+        }
         
       </div>
-      <div className="uk-width-1-1 uk-flex uk-flex-center">
+      <div id="target" className="uk-width-1-1 uk-flex uk-flex-center">
         <button type="submit" className="uk-button uk-button-primary uk-border-pill uk-width-2-3 uk-width-1-4@m" disabled={isButtonDisabled} >
           Crear receta
         </button>

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
+const bcrypt = require('bcryptjs');                 // Import bcryptjs for password hash creation and password validation
 
 // Import helper for token verification (jwt)
 const { verifyToken } = require('../helpers/auth-helper');
@@ -37,5 +38,45 @@ router.patch('/edit', verifyToken, uploader.single('profile_picture'), (req, res
   });
 
 });
+
+router.patch('/password', verifyToken, (req, res, next) => {
+
+  const { email, password, newPassword, confirm_password } = req.body;
+
+  if ( password.length < 8 ) return res.status(400).json({ msg: "La contraseña debe tener al menos 8 caracteres" });
+  if ( newPassword !== confirm_password ) return res.status(400).json({msg: 'Las contraseñas no coinciden. Intenta de nuevo.'})
+
+  User.findOne({ email }).exec((error, user) => {
+
+    if ( error || !user ) 
+      return res.status(400).json({ error, msg: 'No fue posible cambiar la contraseña. Por favor intenta de nuevo.' });
+
+    // Verify if password sent is correct, true. If password is incorrect, false and send 401 status
+    const isPasswordValid = bcrypt.compareSync(password, user.password);
+    const isNewPasswordSame = bcrypt.compareSync(newPassword, user.password)
+
+    if (!isPasswordValid) 
+      return res.status(401).json({ msg: 'Contraseña actual inválida' });
+    if (isNewPasswordSame)
+      return res.status(400).json({ msg: 'Utiliza una contraseña diferente a la actual' });
+
+
+    // Use bcryptjs methods to generate salt and hash password, for storage with an extra level of security
+    const salt = bcrypt.genSaltSync(10);
+    const hashedPassword = bcrypt.hashSync(newPassword, salt);    
+
+    return user.updateOne({password: hashedPassword}, (error, success) => {
+
+      if ( error ) {
+        return res.status(500).json({ error, msg: 'No fue posible cambiar la contraseña. Por favor intenta de nuevo más tarde.'})
+      }
+
+      return res.status(200).json({msg: 'Se ha cambiado la contraseña correctamente'})
+
+    })
+
+  })
+
+})
 
 module.exports = router;

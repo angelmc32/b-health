@@ -3,21 +3,25 @@ import { NavLink } from 'react-router-dom';       // Import NavLink for "navigat
 
 // Declare AuthForm functional component, receives action variable for conditional rendering,
 // email, password and confirm_password variables from form state variable, and submit and handleChange functions
-const AuthForm = ( { submit, action, email = '', password = '', confirm_password = '', handleChange } ) => {
+const AuthForm = ( { submit, action, email = '', password = '', confirm_password = '', handleChange, spinnerState, setRoute } ) => {
 
   let error = null;
   const [ emailInputState, setEmailInputState ] = useState(null)
   const [ passwordInputState, setPasswordInputState ] = useState(null)
   const [ confPasswordInputState, setConfPasswordInputState ] = useState(null)
+  const [ checkboxState, setCheckboxState ] = useState(false)
   const [ isButtonDisabled, setIsButtonDisabled ] = useState(true)
   const [ passwordValidationObj, setPasswordValidationObj ] = useState({minLength: false, oneCap: false, oneLow: false, oneNumber: false})
 
   useEffect( () => {
-    if ( emailInputState === 'uk-form-success' && passwordInputState === 'uk-form-success' && confPasswordInputState === 'uk-form-success' )
+    if ( emailInputState === 'uk-form-success' && passwordInputState === 'uk-form-success' && confPasswordInputState === 'uk-form-success' && checkboxState )
       setIsButtonDisabled(false);
     else
       setIsButtonDisabled(true);
-  }, [emailInputState, passwordInputState, confPasswordInputState])
+
+    if ( spinnerState )
+      setIsButtonDisabled(true);
+  }, [emailInputState, passwordInputState, confPasswordInputState, checkboxState, spinnerState])
 
   const validateEmail = (email) => {
     const regEx = /\S+@\S+\.\S+/;
@@ -25,11 +29,11 @@ const AuthForm = ( { submit, action, email = '', password = '', confirm_password
   }
 
   const validatePassword = (password) => {
-    const regEx = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+    const regEx = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d@$!%*?&-_/]{8,}$/;
     const regEXlowcase = /^(?=.*[a-z])/
     const regEXuppercase = /^(?=.*[A-Z])/
     const regEXnumber = /^(?=.*\d)/
-    const regEXminlength = /[a-zA-Z\d]{8,}$/
+    const regEXminlength = /[A-Za-z\d@$!%*?&-_/]{8,}$/
     setPasswordValidationObj( prevState => ({...prevState, oneLow: regEXlowcase.test(password)}) )
     setPasswordValidationObj( prevState => ({...prevState, oneCap: regEXuppercase.test(password)}) )
     setPasswordValidationObj( prevState => ({...prevState, oneNumber: regEXnumber.test(password)}) )
@@ -78,13 +82,13 @@ const AuthForm = ( { submit, action, email = '', password = '', confirm_password
     
         { action === "signup" ? (
           <p>¿Ya tienes cuenta? 
-            <NavLink to="/login" className="uk-margin-small-left">
+            <NavLink to="/login" className="links uk-margin-small-left">
               Accede aquí
             </NavLink>
           </p>
           ) : (
           <p>¿No tienes cuenta? 
-            <NavLink to="/registro" className="uk-margin-small-left">
+            <NavLink to="/registro" className="links uk-margin-small-left">
               Regístrate aquí
             </NavLink>
           </p>
@@ -99,7 +103,7 @@ const AuthForm = ( { submit, action, email = '', password = '', confirm_password
             <label className="uk-form-label">Correo Electrónico:</label>
             <div className="uk-inline uk-width-4-5 uk-width-1-3@s">
               <span className="uk-form-icon" uk-icon="icon: user"></span>
-              <input onChange={event => inputValidation(event)} name="email" value={email} className={emailInputState !== null ? `${emailInputState} uk-input uk-width-1-1 uk-border-pill` : "uk-input uk-width-1-1 uk-border-pill"} type="email" />
+              <input onChange={event => inputValidation(event)} name="email" value={email} className={emailInputState !== null ? `${emailInputState} uk-input uk-width-1-1 uk-border-pill` : "uk-input uk-width-1-1 uk-border-pill"} type="email" required={true} />
             </div>
             { emailInputState === 'uk-form-danger' ?
                 <div>
@@ -121,55 +125,60 @@ const AuthForm = ( { submit, action, email = '', password = '', confirm_password
                     passwordInputState !== null ? `${passwordInputState} uk-input uk-width-1-1 uk-border-pill` : "uk-input uk-width-1-1 uk-border-pill"
                   : "uk-input uk-width-1-1 uk-border-pill"}
                 type="password"
+                required={true}
               />
             </div>
             <div className="uk-margin uk-flex uk-flex-center">
-              { action === 'signup' ?
-                <div className="uk-width-1-2@s uk-flex uk-flex-column">
-                  <div className="uk-width-1-1 uk-flex">
-                      { passwordValidationObj.oneCap ?
+                { action === 'signup' ?
+                  <div className="uk-width-1-2@s uk-flex uk-flex-column">
+                    <div className="uk-width-1-1 uk-flex">
+                        { passwordValidationObj.oneCap ?
+                          <div className="uk-width-1-2 uk-flex uk-flex-center@s uk-flex-middle uk-text-success">
+                            <span uk-icon="check" className="uk-width-1-6"></span> Una letra mayúscula
+                          </div>
+                          : 
+                          <div className="uk-width-1-2 uk-flex uk-flex-center@s uk-flex-middle">
+                            <span uk-icon="warning" className="uk-width-1-6"></span>  Una letra mayúscula
+                          </div>
+                        }
+                        { passwordValidationObj.oneNumber ?
+                          <div className="uk-width-1-2 uk-flex uk-flex-middle uk-text-success">
+                            <span uk-icon="check" className="uk-width-1-6"></span> Un número
+                          </div>
+                          : 
+                          <div className="uk-width-1-2 uk-flex uk-flex-middle">
+                            <span uk-icon="warning" className="uk-width-1-6"></span>  Un número
+                          </div>
+                        }
+                        
+                    </div>
+                    <div className="uk-width-1-1 uk-flex">
+                      { passwordValidationObj.oneLow ?
                         <div className="uk-width-1-2 uk-flex uk-flex-center@s uk-flex-middle uk-text-success">
-                          <span uk-icon="check"></span> Una letra mayúscula
+                          <span uk-icon="check" className="uk-width-1-6"></span> Una letra minúscula
                         </div>
                         : 
                         <div className="uk-width-1-2 uk-flex uk-flex-center@s uk-flex-middle">
-                          <span uk-icon="warning"></span>  Una letra mayúscula
+                          <span uk-icon="warning" className="uk-width-1-6"></span>  Una letra minúscula
                         </div>
                       }
-                      { passwordValidationObj.oneNumber ?
+                      { passwordValidationObj.minLength ?
                         <div className="uk-width-1-2 uk-flex uk-flex-left uk-flex-middle uk-text-success">
-                          <span uk-icon="check"></span> Un número
+                          <span uk-icon="check" className="uk-width-1-6"></span> Mínimo 8 caracteres
                         </div>
                         : 
                         <div className="uk-width-1-2 uk-flex uk-flex-left uk-flex-middle">
-                          <span uk-icon="warning"></span>  Un número
+                          <span uk-icon="warning" className="uk-width-1-6"></span> Mínimo 8 caracteres
                         </div>
                       }
-                      
+                    </div>
                   </div>
-                  <div className="uk-width-1-1 uk-flex">
-                    { passwordValidationObj.oneLow ?
-                      <div className="uk-width-1-2 uk-flex uk-flex-center@s uk-flex-middle uk-text-success">
-                        <span uk-icon="check"></span> Una letra minúscula
-                      </div>
-                      : 
-                      <div className="uk-width-1-2 uk-flex uk-flex-center@s uk-flex-middle">
-                        <span uk-icon="warning"></span>  Una letra minúscula
-                      </div>
-                    }
-                    { passwordValidationObj.minLength ?
-                      <div className="uk-width-1-2 uk-flex uk-flex-left uk-flex-middle uk-text-success">
-                        <span uk-icon="check"></span> Mínimo 8 caracteres
-                      </div>
-                      : 
-                      <div className="uk-width-1-2 uk-flex uk-flex-left uk-flex-middle">
-                        <span uk-icon="warning"></span> Mínimo 8 caracteres
-                      </div>
-                    }
-                  </div>
-                </div> : null
-              }
-            </div>
+                 : 
+                  <NavLink to="/recuperar" className="links" onClick={event => setRoute('none')}>
+                    ¿Olvidaste tu contraseña?
+                  </NavLink>
+                }
+              </div>
             </div>
             { action === "signup" ? (
             <div className="uk-margin">
@@ -185,14 +194,14 @@ const AuthForm = ( { submit, action, email = '', password = '', confirm_password
                 />
               </div>
               { confPasswordInputState === 'uk-form-danger' ?
-                <div>
-                  <span className="uk-text-danger">Asegúrate de introducir la misma contraseña</span>
-                </div>
-              : null 
-            }
+                  <div>
+                    <span className="uk-text-danger">Asegúrate de introducir la misma contraseña</span>
+                  </div>
+                : null 
+              }
             <div className="uk-width-1-1 uk-margin-top">
-              <input type="checkbox" className="uk-checkbox uk-margin-small-right"/>
-               Estoy de acuerdo con los <a href={`#modal-sections-0`} uk-toggle={`target: #modal-sections-0`}>términos y condiciones</a>
+              <input type="checkbox" className="uk-checkbox uk-margin-small-right" defaultChecked={checkboxState} onChange={() => setCheckboxState(!checkboxState)} />
+               Estoy de acuerdo con los <a className="links" href={`#modal-sections-0`} uk-toggle={`target: #modal-sections-0`}>términos y condiciones</a>
             </div>
             <div id={`modal-sections-0`} uk-modal="true">
               <div className="uk-modal-dialog uk-modal-body">
@@ -218,14 +227,15 @@ const AuthForm = ( { submit, action, email = '', password = '', confirm_password
                 </div>
               </div>
             </div>
-            ) : null }
+            ) : null
+          }
             
             
 
           
 
           <button disabled={action === 'signup' ? isButtonDisabled : false} className="uk-button uk-button-primary uk-border-pill uk-width-3-5 uk-width-1-5@s uk-margin" type="submit">
-            {action === "signup" ? "Registrar" : "Entrar"}
+            {action === "signup" ? spinnerState ? "Registrando" : "Registrar" : "Entrar"} <div className={ spinnerState ? 'uk-visible' : 'uk-hidden'} uk-spinner="true"></div>
           </button>
 
         </form>

@@ -25,18 +25,30 @@ const ConsultationInfo = ({ consultation, goToPrescription }) => {
   return (
     <div className="uk-container">
       <div className="uk-margin">
-        <h4>Motivo de Consulta</h4>
-        <p>Síntomas indicados por paciente: {consultation.chief_complaint}</p>
+        <h4>Datos de Consulta</h4>
         <p>Fecha de consulta: {moment(consultation.date).locale('es').format('LL')}</p>
         <p>Hora de consulta:  {moment(consultation.date).format('h')}:{moment(consultation.date).format('mm')}  {moment(consultation.date).format('A')}</p>
+        { consultation.treatment ? (
+            <button className="uk-button uk-button-default uk-border-pill uk-margin" onClick={event => goToPrescription(event, consultation, 'special')} >
+              <NavLink to="/recetas">Ver Receta</NavLink>
+            </button>
+          ) : (
+            <button className="uk-button uk-button-default uk-border-pill uk-margin" onClick={event => goToPrescription(event, consultation, 'create')} >
+              <NavLink to="/recetas">Agregar Receta</NavLink>
+            </button>
+          )
+        }
+        <hr className="uk-divider-icon"></hr>
+        <h4>Motivo de Consulta</h4>
+        <p>Síntomas indicados por paciente: {consultation.chief_complaint}</p>
         <hr className="uk-divider-icon"></hr>
         <h4>Diagnóstico</h4>
         <p>Diagnóstico: {consultation.diagnosis}</p>
         <p>Doctor: {consultation.doctor}</p>
         <hr className="uk-divider-icon"></hr>
         <h4>Tratamiento</h4>
-        { consultation.prescription ? (
-            <button className="uk-button uk-button-default uk-border-pill uk-margin" onClick={event => goToPrescription(event, consultation, 'read')} >
+        { consultation.treatment ? (
+            <button className="uk-button uk-button-default uk-border-pill uk-margin" onClick={event => goToPrescription(event, consultation, 'special')} >
               <NavLink to="/recetas">Ver Receta</NavLink>
             </button>
           ) : (

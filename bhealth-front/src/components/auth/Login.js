@@ -15,11 +15,9 @@ const Login = () => {
 
   useEffect( () => {
 
-    if ( user._id ) {    // If there is no user logged in, send a notification and "redirect" to login
-      
-      return push('/home');         // If not logged in, "redirect" user to login
+    if ( user._id )               // If there is no user logged in, send a notification and "redirect" to login
+      return push('/home');       // If not logged in, "redirect" user to login
 
-    };
   })
 
   // Declare function for form submit event
@@ -39,10 +37,12 @@ const Login = () => {
 
       setUser(user);    // Modify user state variable, setting the user data in the state
       setRoute('');
-      if ( user.gaveConsent)
-        push('/home');    // "Redirect" user to home
+      if ( !user.gaveConsent )
+        push('/consentimiento');    // "Redirect" user to home
+      else if ( !user.isProfileComplete )
+        push('/perfil')
       else
-        push('/consentimiento')
+        push('/home')
 
     })
     .catch( res => {
@@ -51,7 +51,7 @@ const Login = () => {
 
       // Send UIkit error notification
       UIkit.notification({
-        message: `<span uk-icon='close'></span> ${msg}`,
+        message: `<p class="uk-text-center">${msg}</p>`,
         pos: 'bottom-center',
         status: 'danger'
       });
@@ -67,6 +67,7 @@ const Login = () => {
           submit={handleSubmit}
           action="login"
           handleChange={handleInput}
+          setRoute={setRoute}
           {...form}
         />
       </div>
