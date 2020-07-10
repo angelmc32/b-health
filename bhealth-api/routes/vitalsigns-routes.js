@@ -29,14 +29,14 @@ router.post('/', verifyToken, (req, res, next) => {
   const { id } = req.user;
 
   VitalSigns.create({ ...req.body, user: id })
-  .then( vitalsigns => {
+  .then( vitalSigns => {
 
-    res.status(200).json({ vitalsigns });
+    res.status(200).json({ vitalSigns });
 
   })
   .catch( error => {
 
-    res.status(500).json({ error, msg: 'Unable to create vital signs' }); // Respond 500 status, error and message
+    res.status(500).json({ error, msg: 'No fue posible registrar sus signos vitales. Intente de nuevo más tarde.' }); // Respond 500 status, error and message
 
   });
 

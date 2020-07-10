@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
-const ProfileForm = ({form, handleSubmit, handleInput, isButtonDisabled = false}) => {
+const ProfileForm = ({form, handleSubmit, handleInput, isButtonDisabled}) => {
+
   return (
     <div>
       <h2>Completar Información Básica</h2>
@@ -24,7 +25,7 @@ const ProfileForm = ({form, handleSubmit, handleInput, isButtonDisabled = false}
           <input className="uk-input uk-border-pill uk-width-1-1 uk-width-1-2@s" type="text" name="last_name2" onChange={handleInput} placeholder="Apellido materno..."  required={true}/>
         </div>
         <div className="uk-width-1-1 uk-flex uk-flex-center uk-margin-medium-top">
-          <button type="submit" className="uk-button uk-button-primary uk-button uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin" disabled={isButtonDisabled} >
+          <button type="submit" className="uk-button uk-button-primary uk-button uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin" >
             Guardar
           </button>
         </div>

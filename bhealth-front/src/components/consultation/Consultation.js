@@ -12,13 +12,14 @@ import { getConsultations, getConsultation, createConsultation, deleteConsultati
 // import ConsultationForm from './ConsultationForm';
 import ConsultationFormSpecial from './ConsultationFormSpecial'
 import ConsultationInfo from './ConsultationInfo';
+import { reset } from '../../services/auth-services';
 
 moment.locale('es')
 
 const Consultation = () => {
 
   // Destructure form state variable, handleInput and handleFileInput functions for form state manipulation
-  const { form, handleInput } = useForm();
+  const { form, setForm, resetForm, handleInput } = useForm();
 
   const { push } = useHistory();                    // Destructure push method from useHistory to "redirect" user
   const { user, route, setRoute, objectHandler, setObjectHandler, resetUserContext } = useContext(AppContext);
@@ -121,59 +122,75 @@ const Consultation = () => {
       }
     }
 
-    form['date'] = datetime;
+    if ( route === 'create' || route === 'update' && form.isNewDate )
+      form['date'] = datetime;
 
-    createConsultation(form)
-    .then( res => {
+    if ( route === 'create') {
+      createConsultation(form)
+      .then( res => {
 
-      const { consultation } = res.data    // Destructure updated preferences document from response
+        const { consultation } = res.data    // Destructure updated preferences document from response
 
-      vitalsFormValues['consultation'] = consultation._id
+        vitalsFormValues['consultation'] = consultation._id
 
-      // setVitalsFormValues( currentValues => ({
-      //   ...currentValues,
-      //   [date]: event.target.value
-      // }))
+        // Send UIkit success notification
+        UIkit.notification({
+          message: '<p class="uk-text-center">La consulta fue creada exitosamente</p>',
+          pos: 'bottom-center',
+          status: 'success'
+        });
+        resetForm();
+        setIsButtonDisabled(false);
+        loadConsultation({consultation}, 'read')
 
-      // createVitalSigns(vitalsFormValues)
-      // .then( res => {
+      })
+      .catch( res => {
 
-      //   const { vitalsigns } = res.data;
+        const { msg } = res.response.data;
 
-      // })
-      // .catch( error => {
-      //   console.log('error creando signos vitales');
-      //   console.log(error);
-      // })
+        // Send UIkit error notification
+        UIkit.notification({
+          message: `<p class="uk-text-center">${msg}</p>`,
+          pos: 'bottom-center',
+          status: 'danger'
+        });
+        
+        setIsButtonDisabled(false);
 
-      // Send UIkit success notification
-      UIkit.notification({
-        message: `<span uk-icon='close'></span> '¡La consulta fue creada exitosamente!'`,
-        pos: 'bottom-center',
-        status: 'success'
       });
-      setIsButtonDisabled(false);
-      loadConsultation({consultation}, 'read')
+    }
+    else if ( route === 'update' ) {
+      editConsultation(consultation.consultation._id, form)
+      .then( res => {
 
-      // setRoute('consultations');
-      // setIsButtonDisabled(false);
+        const { consultation } = res.data    // Destructure updated preferences document from response
 
-    })
-    .catch( res => {
+        // Send UIkit success notification
+        UIkit.notification({
+          message: '<p class="uk-text-center">La consulta fue actualizada exitosamente</p>',
+          pos: 'bottom-center',
+          status: 'success'
+        });
+        setIsButtonDisabled(false);
+        resetForm();
+        loadConsultation({consultation}, 'read')
 
-      const { msg } = res.response.data;
+      })
+      .catch( res => {
 
-      // Send UIkit error notification
-      UIkit.notification({
-        message: `<span uk-icon='close'></span> ${msg}`,
-        pos: 'bottom-center',
-        status: 'danger'
+        const { msg } = res.response.data;
+
+        // Send UIkit error notification
+        UIkit.notification({
+          message: `<p class="uk-text-center">${msg}</p>`,
+          pos: 'bottom-center',
+          status: 'danger'
+        });
+        
+        setIsButtonDisabled(false);
+
       });
-      
-      setIsButtonDisabled(false);
-
-    });
-
+    }
   }
 
   const toggleButton = () => setIsButtonDisabled(!isButtonDisabled);
@@ -333,7 +350,7 @@ const Consultation = () => {
                   <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin" onClick={event => setRoute('consultations')} >
                     Regresar
                   </button>
-                  <ConsultationFormSpecial handleSubmit={handleSubmit} handleInput={handleInput} form={form} isButtonDisabled={isButtonDisabled} setVitalsFormValues={setVitalsFormValues}/>
+                  <ConsultationFormSpecial handleSubmit={handleSubmit} handleInput={handleInput} form={form} setForm={setForm} isButtonDisabled={isButtonDisabled} setVitalsFormValues={setVitalsFormValues}/>
                 </div>
               </div>
             ) : (
@@ -368,7 +385,7 @@ const Consultation = () => {
                     <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin" onClick={event => setRoute('consultations')} >
                       Regresar
                     </button>
-                    <ConsultationFormSpecial handleSubmit={handleSubmit} handleInput={handleInput} form={form} isButtonDisabled={isButtonDisabled} setVitalsFormValues={setVitalsFormValues} {...consultation}/>
+                    <ConsultationFormSpecial handleSubmit={handleSubmit} handleInput={handleInput} form={form} setForm={setForm} isButtonDisabled={isButtonDisabled} setVitalsFormValues={setVitalsFormValues} {...consultation}/>
                   </div>
                 </div>
               ) : (

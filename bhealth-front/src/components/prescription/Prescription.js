@@ -20,7 +20,7 @@ UIkit.use(Icons);   // Execute to allow icon use
 const Prescription = () => {
 
   // Destructure form state variable, handleInput and handleFileInput functions for form state manipulation
-  const { form, handleInput, handleFileInput } = useDrugsForm();
+  const { form, setForm, handleInput, handleFileInput } = useDrugsForm();
 
   const { push } = useHistory();                    // Destructure push method from useHistory to "redirect" user
   const { user, route, setRoute, objectHandler, setObjectHandler, resetUserContext } = useContext(AppContext);
@@ -29,7 +29,7 @@ const Prescription = () => {
   const [ showForm, setShowForm ] = useState(false);
   const [ showConsultation, setShowConsultation ] = useState(false);
   const [ isButtonDisabled, setIsButtonDisabled ] = useState(false);
-  let drugs = [/*{'generic_name': null, brand_name: null, dosage_form: null, dose: null, indications: null}]*/];
+  const [ drugs, setDrugs ] = useState([])
 
   useEffect( () => {
 
@@ -78,13 +78,12 @@ const Prescription = () => {
         // setRoute('read')
 
       })
-      .catch( error => {
-        console.log(error)
-        // if (error.response.status === 401) {
-        //   localStorage.clear();
-        //   resetUserContext();
-        //   push('/login');
-        // }
+      .catch( res => {
+        if (res.response.status === 401) {
+          localStorage.clear();
+          resetUserContext();
+          push('/login');
+        }
       });
     }
     
@@ -100,12 +99,6 @@ const Prescription = () => {
 
     form.drugsJSON = JSON.stringify(drugs);
 
-    if ( objectHandler ) {
-      form['date'] = objectHandler.date
-      form['doctor'] = objectHandler.doctor
-      form['consultation'] = objectHandler._id
-    }
-
     // Iterate through every key in form object and append name:value to formData
     for (let key in form) {
 
@@ -114,6 +107,12 @@ const Prescription = () => {
 
       else formData.append(key, form[key]);
       
+    }
+
+    if ( objectHandler ) {
+      formData.append('date', moment(objectHandler.date));
+      formData.append('doctor', objectHandler.doctor);
+      formData.append('consultation', objectHandler._id);
     }
     
     // Call edit service with formData as parameter, which includes form data for user profile information
@@ -159,13 +158,13 @@ const Prescription = () => {
       }
 
     })
-    .catch( error => {
+    .catch( res => {
 
-      console.log(error);
+      const { msg } = res.response.data
 
       // Send UIkit error notification
       UIkit.notification({
-        message: `<span uk-icon='close'></span> ${error}`,
+        message: `<span uk-icon='close'></span> ${msg}`,
         pos: 'bottom-center',
         status: 'danger'
       });
@@ -210,7 +209,7 @@ const Prescription = () => {
           setIsButtonDisabled(false)
           // Send UIkit success notification
           UIkit.notification({
-            message: `<p className='uk-text-center'>Se ha eliminado la receta exitosamente</p>`,
+            message: `<p class='uk-text-center'>Se ha eliminado la receta exitosamente.</p>`,
             pos: 'bottom-center',
             status: 'success'
           });
@@ -352,7 +351,7 @@ const Prescription = () => {
                   <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin" onClick={deleteConsultationObject} >
                     Regresar
                   </button>
-                  <PrescriptionForm handleSubmit={handleSubmit} handleInput={handleInput} handleFileInput={handleFileInput} form={form} isButtonDisabled={isButtonDisabled} objectHandler={objectHandler} drugs={drugs}/>
+                  <PrescriptionForm handleSubmit={handleSubmit} handleInput={handleInput} handleFileInput={handleFileInput} form={form} isButtonDisabled={isButtonDisabled} objectHandler={objectHandler} drugs={drugs} setDrugs={setDrugs}/>
                 </div>
               </div>
             ) : (

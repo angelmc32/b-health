@@ -24,10 +24,27 @@ const ConsultationInfo = ({ consultation, goToPrescription }) => {
 
   return (
     <div className="uk-container">
-      <div className="uk-margin">
-        <h4>Datos de Consulta</h4>
-        <p>Fecha de consulta: {moment(consultation.date).locale('es').format('LL')}</p>
-        <p>Hora de consulta:  {moment(consultation.date).format('h')}:{moment(consultation.date).format('mm')}  {moment(consultation.date).format('A')}</p>
+      <div className="uk-child-width-1-3@m uk-child-width-1-1 uk-grid-small uk-grid-match uk-margin" uk-grid="true">
+        <div>
+          <div className="uk-card uk-card-hover uk-card-body uk-padding-small">
+            <h4>Información</h4>
+            <p>Doctor: {consultation.doctor}</p>
+            <p>Especialidad: {consultation.doctor_specialty}</p>
+            <p>Fecha de consulta: {moment(consultation.date).locale('es').format('LL')}</p>
+            <p>Hora de consulta:  {moment(consultation.date).format('h')}:{moment(consultation.date).format('mm')}  {moment(consultation.date).format('A')}</p>
+            
+          </div>
+        </div>
+        <div>
+          <div className="uk-card uk-card-hover uk-card-body uk-padding-small">
+            <h4>Consulta</h4>
+            <p>Síntomas indicados por paciente: {consultation.chief_complaint}</p>
+            <p>Diagnóstico: {consultation.diagnosis}</p>
+          </div>
+        </div>
+        <div>
+          <div className="uk-card uk-card-hover uk-card-body uk-padding-small">
+          <h4>Tratamiento</h4>
         { consultation.treatment ? (
             <button className="uk-button uk-button-default uk-border-pill uk-margin" onClick={event => goToPrescription(event, consultation, 'special')} >
               <NavLink to="/recetas">Ver Receta</NavLink>
@@ -38,25 +55,11 @@ const ConsultationInfo = ({ consultation, goToPrescription }) => {
             </button>
           )
         }
-        <hr className="uk-divider-icon"></hr>
-        <h4>Motivo de Consulta</h4>
-        <p>Síntomas indicados por paciente: {consultation.chief_complaint}</p>
-        <hr className="uk-divider-icon"></hr>
-        <h4>Diagnóstico</h4>
-        <p>Diagnóstico: {consultation.diagnosis}</p>
-        <p>Doctor: {consultation.doctor}</p>
-        <hr className="uk-divider-icon"></hr>
-        <h4>Tratamiento</h4>
-        { consultation.treatment ? (
-            <button className="uk-button uk-button-default uk-border-pill uk-margin" onClick={event => goToPrescription(event, consultation, 'special')} >
-              <NavLink to="/recetas">Ver Receta</NavLink>
-            </button>
-          ) : (
-            <button className="uk-button uk-button-default uk-border-pill uk-margin" onClick={event => goToPrescription(event, consultation, 'create')} >
-              <NavLink to="/recetas">Agregar Receta</NavLink>
-            </button>
-          )
-        }
+          </div>
+        </div>
+        
+        
+        
         {/* <p>Temperatura: {vitals.temperature ? vitals.temperature : 'No registrada'}</p>
         <p>Presión Arterial: {vitals.blood_pressure_sys ? `${vitals.blood_pressure_sys} / ${vitals.blood_pressure_dias}` : 'No registrada'}</p>
         <p>Frecuencia Cardiaca: {vitals.heart_rate ? vitals.heart_rate : 'No registrada'}</p>

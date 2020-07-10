@@ -47,7 +47,7 @@ const Profile = () => {
 
       if ( spinnerState )
         setIsButtonDisabled(true);
-      }
+    }
 
   }, [user, isButtonDisabled, passwordInputState, confPasswordInputState] );
 

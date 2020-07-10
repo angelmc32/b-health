@@ -41,7 +41,7 @@ router.post('/', verifyToken, uploader.single('image'), (req, res, next) => {
   console.log('REVISAR AQUI!')
   console.log(req.body)
   console.log(req.body.drugsJSON)
-  drugArray = JSON.parse(drugsJSON)
+  let drugArray = JSON.parse(drugsJSON)
   console.log(drugArray);
 
   Prescription.create({ drugs: JSON.parse(drugsJSON) , ...req.body, user: id })

@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import ImgUploader from '../common/ImgUploader'
 import moment from 'moment';                                        // Import momentjs for date formatting
 import { Document, Page } from '../../../node_modules/react-pdf/dist/entry.webpack';
 
-const PrescriptionForm = ({ handleSubmit, handleInput, handleFileInput, form, isButtonDisabled, objectHandler, drugs }) => {
+const PrescriptionForm = ({ handleSubmit, handleInput, handleFileInput, form, isButtonDisabled, objectHandler, drugs, setDrugs }) => {
 
   const [ imgPreviewState, setImgPreviewState ] = useState({file: '',imagePreviewUrl: ''})
   const [ showImgPreview, setShowImgPreview ] = useState(false)

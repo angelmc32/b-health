@@ -32,6 +32,8 @@ import VitalSigns from './components/vitalsigns/VitalSigns'
 import Summary from './components/medHistory/Summary'
 import Consent from './components/common/Consent'
 import Benefits from './components/benefits/Benefits';
+import VitalSignsIndex from './components/vitales/VitalSignsIndex'
+import NoMatch from './components/common/NoMatch'
 // import Calendar from './components/schedule/Calendar';
 
 const Router = () => {
@@ -88,7 +90,7 @@ const Router = () => {
       </Route>
 
       <Route path="/signosvitales">
-        <VitalSigns />
+        <VitalSignsIndex />
       </Route>
 
       <Route path="/consultas">
@@ -131,6 +133,10 @@ const Router = () => {
         <Consent />
       </Route>
       
+      <Route path="*">
+        <NoMatch />
+      </Route>
+
     </Switch>
   )
 };

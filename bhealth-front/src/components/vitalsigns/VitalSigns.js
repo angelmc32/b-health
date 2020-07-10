@@ -35,6 +35,8 @@ const VitalSigns = () => {
   let datetime;
 
   useEffect( () => {
+
+    console.log(datetime)
     
     getVitalSigns()
     .then( res => {

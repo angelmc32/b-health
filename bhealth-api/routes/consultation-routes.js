@@ -68,6 +68,7 @@ router.get('/:consultationID', verifyToken, (req, res, next) => {
 router.patch('/:consultationID', verifyToken, (req, res, next) => {
 
   const { consultationID } = req.params;
+  
 
   Consultation.findByIdAndUpdate(consultationID, { $set: { ...req.body } }, { new: true} )
   .then( consultation => {
@@ -77,7 +78,8 @@ router.patch('/:consultationID', verifyToken, (req, res, next) => {
   })
   .catch( error => {
 
-    res.status(500).json({ error, msg: 'Unable to retrieve data' }); // Respond 500 status, error and message
+    console.log(error)
+    res.status(500).json({ error, msg: 'No fue posible actualizar la consulta. Intente de nuevo más tarde.' }); // Respond 500 status, error and message
 
   });
 
