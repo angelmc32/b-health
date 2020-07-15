@@ -1,75 +1,218 @@
-import React, { useEffect, useState } from 'react'
-import cie10 from '../../catalogs/cie10.json'
-import procedures from '../../catalogs/procedimientos.json'
-import drugs from '../../catalogs/drugs.json'
-import specialties from '../../catalogs/medspecs.json'
+import React, { Fragment, useEffect, useState } from 'react'
 
-const CatalogSearchbar = ({type, form, handleFormInput}) => {
+const Autocomplete = ({ suggestions, propertyName, type }) => {
 
-  const [ searchResults, setSearchResults ] = useState([]);
-  const [ searchValue, setSearchValue ] = useState('');
-  const [ showDrop, setShowDrop ] = useState(true);
+  const [ state, setState ] = useState({
+    // The active selection's index
+    activeSuggestion: 0,
+    // The suggestions that match the user's input
+    filteredSuggestions: [],
+    // Whether or not the suggestion list is shown
+    showSuggestions: false,
+    // What the user has entered
+    userInput: ""
+  })
 
-  const handleInput = (event) => {
-    setSearchValue(event.target.value);
+  const shortDiagnosis = [
+    {"CONSECUTIVO":"114","LETRA":"A","CATALOG_KEY":"A20","NOMBRE":"PESTE"},
+    {"CONSECUTIVO":"360","LETRA":"A","CATALOG_KEY":"A75","NOMBRE":"TIFUS"},
+    {"CONSECUTIVO":"392","LETRA":"A","CATALOG_KEY":"A82","NOMBRE":"RABIA"},
+    {"CONSECUTIVO":"393","LETRA":"A","CATALOG_KEY":"A820","NOMBRE":"RABIA SELVATICA"},
+    {"CONSECUTIVO":"394","LETRA":"A","CATALOG_KEY":"A821","NOMBRE":"RABIA URBANA"},
+    {"CONSECUTIVO":"395","LETRA":"A","CATALOG_KEY":"A829","NOMBRE":"RABIA, SIN OTRA ESPECIFICACION"},
+    {"CONSECUTIVO":"4340","LETRA":"J","CATALOG_KEY":"J45","NOMBRE":"ASMA"},
+    {"CONSECUTIVO":"4341","LETRA":"J","CATALOG_KEY":"J450","NOMBRE":"ASMA PREDOMINANTEMENTE ALERGICA"},
+    {"CONSECUTIVO":"4342","LETRA":"J","CATALOG_KEY":"J451","NOMBRE":"ASMA NO ALERGICA"},
+    {"CONSECUTIVO":"4343","LETRA":"J","CATALOG_KEY":"J458","NOMBRE":"ASMA MIXTA"},
+    {"CONSECUTIVO":"4344","LETRA":"J","CATALOG_KEY":"J459","NOMBRE":"ASMA, NO ESPECIFICADO"},
+    {"CONSECUTIVO":"4345","LETRA":"J","CATALOG_KEY":"J46X","NOMBRE":"ESTADO ASMATICO"},
+    {"CONSECUTIVO":"5235","LETRA":"L","CATALOG_KEY":"L70","NOMBRE":"ACNE"},
+    {"CONSECUTIVO":"5236","LETRA":"L","CATALOG_KEY":"L700","NOMBRE":"ACNE VULGAR"},
+    {"CONSECUTIVO":"5237","LETRA":"L","CATALOG_KEY":"L701","NOMBRE":"ACNE CONGLOBADO"},
+    {"CONSECUTIVO":"5238","LETRA":"L","CATALOG_KEY":"L702","NOMBRE":"ACNE VARIOLIFORME"},
+    {"CONSECUTIVO":"5239","LETRA":"L","CATALOG_KEY":"L703","NOMBRE":"ACNE TROPICAL"},
+    {"CONSECUTIVO":"5240","LETRA":"L","CATALOG_KEY":"L704","NOMBRE":"ACNE INFANTIL"},
+    {"CONSECUTIVO":"5241","LETRA":"L","CATALOG_KEY":"L705","NOMBRE":"ACNE EXCORIADO DE LA MUJER JOVEN"},
+    {"CONSECUTIVO":"5242","LETRA":"L","CATALOG_KEY":"L708","NOMBRE":"OTROS ACNES"},
+    {"CONSECUTIVO":"5243","LETRA":"L","CATALOG_KEY":"L709","NOMBRE":"ACNE, NO ESPECIFICADO"},
+    {"CONSECUTIVO":"8186","LETRA":"R","CATALOG_KEY":"R232","NOMBRE":"RUBOR"},
+    {"CONSECUTIVO":"5429","LETRA":"M","CATALOG_KEY":"M10","NOMBRE":"GOTA"},
+    {"CONSECUTIVO":"5430","LETRA":"M","CATALOG_KEY":"M100","NOMBRE":"GOTA IDIOPATICA"},
+    {"CONSECUTIVO":"5431","LETRA":"M","CATALOG_KEY":"M101","NOMBRE":"GOTA SATURNINA"},
+    {"CONSECUTIVO":"5432","LETRA":"M","CATALOG_KEY":"M102","NOMBRE":"GOTA INDUCIDA POR DROGAS"},
+    {"CONSECUTIVO":"5433","LETRA":"M","CATALOG_KEY":"M103","NOMBRE":"GOTA DEBIDA A ALTERACION DE LA FUNCION RENAL"},
+    {"CONSECUTIVO":"5434","LETRA":"M","CATALOG_KEY":"M104","NOMBRE":"OTRAS GOTAS SECUNDARIAS"},
+    {"CONSECUTIVO":"5435","LETRA":"M","CATALOG_KEY":"M109","NOMBRE":"GOTA, NO ESPECIFICADA"},
+    {"CONSECUTIVO":"8119","LETRA":"R","CATALOG_KEY":"R05X","NOMBRE":"TOS"},
+    {"CONSECUTIVO":"8127","LETRA":"R","CATALOG_KEY":"R066","NOMBRE":"HIPO"},
+  ]
+
+  const onChange = e => {
+
+    const userInput = e.currentTarget.value;
+
+    console.log(e.currentTarget.value.length)
+
+      if ( e.currentTarget.value.length > 5 ){
+        
+      // Filter our suggestions that don't contain the user's input
+      const filteredSuggestions = suggestions.filter(
+        suggestion =>
+          suggestion[propertyName].toLowerCase().indexOf(userInput.toLowerCase()) >
+          -1
+      );
+      console.log(filteredSuggestions)
+      setState({
+        activeSuggestion: 0,
+        filteredSuggestions,
+        showSuggestions: true,
+        userInput: e.currentTarget.value
+      });
+    }
+    else if ( type === 'diagnosis' && e.currentTarget.value.length > 2 && e.currentTarget.value.length < 6 ) {
+      const filteredSuggestions = shortDiagnosis.filter(
+        suggestion =>
+          suggestion[propertyName].toLowerCase().indexOf(userInput.toLowerCase()) >
+          -1
+      );
+      console.log(filteredSuggestions)
+      setState({
+        activeSuggestion: 0,
+        filteredSuggestions,
+        showSuggestions: true,
+        userInput: e.currentTarget.value
+      });
+    }
+    else {
+      setState({
+        activeSuggestion: 0,
+        filteredSuggestions,
+        showSuggestions: false,
+        userInput: e.currentTarget.value
+      });
+    }
   };
 
-  let results = [];
+  const onClick = e => {
+    setState({
+      activeSuggestion: 0,
+      filteredSuggestions: [],
+      showSuggestions: false,
+      userInput: e.currentTarget.innerText
+    });
+  };
 
-  useEffect( () => {
+  const onKeyDown = e => {
+    const { activeSuggestion, filteredSuggestions } = state;
 
-    switch (type) {
-      case "diagnosis": results = cie10.filter( disease =>
-        disease.NOMBRE.toLowerCase().includes(searchValue)
-        );
-        break;
-
-      case "procedure": results = procedures.filter( disease =>
-        disease.PRO_NOMBRE.toLowerCase().includes(searchValue)
-        );
-        break;
-
-      case "drugs": results = drugs.filter( disease =>
-        disease.generic_name.toLowerCase().includes(searchValue)
-        );
-        break;
-
-      case "doctor_specialty": results = specialties.filter( disease =>
-        disease.ESPECIALIDAD.toLowerCase().includes(searchValue)
-        );
-        break;
+    // User pressed the enter key
+    if (e.keyCode === 13) {
+      setState({
+        activeSuggestion: 0,
+        showSuggestions: false,
+        userInput: filteredSuggestions[activeSuggestion]
+      });
     }
+    // User pressed the up arrow
+    else if (e.keyCode === 38) {
+      if (activeSuggestion === 0) {
+        return;
+      }
 
-    setSearchResults(results);
-
-    if ( results.length <= 100 ) {
-      setShowDrop(true);
+      setState( (prevState) => ({ ...prevState, activeSuggestion: activeSuggestion -1 }));
     }
+    // User pressed the down arrow
+    else if (e.keyCode === 40) {
+      if (activeSuggestion - 1 === filteredSuggestions.length) {
+        return;
+      }
 
-  }, []);
+      setState( (prevState) => ({ ...prevState, activeSuggestion: activeSuggestion + 1 }));
+    }
+  };
 
+  const { activeSuggestion, filteredSuggestions, showSuggestions, userInput } = state;
+
+  let suggestionsListComponent;
+
+  if (showSuggestions && userInput) {
+    if (filteredSuggestions.length) {
+      suggestionsListComponent = (
+        <ul className="suggestions">
+          {filteredSuggestions.map((suggestion, index) => {
+            let className;
+
+            // Flag the active suggestion with a class
+            if (index === activeSuggestion) {
+              className = "suggestion-active";
+            }
+
+            return (
+              <li className={className} key={index} onClick={onClick}>
+                {suggestion[propertyName]}
+              </li>
+            );
+          })}
+        </ul>
+      );
+    } else {
+      suggestionsListComponent = (
+        <div className="no-suggestions">
+          <em>No suggestions, you're on your own!</em>
+        </div>
+      );
+    }
+  }
 
   return (
-      <div className="uk-margin uk-width-1-1">
-        {/* <div className="uk-search uk-search-default uk-width-1-1">
+    <Fragment>
+      <div className="uk-search uk-search-default uk-width-1-1 uk-hidden@s" uk-toggle="target: #search">
+        <span className="uk-search-icon-flip" uk-search-icon="true"></span>
+        <input
+          className="uk-search-input uk-text-center uk-border-pill"
+          type="search"
+          placeholder={ type === 'diagnosis' ? "Busca padecimiento..." : type === 'drugs' ? "Busca por nombre genérico..." : type === 'procedure' ? "Busca procedimiento..." : "Busca especialidad"}
+          value={userInput}
+          onChange={onChange}
+          onKeyDown={onKeyDown}
+        />
+      </div>
+      <div id="search" className="uk-modal-full" uk-modal="true">
+        <div className="uk-modal-dialog uk-modal-body uk-height-1-1">
+        <div className="uk-section">
+          <button className="uk-modal-close-default" type="button" uk-close="true" />
+            <div className="uk-search uk-search-default uk-width-1-1 uk-margin">
+              <span className="uk-search-icon-flip" uk-search-icon="true"></span>
+              <input
+                className="uk-search-input uk-text-center uk-border-pill"
+                type="search"
+                placeholder={ type === 'diagnosis' ? "Busca padecimiento..." : type === 'drugs' ? "Busca por nombre genérico..." : type === 'procedure' ? "Busca procedimiento..." : "Busca especialidad"}
+                value={userInput}
+                onChange={onChange}
+                onKeyDown={onKeyDown}
+              />
+            </div>
+            {suggestionsListComponent}
+        </div>
+        
+      </div>
+      </div>
+      <div className="uk-margin uk-width-1-1 uk-visible@s">
+        <div className="uk-search uk-search-default uk-width-1-1">
           <span className="uk-search-icon-flip" uk-search-icon="true"></span>
           <input
             className="uk-search-input uk-text-center uk-border-pill"
             type="search"
             placeholder={ type === 'diagnosis' ? "Busca padecimiento..." : type === 'drugs' ? "Busca por nombre genérico..." : type === 'procedure' ? "Busca procedimiento..." : "Busca especialidad"}
-            value={searchValue}
-            onChange={handleInput}
+            value={userInput}
+            onChange={onChange}
+            onKeyDown={onKeyDown}
           />
-        </div> */}
-        { showDrop ? (
-            <select className="uk-select uk-border-pill" name={type} onChange={handleFormInput} defaultValue="" required={true} >
-              <option value="">Selecciona por favor</option>
-              {searchResults.map( (disease, index) => <option key={index} value={ type === "diagnosis" ? disease.NOMBRE : type === "drugs" ? disease.generic_name : disease.PRO_NOMBRE} >{ type === "diagnosis" ? disease.NOMBRE : type === "drugs" ? disease.generic_name : type === "procedure" ? disease.PRO_NOMBRE : disease.ESPECIALIDAD}</option> )}
-            </select>
-          ) : null 
-        }
+        </div>
+        {suggestionsListComponent}
       </div>
-  )
+    </Fragment>
+  );
 }
 
-export default CatalogSearchbar
+export default Autocomplete;

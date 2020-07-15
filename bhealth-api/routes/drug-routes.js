@@ -34,8 +34,9 @@ router.post('/', verifyToken, (req, res, next) => {
 
   })
   .catch( error => {
-
+    console.log(error)
     res.status(500).json({ error, msg: 'Unable to register drug information' }); // Respond 500 status, error and message
+    
 
   });
 
@@ -76,6 +77,24 @@ router.patch('/:drugID', verifyToken, (req, res, next) => {
   .catch( error => {
 
     res.status(500).json({ error, msg: 'Unable to retrieve data' }); // Respond 500 status, error and message
+
+  });
+
+});
+
+router.delete('/:drugID', verifyToken, (req, res, next) => {
+
+  const { drugID } = req.params;
+
+  Drug.findByIdAndDelete(drugID)
+  .then( drug => {
+
+    res.status(200).json({ drug });
+
+  })
+  .catch( error => {
+
+    res.status(500).json({ error, msg: 'Unable to delete drug' }); // Respond 500 status, error and message
 
   });
 

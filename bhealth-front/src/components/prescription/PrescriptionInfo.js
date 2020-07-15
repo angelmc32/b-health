@@ -1,12 +1,18 @@
 import React from 'react';
 import moment from 'moment';                                        // Import momentjs for date formatting
 
-const PrescriptionInfo = ({ prescription }) => {
+const PrescriptionInfo = ({ prescription, push, loadConsultation }) => {
   return (
     <div className="uk-container">
       <div className="uk-margin uk-flex uk-flex-column uk-flex-middle">
         <p className="uk-margin-remove">Fecha de receta: {moment(prescription.date).locale('es').format('LL')}</p>
         <p className="uk-margin-remove">Doctor: {prescription.doctor}</p>
+        { prescription.consultation ? (
+            <button className="uk-button uk-button-default uk-border-pill uk-margin" onClick={(event) => loadConsultation(prescription.consultation)} >
+              Ver Consulta
+            </button>
+          ) : null
+        }
         { prescription.image === 'Sin imagen registrada' ? null :
             <div className="uk-margin" uk-lightbox="true">
               <a className="uk-button uk-button-default" href={prescription.image} data-alt="Image">Ver Imagen</a>

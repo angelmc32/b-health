@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { NavLink, useHistory } from 'react-router-dom';                      // Import useHistory for "redirection"
+import { NavLink, useHistory, useRouteMatch } from 'react-router-dom';                      // Import useHistory for "redirection"
 import { AppContext } from '../../AppContext';                      // Import AppContext to use created context
 import useDrugsForm from '../../hooks/useDrugsForm';                          // Import useForm custom hook
 import UIkit from 'uikit';                                          // Import UIkit for notifications
@@ -23,6 +23,7 @@ const Prescription = () => {
   const { form, setForm, handleInput, handleFileInput } = useDrugsForm();
 
   const { push } = useHistory();                    // Destructure push method from useHistory to "redirect" user
+  let { path, url } = useRouteMatch();
   const { user, route, setRoute, objectHandler, setObjectHandler, resetUserContext } = useContext(AppContext);
   const [ prescription, setPrescription] = useState({});
   const [ prescriptions, setPrescriptions ] = useState([]);
@@ -377,7 +378,7 @@ const Prescription = () => {
                       </div>
                     </div>
                   }
-                  <PrescriptionInfo {...prescription} />
+                  <PrescriptionInfo {...prescription} push={push} url={url} loadConsultation={loadConsultation} />
                 </div>
               ) : (
                 <div className="uk-section">

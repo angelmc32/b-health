@@ -27,14 +27,18 @@ import Hospitalization from './components/hospitalization/Hozpitalization';
 import Emergency from './components/emergency/Emergency'
 import ConsultationFormSpecial from './components/consultation/ConsultationFormSpecial'
 import Drug from './components/drug/Drug'
+import DrugsIndex from './components/drug/DrugsIndex'
 import Questionnaire from './components/Questionnaire'
 import VitalSigns from './components/vitalsigns/VitalSigns'
+import VitalSignsIndex from './components/vitales/VitalSignsIndex'
 import Summary from './components/medHistory/Summary'
 import Consent from './components/common/Consent'
 import Benefits from './components/benefits/Benefits';
-import VitalSignsIndex from './components/vitales/VitalSignsIndex'
+
 import NoMatch from './components/common/NoMatch'
 // import Calendar from './components/schedule/Calendar';
+import drugs from './catalogs/drugs.json'
+import diseases from './catalogs/cie10.json'
 
 const Router = () => {
 
@@ -98,7 +102,7 @@ const Router = () => {
       </Route>
 
       <Route path="/medicamentos">
-        <Drug />
+        <DrugsIndex />
       </Route>
 
       <Route path="/recetas">
@@ -131,6 +135,10 @@ const Router = () => {
 
       <Route path="/consentimiento">
         <Consent />
+      </Route>
+
+      <Route path="/test">
+        <CatalogSearchbar suggestions={diseases} propertyName={'NOMBRE'} type={'diagnosis'}/>
       </Route>
       
       <Route path="*">

@@ -95,30 +95,31 @@ const Consultation = () => {
 
     if ( form['time-period'] === 'AM' ) {
       if ( form['time-hours'] === '12' )
-        datetime = `${form['only-date']}T00:${form['time-minutes']}:00`;
+        datetime = `${form['only-date']}T00:${form['time-minutes']}:00-05:00`;
       else if ( form['time-hours'] === '11' || form['time-hours'] === '10' )
-        datetime = `${form['only-date']}T${form['time-hours']}:${form['time-minutes']}:00`;
+        datetime = `${form['only-date']}T${form['time-hours']}:${form['time-minutes']}:00-05:00`;
       else
-        datetime = `${form['only-date']}T0${form['time-hours']}:${form['time-minutes']}:00`;
+        datetime = `${form['only-date']}T0${form['time-hours']}:${form['time-minutes']}:00-05:00`;
     }
     else {
       if ( form['time-hours'] === '12' )
-      datetime = `${form['only-date']}T12:${form['time-minutes']}:00`;
+      datetime = `${form['only-date']}T12:${form['time-minutes']}:00-05:00`;
       else {
         switch (form['time-hours']) {
-          case '1': datetime = `${form['only-date']}T13:${form['time-minutes']}:00`; break;
-          case '2': datetime = `${form['only-date']}T14:${form['time-minutes']}:00`; break;
-          case '3': datetime = `${form['only-date']}T15:${form['time-minutes']}:00`; break;
-          case '4': datetime = `${form['only-date']}T16:${form['time-minutes']}:00`; break;
-          case '5': datetime = `${form['only-date']}T17:${form['time-minutes']}:00`; break;
-          case '6': datetime = `${form['only-date']}T18:${form['time-minutes']}:00`; break;
-          case '7': datetime = `${form['only-date']}T19:${form['time-minutes']}:00`; break;
-          case '8': datetime = `${form['only-date']}T20:${form['time-minutes']}:00`; break;
-          case '9': datetime = `${form['only-date']}T21:${form['time-minutes']}:00`; break;
-          case '10': datetime = `${form['only-date']}T22:${form['time-minutes']}:00`; break;
-          case '11': datetime = `${form['only-date']}T23:${form['time-minutes']}:00`; break;
-          default: datetime = `${form['only-date']}T12:${form['time-minutes']}:00`; break;
+          case '1': datetime = `${form['only-date']}T13:${form['time-minutes']}:00-05:00`; break;
+          case '2': datetime = `${form['only-date']}T14:${form['time-minutes']}:00-05:00`; break;
+          case '3': datetime = `${form['only-date']}T15:${form['time-minutes']}:00-05:00`; break;
+          case '4': datetime = `${form['only-date']}T16:${form['time-minutes']}:00-05:00`; break;
+          case '5': datetime = `${form['only-date']}T17:${form['time-minutes']}:00-05:00`; break;
+          case '6': datetime = `${form['only-date']}T18:${form['time-minutes']}:00-05:00`; break;
+          case '7': datetime = `${form['only-date']}T19:${form['time-minutes']}:00-05:00`; break;
+          case '8': datetime = `${form['only-date']}T20:${form['time-minutes']}:00-05:00`; break;
+          case '9': datetime = `${form['only-date']}T21:${form['time-minutes']}:00-05:00`; break;
+          case '10': datetime = `${form['only-date']}T22:${form['time-minutes']}:00-05:00`; break;
+          case '11': datetime = `${form['only-date']}T23:${form['time-minutes']}:00-05:00`; break;
+          default: datetime = `${form['only-date']}T12:${form['time-minutes']}:00-05:00`; break;
         }
+        
       }
     }
 

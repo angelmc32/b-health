@@ -14,28 +14,73 @@ const drugSchema = new Schema(
     },
     date_added: {
       type: Date,
+    },
+    start_date: {
+      type: Date,
+      default: null
+    },
+    end_date: {
+      type: Date,
+      default: null
+    },
+    name: {
+      type: String,
       required: true
     },
-    date_finished: {
-      type: Date,
-    },
     brand_name: {
-      type: String
+      type: String,
+      default: null
     },
     generic_name: {
-      type: String
+      type: String,
+      default: null
     },
-    dose: {
-      type: String
+    dosage: {
+      type: String,
+      default: null
+    },
+    dosage_units: {
+      type: String,
+      default: null
     },
     dosage_form: {
-      type: String
+      type: String,
+      default: null
     },
-    isCurrent: {
+    shape: {
+      type: String,
+      default: null
+    },
+    color: {
+      type: String,
+      default: null
+    },
+    frequency: {
+      type: String,
+      default: null
+    },
+    times_per_day: {
+      type: Number,
+      default: null
+    },
+    schedule: {
+      type: [String],
+      default: null
+    },
+    quantity: {
+      type: [Number],
+      default: null
+    },
+    isCurrentTreatment: {
       type: Boolean,
       default: true
+    },
+    isSelfMedicated: {
+      type: Boolean,
+      default: false
     }
-  }
+  },
+  { timestamps: true }
 );
 
 module.exports = model('Treatment', drugSchema);

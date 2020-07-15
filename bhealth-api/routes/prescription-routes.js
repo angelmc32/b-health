@@ -47,9 +47,9 @@ router.post('/', verifyToken, uploader.single('image'), (req, res, next) => {
   Prescription.create({ drugs: JSON.parse(drugsJSON) , ...req.body, user: id })
   .then( prescription => {
 
-    for ( drug of drugArray ) {
-      Drug.create({ ...drug, user: id, prescription: prescription._id, date_added: prescription.date })
-    }
+    // for ( drug of drugArray ) {
+    //   Drug.create({ ...drug, user: id, prescription: prescription._id, date_added: prescription.date })
+    // }
 
     res.status(200).json({ prescription });
 

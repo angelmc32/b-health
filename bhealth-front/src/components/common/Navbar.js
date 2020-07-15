@@ -51,7 +51,7 @@ const Navbar = () => {
           </li>
           <li className="uk-active uk-flex uk-flex-middle uk-height-1-1">
               <NavLink to="/">
-                BEESALUD
+                Eva Salud
               </NavLink>
           </li>
       </ul>
