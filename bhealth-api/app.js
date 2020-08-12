@@ -38,7 +38,7 @@ app.use(cookieParser());
 // cors package config to allow requests from the url's in the origin array
 app.use(
   cors({
-    origin: ['http://beesalud.com', 'http://localhost:3001']
+    origin: ['http://eva-salud.com', 'http://localhost:3001']
   })
 );
 
