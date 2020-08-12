@@ -24,48 +24,49 @@ const Sidebar = () => {
      
     <div className="sidebar">
       <ul className="uk-nav-default uk-nav-parent-icon uk-width-4-5 uk-text-left uk-margin-left uk-margin-large-top" uk-nav="true">
-        <li className="uk-active" onClick={event => handleRoute(event, "none")} >
+        <li className="uk-active">
           <NavLink to="/home">Mi Salud</NavLink>
         </li>
-        <li className="uk-active" onClick={event => handleRoute(event, "none")} >
+        <li className="uk-active">
           <NavLink to="/antecedentes">Antecedentes</NavLink>
         </li>
-        <li className="uk-active" onClick={event => handleRoute(event, "none")} >
+        <li className="uk-active">
           <NavLink to="/signosvitales">Signos Vitales</NavLink>
         </li>
-        <li className="uk-active" onClick={event => handleRoute(event, "none")} >
+        <li className="uk-active">
+          <NavLink to="/medicamentos">Mis Medicamentos</NavLink>
+        </li>
+        <li className="uk-active">
           <NavLink to="/consultas">Consultas</NavLink>
         </li>
-        <li className="uk-active" onClick={event => handleRoute(event, "none")} >
+        <li className="uk-active">
           <NavLink to="/recetas">Recetas</NavLink>
         </li>
-        <li className="uk-active" onClick={event => handleRoute(event, "none")} >
+        <li className="uk-active">
           <NavLink to="/laboratorio">Laboratorio</NavLink>
         </li>
-        <li className="uk-active" onClick={event => handleRoute(event, "none")} >
+        <li className="uk-active">
           <NavLink to="/imagenologia">Rayos X e Imagen</NavLink>
         </li>
-        <li className="uk-active" onClick={event => handleRoute(event, "none")} >
+        <li className="uk-active">
           <NavLink to="/urgencias">Urgencias</NavLink>
         </li>
-        <li className="uk-active" onClick={event => handleRoute(event, "none")} >
+        {/* <li className="uk-active" onClick={event => handleRoute(event, "none")} >
           <NavLink to="/hospitalizaciones">Hospitalizaciones</NavLink>
         </li>
         <li className="uk-active" onClick={event => handleRoute(event, "none")} >
           <NavLink to="/padecimientos">Resumen Padecimientos</NavLink>
-        </li>
-        <li className="uk-active" onClick={event => handleRoute(event, "none")} >
-          <NavLink to="/medicamentos">Resumen Medicamentos</NavLink>
-        </li>
+        </li> */}
+        
         {/* <li className="uk-active" onClick={event => handleRoute(event, "none")} >
           <NavLink to="/agenda">Agenda</NavLink>
         </li>
         <li className="uk-active" onClick={event => handleRoute(event, "none")} >
           <NavLink to="/terapias">Otras Terapias</NavLink>
         </li> */}
-        <li className="uk-active" onClick={event => handleRoute(event, "none")} >
+        {/* <li className="uk-active" onClick={event => handleRoute(event, "none")} >
           <NavLink to="/beneficios">Servicios Adicionales</NavLink>
-        </li>
+        </li> */}
       </ul>
     </div>
         

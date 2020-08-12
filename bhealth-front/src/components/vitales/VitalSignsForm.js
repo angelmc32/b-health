@@ -1,20 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import useForm from '../../hooks/useForm';
 import UIkit from 'uikit';                                          // Import UIkit for notifications
 import moment from 'moment';                                        // Import momentjs for date formatting
 
-import VitalSignsCard from '../vitalsigns/VitalSignsCard'
-
-import happy_img from '../../images/icons/happy-face.svg'
-import sad_img from '../../images/icons/sad-face.svg'
-import add_vitals_icon from '../../images/icons/add-vitals.svg'
-import blood_pressure_icon from '../../images/icons/blood-pressure.svg'
-import blood_sugar_icon from '../../images/icons/blood-sugar.svg'
-import heart_rate_icon from '../../images/icons/heart-rate.svg'
-import temperature_icon from '../../images/icons/temperature.svg'
-import weight_icon from '../../images/icons/weight.svg'
-
-import { getVitalSigns, getOneVitalSigns, createVitalSigns } from '../../services/vitalsigns-services'
+import { createVitalSigns } from '../../services/vitalsigns-services'
 
 const VitalSignsForm = ({push, url}) => {
 
@@ -75,7 +64,6 @@ const VitalSignsForm = ({push, url}) => {
 
     if (Object.keys(form).length === 0 && form.constructor === Object) {
 
-      console.log('no vale')
       setState({
         isButtonDisabled: true,
         spinnerState: false,

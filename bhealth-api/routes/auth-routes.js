@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');                // Import jsonwebtoken for t
 const bcrypt = require('bcryptjs');                 // Import bcryptjs for password hash creation and password validation
 const AWS = require('aws-sdk');
 const User = require('../models/User');             // Require the User model to create and find users in database
+const MedicalHistory = require('../models/MedicalHistory')
 
 // Import send method from mailer helper to email verification through sendgrid (config in mailer-helper)
 const { send, sendResetPassword } = require('../helpers/mailer-helper');
@@ -64,8 +65,8 @@ router.post('/signup', (req, res, next) => {
       const options = {
         filename: 'signup',
         email,
-        text: 'Completa tu registro a Beesalud',
-        subject: 'Completa tu registro a Beesalud',
+        text: 'Completa tu registro a Eva',
+        subject: 'Completa tu registro a Eva',
         token
       };
 
@@ -200,19 +201,42 @@ router.post('/activate/:activationToken', (req, res, next) => {
       User.create({email, password: hashedPassword})
       .then( user => {
 
-        jwt.sign({ id: user._id }, process.env.SECRET, (error, token) => {
+        MedicalHistory.create({ user: user._id, health_history: {
+          "Diabetes": false,
+          "Hipertensión": false,
+          "Asma": false,
+          "Alergias": false,
+          "Enfermedades del Corazón": false,
+          "Enfermedades del Hígado": false,
+          "Enfermedades del Riñón": false,
+          "Enfermedades Endócrinas": false,
+          "Enfermedades del Sistema Digestivo": false,
+          "Enfermedades Mentales": false,
+          "Cáncer": false,
+          "Otras": false
+        } })
+        .then( medicalHistory => {
 
-          // Delete the password from the user document (returned by mongoose) before sending to front-end
-          delete user._doc.password;
+          jwt.sign({ id: user._id }, process.env.SECRET, (error, token) => {
 
-          // If there's an error creating the token, respond to the request with a 500 status, the error and a message
-          if ( error ) return res.status(500).json({ error, msg: 'Error creando el token' });
+            // Delete the password from the user document (returned by mongoose) before sending to front-end
+            delete user._doc.password;
 
-          // Respond to the request with a 200 status, the user data and a success message
-          res.status(200).json({ user, token, msg: 'Su usuario ha sido creado exitosamente, y ha iniciado sesión' });
+            // If there's an error creating the token, respond to the request with a 500 status, the error and a message
+            if ( error ) return res.status(500).json({ error, msg: 'Error creando el token' });
 
+            // Respond to the request with a 200 status, the user data and a success message
+            res.status(200).json({ user, token, msg: 'Su usuario ha sido creado exitosamente, y ha iniciado sesión' });
+
+          })
         })
-  
+        .catch( error => {
+
+          console.log(error)
+          res.status(500).json({ error, msg: 'Unable to create medicalHistory' }); // Respond 500 status, error and message
+      
+        });
+
       })
       .catch( error => {
       

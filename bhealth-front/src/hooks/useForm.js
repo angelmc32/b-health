@@ -8,8 +8,6 @@ const useForm = () => {
   
   // Declare form state variable and setForm function to update the form state variable
   const [ form, setForm ] = useState({});
-  const [ array, setArray ] = useState([]);
-
   // Declare handleInput function for input data manipulation
   const handleInput = (event) => {
     
@@ -17,22 +15,19 @@ const useForm = () => {
     const { name, value } = event.target;
 
     // When using checkboxes, store the values in an array
-    if ( event.target.type === 'checkbox' ) {
-      const { checked } = event.target
-      setForm( prevState => ({...prevState, [name]: checked}) );
+    // if ( event.target.type === 'checkbox' ) {
+    //   const { checked } = event.target
+    //   setForm( prevState => ({...prevState, [name]: checked}) );
 
-    } else if ( name === 'date' ) {
+    // } else 
+    if ( name === 'date' ) {
       let date = moment(value).format()
-      console.log(date)
       setForm( prevState => ({...prevState, [name]: date}) );
 
     } else {
-  
       // Update the form state without erasing previos values (with prevState)
       setForm( prevState => ({...prevState, [name]: value}) );
-
     }
-
   };
 
   // Declare handleInputFile function for files manipulation
@@ -46,10 +41,17 @@ const useForm = () => {
 
   };
 
+  const handleSearchbarInput = (name, value) => {
+    
+    // Update the form state without erasing previos values (with prevState)
+    setForm( prevState => ({...prevState, [name]: value}) );
+
+  };
+
   const resetForm = () => setForm({});
 
   // Return the form state variable and input handling functions
-  return { form, setForm, resetForm, handleInput, handleFileInput };
+  return { form, setForm, resetForm, handleInput, handleFileInput, handleSearchbarInput };
 
 };
 

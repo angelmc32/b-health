@@ -1,4 +1,7 @@
 import { useState } from 'react';   // Import useState hook to create custom hook
+import moment from 'moment'
+import 'moment/locale/es'  // without this line it didn't work
+moment.locale('es')
 
 // Declare hook as a React functional component
 const useDrugsForm = (drugsArray) => {
@@ -6,11 +9,6 @@ const useDrugsForm = (drugsArray) => {
   // Declare form state variable and setForm function to update the form state variable
   const [ form, setForm ] = useState({});
   const [ array, setArray ] = useState([]);
-  const [ genericName, setGenericName ] = useState();
-  const [ brandName, setBrandName ] = useState();
-  const [ dosageForm, setDosageForm ] = useState();
-  const [ dose, setDose ] = useState();
-  const [ indications, setIndications ] = useState();
 
   // Declare handleInput function for input data manipulation
   const handleInput = (event) => {
@@ -24,6 +22,10 @@ const useDrugsForm = (drugsArray) => {
       array.push(value);
       setArray(array);
       setForm( prevState => ({...prevState, [name]: array}) );
+
+    } else if ( name === 'date' ) {
+      let date = moment(value).format()
+      setForm( prevState => ({...prevState, [name]: date}) );
 
     } else {
 

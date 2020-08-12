@@ -12,6 +12,10 @@ const consultationSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'Prescription'
     },
+    studies: [{ 
+      type : Schema.Types.ObjectId,
+      ref: 'Study'
+    }],
     vitals: {
       type: Schema.Types.ObjectId,
       ref: 'VitalSigns'
@@ -51,6 +55,10 @@ const consultationSchema = new Schema(
     prognosis: {
       type: String
     },
+    isEmergency: {
+      type: Boolean,
+      default: false
+    }
   },
   { timestamps: true }
 );

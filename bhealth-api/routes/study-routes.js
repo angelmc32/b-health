@@ -73,9 +73,16 @@ router.get('/:studyID', verifyToken, (req, res, next) => {
 
 });
 
-router.patch('/:studyID', verifyToken, (req, res, next) => {
+router.patch('/:studyID', verifyToken, uploader.single('image'), (req, res, next) => {
 
   const { studyID } = req.params;
+  const body  = req.body;               // Extract body from request
+  
+  if ( req.file ) {
+    const secure_url = req.file.secure_url;
+    body['image'] = secure_url;
+  }
+  console.log(req.body)
 
   Study.findByIdAndUpdate(studyID, { $set: { ...req.body } }, { new: true} )
   .then( study => {
@@ -104,6 +111,26 @@ router.delete('/:studyID', verifyToken, (req, res, next) => {
   .catch( error => {
 
     res.status(500).json({ error, msg: 'Unable to delete study' }); // Respond 500 status, error and message
+
+  });
+
+});
+
+router.get('/consulta/:consultationID', verifyToken, (req, res, next) => {
+
+  const { consultationID } = req.params;
+  const { id } = req.user;    // Destructure the user id from the request
+
+  Study.find({ $and: [{user: id}, {consultation: consultationID}] })
+  .sort({date: -1})
+  .then( studies => {
+
+    res.status(200).json({ studies });
+
+  })
+  .catch( error => {
+
+    res.status(500).json({ error, msg: 'Unable to retrieve data' }); // Respond 500 status, error and message
 
   });
 

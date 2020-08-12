@@ -30,10 +30,10 @@ const userSchema = new Schema(
       default: 'Apellido Materno'
     },
     phone_number: {
-      type: Number,
+      type: String,
     },
     zip_code: {
-      type: Number
+      type: String
     },
     curp: {
       type: String,
@@ -41,13 +41,12 @@ const userSchema = new Schema(
       maxlength: 18
     },
     date_of_birth: {
-      type: Date,
+      type: String,
       default: Date.now
     },
     gender: {
       type: String,
-      enum: ['F','M','N'],
-      default: 'N'
+      default: 'No especificado'
     },
     profile_picture: {
       type: String,
@@ -55,9 +54,11 @@ const userSchema = new Schema(
     },
     marital_status: {
       type: String,
+      default: ''
     },
     education_level: {
-      type: String
+      type: String,
+      default: ''
     },
     isProfileComplete: {
       type: Boolean,

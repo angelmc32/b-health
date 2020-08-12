@@ -66,3 +66,17 @@ export const deleteStudy = (studyID) => {
   });
 
 }
+
+
+// Export get function to retrieve all prescriptions of the current logged in user
+export const getConsultationStudies = (consultationID) => {
+
+  const token = localStorage.getItem('token');  // Get token from localStorage
+
+  return axios.get(`${base_url}/consulta/${consultationID}`, {
+    headers: {
+      Authorization: token,                     // Send token in request headers (check api/helpers/auth-helper)
+    }
+  });
+
+};

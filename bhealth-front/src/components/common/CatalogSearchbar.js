@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react'
 
-const Autocomplete = ({ suggestions, propertyName, type }) => {
+const Autocomplete = ({ suggestions, propertyName, type, form, inputValue = null, inputClass = null, handleSearchbarInput }) => {
 
   const [ state, setState ] = useState({
     // The active selection's index
@@ -10,7 +10,7 @@ const Autocomplete = ({ suggestions, propertyName, type }) => {
     // Whether or not the suggestion list is shown
     showSuggestions: false,
     // What the user has entered
-    userInput: ""
+    userInput: inputValue || ""
   })
 
   const shortDiagnosis = [
@@ -51,9 +51,7 @@ const Autocomplete = ({ suggestions, propertyName, type }) => {
 
     const userInput = e.currentTarget.value;
 
-    console.log(e.currentTarget.value.length)
-
-      if ( e.currentTarget.value.length > 5 ){
+    if ( e.currentTarget.value.length > 5 ){
         
       // Filter our suggestions that don't contain the user's input
       const filteredSuggestions = suggestions.filter(
@@ -61,7 +59,7 @@ const Autocomplete = ({ suggestions, propertyName, type }) => {
           suggestion[propertyName].toLowerCase().indexOf(userInput.toLowerCase()) >
           -1
       );
-      console.log(filteredSuggestions)
+      
       setState({
         activeSuggestion: 0,
         filteredSuggestions,
@@ -75,7 +73,6 @@ const Autocomplete = ({ suggestions, propertyName, type }) => {
           suggestion[propertyName].toLowerCase().indexOf(userInput.toLowerCase()) >
           -1
       );
-      console.log(filteredSuggestions)
       setState({
         activeSuggestion: 0,
         filteredSuggestions,
@@ -91,6 +88,8 @@ const Autocomplete = ({ suggestions, propertyName, type }) => {
         userInput: e.currentTarget.value
       });
     }
+
+    
   };
 
   const onClick = e => {
@@ -100,6 +99,9 @@ const Autocomplete = ({ suggestions, propertyName, type }) => {
       showSuggestions: false,
       userInput: e.currentTarget.innerText
     });
+    form[type] = e.currentTarget.innerText
+    handleSearchbarInput(type, e.currentTarget.innerText)
+    inputClass = null
   };
 
   const onKeyDown = e => {
@@ -107,27 +109,29 @@ const Autocomplete = ({ suggestions, propertyName, type }) => {
 
     // User pressed the enter key
     if (e.keyCode === 13) {
+      let selection = filteredSuggestions[activeSuggestion]
       setState({
         activeSuggestion: 0,
         showSuggestions: false,
-        userInput: filteredSuggestions[activeSuggestion]
+        userInput: selection[propertyName]
       });
+      inputClass = null
+      form[type] = selection[propertyName]
     }
     // User pressed the up arrow
     else if (e.keyCode === 38) {
       if (activeSuggestion === 0) {
         return;
       }
-
       setState( (prevState) => ({ ...prevState, activeSuggestion: activeSuggestion -1 }));
     }
     // User pressed the down arrow
     else if (e.keyCode === 40) {
-      if (activeSuggestion - 1 === filteredSuggestions.length) {
+      if (activeSuggestion + 1 === filteredSuggestions.length) {
         return;
       }
-
-      setState( (prevState) => ({ ...prevState, activeSuggestion: activeSuggestion + 1 }));
+      else
+        setState( (prevState) => ({ ...prevState, activeSuggestion: activeSuggestion + 1 }));
     }
   };
 
@@ -136,9 +140,10 @@ const Autocomplete = ({ suggestions, propertyName, type }) => {
   let suggestionsListComponent;
 
   if (showSuggestions && userInput) {
+    
     if (filteredSuggestions.length) {
       suggestionsListComponent = (
-        <ul className="suggestions">
+        <ul className="suggestions uk-height-small uk-border-rounded">
           {filteredSuggestions.map((suggestion, index) => {
             let className;
 
@@ -156,17 +161,28 @@ const Autocomplete = ({ suggestions, propertyName, type }) => {
         </ul>
       );
     } else {
-      suggestionsListComponent = (
-        <div className="no-suggestions">
-          <em>No suggestions, you're on your own!</em>
-        </div>
-      );
+      if ( userInput.length < 8) {
+        suggestionsListComponent = (
+          <div className="no-suggestions uk-text-center">
+            <em>Buscando, continua escribiendo...</em>
+          </div>
+        );
+      }
+      else {
+        suggestionsListComponent = (
+          <div className="no-suggestions uk-text-center">
+            <em>No se encuentra en el catálogo, intenta otra palabra...</em>
+          </div>
+        );
+      }
+      
     }
+
   }
 
   return (
     <Fragment>
-      <div className="uk-search uk-search-default uk-width-1-1 uk-hidden@s" uk-toggle="target: #search">
+      {/* <div className="uk-search uk-search-default uk-width-1-1" uk-toggle="target: #search" hidden>
         <span className="uk-search-icon-flip" uk-search-icon="true"></span>
         <input
           className="uk-search-input uk-text-center uk-border-pill"
@@ -177,7 +193,7 @@ const Autocomplete = ({ suggestions, propertyName, type }) => {
           onKeyDown={onKeyDown}
         />
       </div>
-      <div id="search" className="uk-modal-full" uk-modal="true">
+      <div id="search" className="uk-modal-full" uk-modal="true" hidden>
         <div className="uk-modal-dialog uk-modal-body uk-height-1-1">
         <div className="uk-section">
           <button className="uk-modal-close-default" type="button" uk-close="true" />
@@ -186,6 +202,7 @@ const Autocomplete = ({ suggestions, propertyName, type }) => {
               <input
                 className="uk-search-input uk-text-center uk-border-pill"
                 type="search"
+                name={type}
                 placeholder={ type === 'diagnosis' ? "Busca padecimiento..." : type === 'drugs' ? "Busca por nombre genérico..." : type === 'procedure' ? "Busca procedimiento..." : "Busca especialidad"}
                 value={userInput}
                 onChange={onChange}
@@ -193,21 +210,22 @@ const Autocomplete = ({ suggestions, propertyName, type }) => {
               />
             </div>
             {suggestionsListComponent}
+          </div>
         </div>
-        
-      </div>
-      </div>
-      <div className="uk-margin uk-width-1-1 uk-visible@s">
+      </div> */}
+      <div className="uk-width-1-1">
         <div className="uk-search uk-search-default uk-width-1-1">
           <span className="uk-search-icon-flip" uk-search-icon="true"></span>
-          <input
-            className="uk-search-input uk-text-center uk-border-pill"
-            type="search"
-            placeholder={ type === 'diagnosis' ? "Busca padecimiento..." : type === 'drugs' ? "Busca por nombre genérico..." : type === 'procedure' ? "Busca procedimiento..." : "Busca especialidad"}
-            value={userInput}
-            onChange={onChange}
-            onKeyDown={onKeyDown}
-          />
+              <input
+                className={`uk-input uk-search-input uk-text-center uk-border-pill ${inputClass}`}
+                type="search"
+                name={type}
+                placeholder={ type === 'diagnosis' ? "Busca padecimiento..." : type === 'drugs' ? "Busca por nombre genérico..." : type === 'procedure' ? "Busca procedimiento..." : "Busca especialidad"}
+                value={userInput}
+                onChange={onChange}
+                onKeyDown={onKeyDown}
+                required
+              />
         </div>
         {suggestionsListComponent}
       </div>

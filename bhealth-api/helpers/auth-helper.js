@@ -12,7 +12,12 @@ exports.verifyToken = require = (req, res, next) => {
   jwt.verify(token, process.env.SECRET, (error, decoded) => {
 
     // Respond with 401 status and failed authentication message in case of an error detected by jwt.verify method
-    if ( error ) return res.status(401).json({ error, msg: 'Token authentication failed'});
+    if ( error ) {
+      if (error.message && error.message === 'jwt expired')
+        return res.status(401).json({ error, msg: 'Sesión expirada. Reinicia sesión por favor.'});
+      else
+        return res.status(401).json({ error, msg: 'Debes iniciar sesión'});
+      }
 
     // Search for user in database using decoded data (in our app, saved as id for user._id when creating token)
     User.findById(decoded.id)

@@ -9,7 +9,7 @@ import { createDrug } from '../../services/drug-services'
 
 const DrugsForm = ({push, url}) => {
 
-  const { user, route, setRoute, objectHandler, setObjectHandler, resetUserContext } = useContext(AppContext);
+  const { user, resetUserContext } = useContext(AppContext);
   const { form, setForm, resetForm, handleInput } = useForm();
   const [ state, setState ] = useState({
     isButtonDisabled: true,
@@ -32,32 +32,25 @@ const DrugsForm = ({push, url}) => {
 
   useEffect( () => {
     
-    // if ( form.name && state.showSchedule ) {
+    if ( !user._id ) {    // If there is no user logged in, send a notification and "redirect" to login
 
-    //   console.log(state.scheduleValues.some(checkIsEmpty))
-    //   console.log(state.quantityValues.some(checkIsEmpty))
+      // Send UIkit warning notification: User must log in
+      UIkit.notification({
+        message: `<span uk-icon='close'></span> Por favor inicia sesión.`,
+        pos: 'bottom-center',
+        status: 'warning'
+      });
+      
+      return push('/login');         // If not logged in, "redirect" user to login
 
-    //   if ( state.scheduleValues.some(checkIsEmpty) || state.quantityValues.some(checkIsEmpty) ) {
-    //     console.log('uno está vacío')
-    //     return setState( prevState => ({...prevState, isButtonDisabled: true}));
-    //   }
-    //   else {
-    //     console.log(state)
-    //     setState( prevState => ({...prevState, isButtonDisabled: false}));
-    //   }
-    // }
-    // else if ( form.name ) {
-    //   setState( prevState => ({...prevState, isButtonDisabled: false}));
-    // }
+    };
 
     if ( form.name )
       setState( prevState => ({...prevState, isButtonDisabled: false}));
     if ( form.frequency === "No aplica" )
       resetSchedule();
     
-  }, [form/*, state.showSchedule, state.isButtonDisabled, state.scheduleValues*/])
-
-  let thisMoment = moment().format(), datetime;
+  }, [form])
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -71,6 +64,8 @@ const DrugsForm = ({push, url}) => {
     }
     form['isCurrentTreatment'] = state.isCurrentTreatment
     form['isSelfMedicated'] = state.isSelfMedicated
+
+    setState( prevState => ({...prevState, isButtonDisabled: true, spinnerState: true}))
     
     createDrug(form)
     .then( res => {
@@ -81,6 +76,8 @@ const DrugsForm = ({push, url}) => {
         pos: 'bottom-center',
         status: 'success'
       });
+      resetForm();
+      push(url);
     })
     .catch( res => {
 
@@ -94,6 +91,7 @@ const DrugsForm = ({push, url}) => {
           pos: 'bottom-center',
           status: 'warning'
         });
+        resetForm();
         push('/login');
       } else
           UIkit.notification({
@@ -101,6 +99,7 @@ const DrugsForm = ({push, url}) => {
             pos: 'bottom-center',
             status: 'danger'
           });
+          setState( prevState => ({...prevState, isButtonDisabled: false, spinnerState: false}))
     });
   }
 
@@ -190,10 +189,10 @@ const DrugsForm = ({push, url}) => {
   return (
     <div className="uk-margin">
       <h2>Agregar Medicamento</h2>
-      <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin-small" onClick={event => push(`${url}`)} >
+      <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin" onClick={event => push(`${url}`)} >
         Regresar
       </button>
-      <form onSubmit={handleSubmit} className="uk-text-left uk-flex uk-flex-column">
+      <form onSubmit={handleSubmit} className="uk-text-left uk-flex uk-flex-column uk-container">
         <div className="uk-width-1-1 uk-flex uk-flex-middle">
           <a className={ state.currentStep === 0 ? "uk-disabled uk-text-muted" : "stepper-primary"} uk-icon="icon: chevron-left" onClick={ state.currentStep === 0 ? null : (event) => {event.preventDefault(); setState( prevState => ({...prevState, currentStep: prevState.currentStep-1})) }}></a>
           {formStepper}
@@ -203,7 +202,7 @@ const DrugsForm = ({push, url}) => {
           <div className="uk-width-1-1">
             <label className="uk-form-label" htmlFor="form-stacked-text">Nombre del medicamento:</label>
             <div className="uk-form-controls">
-              <input className="uk-input uk-border-pill uk-text-center" name="name" onChange={handleInput} placeholder="Introduce el nombre..." required />
+              <input className="uk-input uk-border-pill uk-text-center" name="name" onChange={handleInput} placeholder="Introduce el nombre para poder continuar..." required />
             </div>
           </div>
           <div className="uk-width-1-1 uk-flex uk-flex-between uk-flex-wrap">
@@ -218,12 +217,15 @@ const DrugsForm = ({push, url}) => {
                     <select name="dosage_units" onChange={handleInput} className="uk-select uk-border-pill uk-text-center" defaultValue="" >
                       <option value=""></option>
                       <option >mg</option>
+                      <option>µg</option>
+                      <option>g</option>
                       <option>ml</option>
                       <option>mg/ml</option>
-                      <option>µg</option>
+                      <option>mg/g</option>
+                      <option>µg/mg</option>
+                      <option>µg/µg</option>
                       <option>UI</option>
                       <option>UI/ml</option>
-                      <option>mg/g</option>
                       <option >UIK/ml</option>
                     </select>
                   : null

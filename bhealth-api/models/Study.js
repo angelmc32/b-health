@@ -5,6 +5,7 @@ const studySchema = new Schema (
   {
     user: {
       type: Schema.Types.ObjectId,
+      required: true,
       ref: 'User'
     },
     consultation: {
@@ -13,6 +14,7 @@ const studySchema = new Schema (
     },
     date: {
       type: Date,
+      required: true,
       default: Date.now
     },
     doctor: {
@@ -20,9 +22,11 @@ const studySchema = new Schema (
     },
     study_type: {
       type: String,
+      required: true
     },
     image: {
       type: String,
+      default: 'Sin imagen registrada'
     },
     study_name: {
       type: String

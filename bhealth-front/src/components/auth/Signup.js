@@ -10,10 +10,9 @@ import UIkit from 'uikit';                                // Import UIkit for no
 const Signup = () => {
 
   const { form, handleInput } = useForm();      // Destructure form state variable and handleInput function
-  const { user, setUser, setRoute } = useContext(AppContext);   // Destructure setUser function for user state manipulation
-  const { push, location } = useHistory();                // Destructure push method from useHistory to "redirect" user
+  const { user } = useContext(AppContext);   // Destructure setUser function for user state manipulation
+  const { push } = useHistory();                // Destructure push method from useHistory to "redirect" user
   const [ spinnerState, setSpinnerState ] = useState(false)
-  let history = useHistory();
 
   useEffect( () => {
     

@@ -83,4 +83,4 @@ const drugSchema = new Schema(
   { timestamps: true }
 );
 
-module.exports = model('Treatment', drugSchema);
+module.exports = model('Drug', drugSchema);

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Emergency = require('../models/Emergency');
+const Consultation = require('../models/Consultation');
 
 // Import helper for token verification (jwt)
 const { verifyToken } = require('../helpers/auth-helper');
@@ -9,7 +10,7 @@ router.get('/', verifyToken, (req, res, next) => {
 
   const { id } = req.user;    // Destructure the user id from the request
 
-  Emergency.find({ user: id })
+  Consultation.find({ user: id, isEmergency: true })
   .sort({date: -1})
   .then( emergencies => {
 
@@ -28,7 +29,7 @@ router.post('/', verifyToken, (req, res, next) => {
 
   const { id } = req.user;
 
-  Emergency.create({ ...req.body, user: id })
+  Consultation.create({ ...req.body, user: id })
   .then( emergency => {
 
     res.status(200).json({ emergency });
@@ -47,7 +48,7 @@ router.get('/:emergencyID', verifyToken, (req, res, next) => {
   const { emergencyID } = req.params;
   const { id } = req.user;
 
-  Emergency.findById(emergencyID)
+  Consultation.findById(emergencyID)
   .then( emergency => {
     
     if ( emergency.user != id )
@@ -68,7 +69,7 @@ router.patch('/:emergencyID', verifyToken, (req, res, next) => {
 
   const { emergencyID } = req.params;
 
-  Emergency.findByIdAndUpdate(emergencyID, { $set: { ...req.body } }, { new: true} )
+  Consultation.findByIdAndUpdate(emergencyID, { $set: { ...req.body } }, { new: true} )
   .then( emergency => {
 
     res.status(200).json({ emergency });
@@ -76,6 +77,7 @@ router.patch('/:emergencyID', verifyToken, (req, res, next) => {
   })
   .catch( error => {
 
+    console.log(error)
     res.status(500).json({ error, msg: 'Unable to retrieve data' }); // Respond 500 status, error and message
 
   });
@@ -86,7 +88,7 @@ router.delete('/:emergencyID', verifyToken, (req, res, next) => {
 
   const { emergencyID } = req.params;
 
-  Emergency.findByIdAndDelete(consultationID)
+  Consultation.findByIdAndDelete(emergencyID)
   .then( emergency => {
 
     res.status(200).json({ emergency });

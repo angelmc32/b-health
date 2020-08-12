@@ -37,7 +37,7 @@ const VitalSigns = ({ push, url }) => {
 
       // Send UIkit warning notification: User must log in
       UIkit.notification({
-        message: `<span uk-icon='close'></span> Por favor inicia sesión.`,
+        message: '<p class="uk-text-center">Por favor inicia sesión</p>',
         pos: 'bottom-center',
         status: 'warning'
       });
@@ -110,18 +110,15 @@ const VitalSigns = ({ push, url }) => {
       if (res.response.status === 401) {
         localStorage.clear();
         resetUserContext();
-        UIkit.notification({
-          message: '<p class="uk-text-center">Por favor inicia sesión</p>',
-          pos: 'bottom-center',
-          status: 'warning'
-        });
         push('/login');
-      } else
-          UIkit.notification({
-            message: `<p class="uk-text-center">${msg}</p>`,
-            pos: 'bottom-center',
-            status: 'danger'
-          });
+      } 
+      else {
+        UIkit.notification({
+          message: `<p class="uk-text-center">${msg}</p>`,
+          pos: 'bottom-center',
+          status: 'danger'
+        });
+      }
     });
 
   }, [])

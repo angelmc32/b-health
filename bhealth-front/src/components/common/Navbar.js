@@ -89,6 +89,9 @@ const Navbar = () => {
                   <NavLink to="/signosvitales">Signos Vitales</NavLink>
                 </li>
                 <li className="uk-active" onClick={event => handleRoute(event, "none")} >
+                  <NavLink to="/medicamentos">Mis Medicamentos</NavLink>
+                </li>
+                <li className="uk-active" onClick={event => handleRoute(event, "none")} >
                   <NavLink to="/consultas">Consultas</NavLink>
                 </li>
                 <li className="uk-active" onClick={event => handleRoute(event, "none")} >
@@ -103,24 +106,22 @@ const Navbar = () => {
                 <li className="uk-active" onClick={event => handleRoute(event, "none")} >
                   <NavLink to="/urgencias">Urgencias</NavLink>
                 </li>
-                <li className="uk-active" onClick={event => handleRoute(event, "none")} >
+                {/* <li className="uk-active" onClick={event => handleRoute(event, "none")} >
                   <NavLink to="/hospitalizaciones">Hospitalizaciones</NavLink>
                 </li>
                 <li className="uk-active" onClick={event => handleRoute(event, "none")} >
                   <NavLink to="/padecimientos">Padecimientos</NavLink>
-                </li>
-                <li className="uk-active" onClick={event => handleRoute(event, "none")} >
-                  <NavLink to="/medicamentos">Medicamentos</NavLink>
-                </li>
+                </li> */}
+                
                 {/* <li className="uk-active" onClick={event => handleRoute(event, "none")} >
                   <NavLink to="/agenda">Agenda</NavLink>
                 </li>
                 <li className="uk-active" onClick={event => handleRoute(event, "none")} >
                   <NavLink to="/terapias">Otras Terapias</NavLink>
                 </li> */}
-                <li className="uk-active" onClick={event => handleRoute(event, "none")} >
+                {/* <li className="uk-active" onClick={event => handleRoute(event, "none")} >
                   <NavLink to="/beneficios">Servicios Adicionales</NavLink>
-                </li>
+                </li> */}
               </div>
             </ul>
             :

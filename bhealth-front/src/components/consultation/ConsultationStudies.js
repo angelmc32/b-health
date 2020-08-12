@@ -5,15 +5,21 @@ import UIkit from 'uikit';                                          // Import UI
 import moment from 'moment';                                        // Import momentjs for date formatting
 import 'moment/locale/es'  // without this line it didn't work
 
-import { getStudies } from '../../services/study-services';
+import { getConsultationStudies } from '../../services/study-services';
 
 moment.locale('es')
 
-const Study = ({ studyType, url }) => {
+const ConsultationStudies = ({ studyType, url }) => {
 
-  const { push } = useHistory();                    // Destructure push method from useHistory to "redirect" user
+  const { push, location } = useHistory();                    // Destructure push method from useHistory to "redirect" user
   const { user, resetUserContext } = useContext(AppContext);
   const [ studies, setStudies ] = useState([]);
+  let consultation;
+
+  if ( !location.state )
+    push(url);
+  else
+    consultation = location.state.consultation;
 
   useEffect( () => {
 
@@ -29,32 +35,46 @@ const Study = ({ studyType, url }) => {
       return push('/login');         // If not logged in, "redirect" user to login
 
     };
+  
+    if ( consultation ) {
+      getConsultationStudies(consultation._id)
+      .then( res => {
+        const { studies } = res.data;
+        setStudies(studies)
+      })
+      .catch( res => {
+        const { msg } = res.response.data
+        if (res.response.status === 401) {
+          localStorage.clear();
+          resetUserContext();
+          push('/login');
+        }
+        UIkit.notification({
+          message: `<p class="uk-text-center>${msg}</p>`,
+          pos: 'bottom-center',
+          status: 'danger'
+        });
+      });
+    }
 
-    getStudies(studyType)
-    .then( res => {
-      const { studies } = res.data;
-      setStudies(studies);
-    })
-    .catch( error => {
-      if (error.response.status === 401) {
-        localStorage.clear();
-        resetUserContext();
-        push('/login');
-      }
-
-    });
-  }, [studyType]);
+  }, []);
 
   return (
     <Fragment>
-      <h2>{studyType === 'lab' ? "Laboratorio" : "Rayos X e Imagen"}</h2>
-      <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin" onClick={ event => push(`${url}/crear`) } >
-        + Nuevo Estudio
-      </button>
+      <h2>Estudios de Consulta</h2>
+      <div className="uk-flex uk-flex-column uk-flex-center uk-flex-middle uk-margin">
+        <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin-top" onClick={ event => push({ pathname: '/laboratorio/crear', state: {consultation: consultation} }) } >
+          + Laboratorio
+        </button>
+        <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin-small" onClick={ event => push({ pathname: '/imagenologia/crear', state: {consultation: consultation} }) } >
+          + Rayos X
+        </button>
+      </div>
       <div className="uk-overflow-auto">
         { studies.length < 1 ? (
-            <h4 className="uk-text-danger">No has agregado estudios</h4>
-          ) : null
+            <h4 className="uk-text-danger">No has agregado estudios a la consulta</h4>
+          ) : 
+            <p className="uk-margin-small">Estos son los estudios correspondientes a la consulta seleccionada:</p> 
         }
         <table className="uk-table uk-table-striped uk-table-hover uk-table-middle">
           <thead>
@@ -79,7 +99,12 @@ const Study = ({ studyType, url }) => {
                       : '-'}
                     </td>
                     <td className="uk-text-center">
-                      <button className="uk-button uk-button-default uk-button-small uk-border-pill" onClick={event => push({pathname: `${url}/ver`, state: {study: study} }) } >
+                      <button className="uk-button uk-button-default uk-button-small uk-border-pill"
+                        onClick={ study.study_type === 'lab' ?
+                          event => push({pathname: '/laboratorio/ver', state: {study: study} }) 
+                        : 
+                          event => push({pathname: '/imagenologia/ver', state: {study: study} }) }
+                      >
                         Ver
                       </button>
                     </td>
@@ -104,10 +129,18 @@ const Study = ({ studyType, url }) => {
                                   </div>
                                 )
                               }
-                              <button className="uk-modal-close uk-button uk-button-primary uk-border-pill uk-margin-small uk-width-3-4 uk-width-1-2@s"  onClick={event => push({ pathname: `${url}/editar`,  state: {study: study} }) } >
+                              <button className="uk-modal-close uk-button uk-button-primary uk-border-pill uk-margin-small uk-width-3-4 uk-width-1-2@s"
+                                onClick={ study.study_type === 'lab' ?
+                                  event => push({pathname: '/laboratorio/editar', state: {study: study} }) 
+                                : 
+                                  event => push({pathname: '/imagenologia/editar', state: {study: study} }) }>
                                 Modificar
                               </button>
-                              <button className="uk-modal-close uk-button uk-button-danger uk-border-pill uk-margin-small uk-width-3-4 uk-width-1-2@s" onClick={event => push({pathname: `${url}/eliminar`, state: {study: study} }) } >
+                              <button className="uk-modal-close uk-button uk-button-danger uk-border-pill uk-margin-small uk-width-3-4 uk-width-1-2@s"
+                              onClick={ study.study_type === 'lab' ?
+                                event => push({pathname: '/laboratorio/eliminar', state: {study: study} }) 
+                              : 
+                                event => push({pathname: '/imagenologia/eliminar', state: {study: study} }) }>
                                 Eliminar
                               </button>
                             </div>
@@ -129,4 +162,4 @@ const Study = ({ studyType, url }) => {
   )
 }
 
-export default Study
+export default ConsultationStudies

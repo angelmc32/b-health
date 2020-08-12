@@ -1,8 +1,23 @@
-import React from 'react'
-import { Link, NavLink } from 'react-router-dom';         // Import NavLink for "navigation"
+import React, { useEffect, useContext } from 'react'
+import { Link, NavLink, useHistory } from 'react-router-dom';         // Import NavLink for "navigation"
+import { AppContext } from '../../AppContext';
+import UIkit from 'uikit';
 import placeholderImg from '../../images/icons/diamond-icon.svg'
 
 const Landing = () => {
+
+  const { user, setUser, route, setRoute } = useContext(AppContext); // Destructure user state variable
+  const { push } = useHistory();
+  
+  useEffect( () => {
+
+    if ( user._id ) {    // If there is no user logged in, send a notification and "redirect" to login
+      
+      return push('/home');         // If not logged in, "redirect" user to login
+
+    };
+
+  }, [user] );
   
   return (
     <div className="content">
@@ -82,7 +97,7 @@ const Landing = () => {
           <div className="uk-text-left">
             <h1>Toma el control <br/> de tu salud</h1>
             <h4>Nadie conoce mejor tu salud <br/>y la de tu familia que tú.</h4>
-            <h3>Con B-Health, nunca fue más sencillo</h3>
+            <h3>Con Eva, nunca fue más sencillo</h3>
           </div>
           
         </div>

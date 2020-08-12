@@ -9,7 +9,7 @@ router.get('/', verifyToken, (req, res, next) => {
 
   const { id } = req.user;    // Destructure the user id from the request
 
-  Consultation.find({ user: id })
+  Consultation.find({ user: id, isEmergency: { $ne: true } })
   .sort({date: -1})
   .then( consultations => {
 
@@ -35,9 +35,8 @@ router.post('/', verifyToken, (req, res, next) => {
 
   })
   .catch( error => {
-    console.log(error)
 
-    res.status(500).json({ error, msg: 'Unable to create consultation' }); // Respond 500 status, error and message
+    res.status(500).json({ error, msg: 'No fue posible crear la consulta' }); // Respond 500 status, error and message
 
   });
 
@@ -52,7 +51,7 @@ router.get('/:consultationID', verifyToken, (req, res, next) => {
   .then( consultation => {
     
     if ( consultation.user != id )
-      return res.status(401).json({ error, msg: 'You are not authorized to view this consultation' });
+      return res.status(403).json({ error, msg: 'No estás autorizado para ver esta consulta' });
     else
       res.status(200).json({ consultation });
 
@@ -78,7 +77,6 @@ router.patch('/:consultationID', verifyToken, (req, res, next) => {
   })
   .catch( error => {
 
-    console.log(error)
     res.status(500).json({ error, msg: 'No fue posible actualizar la consulta. Intente de nuevo más tarde.' }); // Respond 500 status, error and message
 
   });

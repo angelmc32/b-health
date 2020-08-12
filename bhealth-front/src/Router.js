@@ -10,26 +10,23 @@ import Activation from './components/auth/Activation'
 import RecoverPassword from './components/auth/RecoverPass'
 import ResetPassword from './components/auth/ResetPassword'
 import Login from './components/auth/Login';
-import Profile from './components/profile/Profile';
+import ProfileIndex from './components/profile/ProfileIndex';
 // import Preferences from './components/profile/Preferences';
 import Home from './components/home/Home';
 // import DoctorLanding from './components/doctor/DoctorLanding';
 // import DoctorHome from './components/doctor/DoctorHome';
 // import PatientHome from './components/patient/PatientHome';
 // import Patients from './components/doctor/myPatients/Patients'
-import Study from './components/study/Study';
+import StudyIndex from './components/study/StudyIndex';
 import Disease from './components/disease/Disease';
-import Consultation from './components/consultation/Consultation';
-import Prescription from './components/prescription/Prescription';
-import MedHistory from './components/medHistory/MedHistory';
+import ConsultationIndex from './components/consultation/ConsultationIndex';
+import PrescriptionIndex from './components/prescription/PrescriptionIndex';
+import MedHistoryIndex from './components/medHistory/MedHistoryIndex'
 import CatalogSearchbar from './components/common/CatalogSearchbar';
 import Hospitalization from './components/hospitalization/Hozpitalization';
-import Emergency from './components/emergency/Emergency'
-import ConsultationFormSpecial from './components/consultation/ConsultationFormSpecial'
-import Drug from './components/drug/Drug'
+import EmergencyIndex from './components/emergency/EmergencyIndex'
 import DrugsIndex from './components/drug/DrugsIndex'
 import Questionnaire from './components/Questionnaire'
-import VitalSigns from './components/vitalsigns/VitalSigns'
 import VitalSignsIndex from './components/vitales/VitalSignsIndex'
 import Summary from './components/medHistory/Summary'
 import Consent from './components/common/Consent'
@@ -82,11 +79,11 @@ const Router = () => {
       </Route>
 
       <Route path="/perfil">
-        <Profile />
+        <ProfileIndex />
       </Route>
 
       <Route path="/antecedentes">
-        <MedHistory />
+        <MedHistoryIndex />
       </Route>
 
       <Route path="/padecimientos">
@@ -98,7 +95,7 @@ const Router = () => {
       </Route>
 
       <Route path="/consultas">
-        <Consultation />
+        <ConsultationIndex />
       </Route>
 
       <Route path="/medicamentos">
@@ -106,15 +103,15 @@ const Router = () => {
       </Route>
 
       <Route path="/recetas">
-        <Prescription />
+        <PrescriptionIndex />
       </Route>
 
       <Route path="/laboratorio">
-        <Study studyType="lab"/>
+        <StudyIndex studyType="lab"/>
       </Route>
 
       <Route path="/imagenologia">
-        <Study studyType="xray"/>
+        <StudyIndex studyType="xray"/>
       </Route>
 
       <Route path="/hospitalizaciones">
@@ -122,7 +119,7 @@ const Router = () => {
       </Route>
 
       <Route path="/urgencias">
-        <Emergency />
+        <EmergencyIndex />
       </Route>
 
       <Route path="/beneficios">
@@ -137,9 +134,9 @@ const Router = () => {
         <Consent />
       </Route>
 
-      <Route path="/test">
-        <CatalogSearchbar suggestions={diseases} propertyName={'NOMBRE'} type={'diagnosis'}/>
-      </Route>
+      {/* <Route path="/test">
+        <PrescriptionIndex />
+      </Route> */}
       
       <Route path="*">
         <NoMatch />

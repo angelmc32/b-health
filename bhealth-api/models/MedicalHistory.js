@@ -9,124 +9,76 @@ const historySchema = new Schema(
       ref: 'User'
     },
     family_diabetes: {
-      type: Boolean,
-      default: false
-    },
-    family_diabetes_patient: {
-      type: String,
-      default: "Ninguno"
+      type: [Boolean],
+      default: [false, false, false, false, false, false, false]
     },
     family_asthma: {
-      type: Boolean,
-      default: false
-    },
-    family_asthma_patient: {
-      type: String,
-      default: "Ninguno"
+      type: [Boolean],
+      default: [false, false, false, false, false, false, false]
     },
     family_hypertension: {
-      type: Boolean,
-      default: false
-    },
-    family_hypertension_patient: {
-      type: String,
-      default: "Ninguno"
+      type: [Boolean],
+      default: [false, false, false, false, false, false, false]
     },
     family_allergies: {
-      type: Boolean,
-      default: false
-    },
-    family_allergies_patient: {
-      type: String,
-      default: "Ninguno"
+      type: [Boolean],
+      default: [false, false, false, false, false, false, false]
     },
     family_heart_disease: {
-      type: Boolean,
-      default: false
-    },
-    family_heart_disease_patient: {
-      type: String,
-      default: "Ninguno"
+      type: [Boolean],
+      default: [false, false, false, false, false, false, false]
     },
     family_liver_disease: {
-      type: Boolean,
-      default: false
-    },
-    family_liver_disease_patient: {
-      type: String,
-      default: "Ninguno"
+      type: [Boolean],
+      default: [false, false, false, false, false, false, false]
     },
     family_digestive_disease: {
-      type: Boolean,
-      default: false
-    },
-    family_digestive_disease_patient: {
-      type: String,
-      default: "Ninguno"
+      type: [Boolean],
+      default: [false, false, false, false, false, false, false]
     },
     family_kidney_disease: {
-      type: Boolean,
-      default: false
-    },
-    family_kidney_disease_patient: {
-      type: String,
-      default: "Ninguno"
+      type: [Boolean],
+      default: [false, false, false, false, false, false, false]
     },
     family_endocrin_disease: {
-      type: Boolean,
-      default: false
-    },
-    family_endocrin_disease_patient: {
-      type: String,
-      default: "Ninguno"
+      type: [Boolean],
+      default: [false, false, false, false, false, false, false]
     },
     family_mental_disease: {
-      type: Boolean,
-      default: false
-    },
-    family_mental_disease_patient: {
-      type: String,
-      default: "Ninguno"
+      type: [Boolean],
+      default: [false, false, false, false, false, false, false]
     },
     family_cancer: {
-      type: Boolean,
-      default: false
-    },
-    family_cancer_patient: {
-      type: String,
-      default: "Ninguno"
+      type: [Boolean],
+      default: [false, false, false, false, false, false, false]
     },
     family_other_disease: {
-      type: Boolean,
-      default: false
-    },
-    family_other_disease_patient: {
-      type: String,
-      default: "Ninguno"
+      type: [Boolean],
+      default: [false, false, false, false, false, false, false]
     },
     health_history: {
       type: Object,
     },
-    procedure: {
-      type: String
+    procedures: {
+      type: [Object]
     },
     traumatisms: {
-      type: String
+      type: [Object]
     },
     hospitalizations: {
-      type: String
+      type: [Object]
     },
     others: {
-      type: String
+      type: [String]
     },
     weekly_exercise_hours: {
       type: Number
     },
     addictions: {
-      type: String,
+      type: [String],
     },
     allergies: {
-      type: String,
+      type: [String],
     },
     alcoholism: {
       type: String,

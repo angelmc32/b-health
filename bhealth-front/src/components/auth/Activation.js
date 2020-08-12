@@ -83,7 +83,7 @@ const Activation = () => {
   return (
     <div className="uk-section">
       <div className="uk-container uk-margin-top uk-margin-remove-top@s">
-        <h2>¿Listo para empezar a utilizar Beesalud?</h2>
+        <h2>¿Listo para empezar a utilizar Eva?</h2>
         <h4>Haz click en el botón de abajo para activar tu cuenta</h4>
         { buttonText !== 'Expirado' ? 
             <button disabled={buttonText === 'Expirado' ? true : false} className={buttonText !== 'Expirado' ? "uk-button uk-button-primary uk-border-pill uk-width-3-5 uk-width-1-5@s uk-margin" : "uk-hidden"} onClick={clickActivate}>

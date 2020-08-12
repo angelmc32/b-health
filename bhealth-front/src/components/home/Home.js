@@ -5,7 +5,6 @@ import UIkit from 'uikit';
 import moment from 'moment';
 
 import VitalSignsForm from '../vitalsigns/VitalSignsForm'
-import ProfileCard from '../profile/ProfileCard'
 
 import happy_img from '../../images/icons/happy-face.svg'
 import sad_img from '../../images/icons/sad-face.svg'
@@ -62,8 +61,8 @@ const Home = () => {
                   Signos Vitales
                 </button>
               </NavLink>
-              <NavLink className="uk-width-1-1 uk-margin-small" to="/consultas">
-                <button className="uk-button uk-button-primary uk-border-pill uk-width-2-3" onClick={setRoute("create")}>
+              <NavLink className="uk-width-1-1 uk-margin-small" to="/consultas/crear">
+                <button className="uk-button uk-button-primary uk-border-pill uk-width-2-3" onClick={event => push('/consultas/crear')}>
                   Nueva Consulta
                 </button>
               </NavLink>
@@ -76,7 +75,7 @@ const Home = () => {
             <div className="uk-width-5-6 card-section-white uk-flex uk-flex-column uk-flex-center uk-flex-middle">
               Cuidar mi salud
               <NavLink className="uk-width-1-1 uk-margin-top" to="/recetas">
-                <button className="uk-button uk-button-primary uk-border-pill uk-width-2-3" onClick={setRoute("prescriptions")}>
+                <button className="uk-button uk-button-primary uk-border-pill uk-width-2-3" onClick={event => push('/recetas')}>
                   Mis Recetas
                 </button>
               </NavLink>

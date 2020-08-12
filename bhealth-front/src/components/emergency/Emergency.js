@@ -1,46 +1,36 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { useHistory, NavLink } from 'react-router-dom';
-import { AppContext } from '../../AppContext';
-import useForm from '../../hooks/useForm';
-import UIkit from 'uikit';
-import moment from 'moment';
+import React, { Fragment, useEffect, useState, useContext } from 'react';
+import { useHistory, NavLink, useRouteMatch } from 'react-router-dom';                      // Import useHistory for "redirection"
+import { AppContext } from '../../AppContext';                      // Import AppContext to use created context
+import UIkit from 'uikit';                                          // Import UIkit for notifications
+import moment from 'moment';                                        // Import momentjs for date formatting
+import 'moment/locale/es'  // without this line it didn't work
 
-import { getEmergencies, getEmergency, createEmergency } from '../../services/emergency-services';
-import EmergencyForm from './EmergencyForm';
-import EmergencyInfo from './EmergencyInfo';
+import { getEmergencies } from '../../services/emergency-services';
 
-const Emergency = () => {
+moment.locale('es')
 
-  // Destructure form state variable, handleInput and handleFileInput functions for form state manipulation
-  const { form, handleInput } = useForm();
+const Emergency = ({ url }) => {
 
-  const { push } = useHistory();                    // Destructure push method from useHistory to "redirect" user
-  const { user, route, setRoute, objectHandler, setObjectHandler, resetUserContext } = useContext(AppContext);
-  const [ emergency, setEmergency ] = useState({});
-  const [ emergencies, setEmergencies ] = useState([]);
-  const [ isButtonDisabled, setIsButtonDisabled ] = useState(false);
+  const { user, resetUserContext } = useContext(AppContext);
+  const { push } = useHistory();
+  const [ consultations, setConsultations ] = useState([]);
 
   useEffect( () => {
 
     if ( !user._id ) {    // If there is no user logged in, send a notification and "redirect" to login
-
-      // Send UIkit warning notification: User must log in
       UIkit.notification({
-        message: `<span uk-icon='close'></span> Por favor inicia sesión.`,
+        message: `<p class="uk-text-center">Por favor inicia sesión.`,
         pos: 'bottom-center',
         status: 'warning'
-      });
-      
+      });    
       return push('/login');         // If not logged in, "redirect" user to login
-
     };
-
+      
     getEmergencies()
     .then( res => {
       
       const { emergencies } = res.data;
-      setEmergencies(emergencies);
-      setRoute('emergencies');
+      setConsultations(emergencies);
 
     })
     .catch( error => {
@@ -51,223 +41,114 @@ const Emergency = () => {
       }
     })
     
-  }, [isButtonDisabled]);
-
-  const handleSubmit = (event) => {
-
-    event.preventDefault();
-    setIsButtonDisabled(true);
-    
-    let datetime;
-
-    if ( form.timeperiod === 'AM' ) {
-      if ( form['time-hours'] === '12' )
-        datetime = form['only-date']+'T00'+':'+form['time-minutes']+':00';
-      else
-        datetime = form['only-date']+'T'+form['time-hours']+':'+form['time-minutes']+':00';
-    }
-    else {
-      if ( form['time-hours'] === '12' )
-        datetime = form['only-date']+'T12'+':'+form['time-minutes']+':00';
-      else {
-        switch (form['time-hours']) {
-          case '1': datetime = form['only-date']+'T13'+':'+form['time-minutes']+':00'; break;
-          case '2': datetime = form['only-date']+'T14'+':'+form['time-minutes']+':00'; break;
-          case '3': datetime = form['only-date']+'T15'+':'+form['time-minutes']+':00'; break;
-          case '4': datetime = form['only-date']+'T16'+':'+form['time-minutes']+':00'; break;
-          case '5': datetime = form['only-date']+'T17'+':'+form['time-minutes']+':00'; break;
-          case '6': datetime = form['only-date']+'T18'+':'+form['time-minutes']+':00'; break;
-          case '7': datetime = form['only-date']+'T19'+':'+form['time-minutes']+':00'; break;
-          case '8': datetime = form['only-date']+'T20'+':'+form['time-minutes']+':00'; break;
-          case '9': datetime = form['only-date']+'T21'+':'+form['time-minutes']+':00'; break;
-          case '10': datetime = form['only-date']+'T22'+':'+form['time-minutes']+':00'; break;
-          case '11': datetime = form['only-date']+'T23'+':'+form['time-minutes']+':00'; break;
-          default: datetime = form['only-date']+'T12'+':'+form['time-minutes']+':00';
-        }
-      }
-    }
-
-    form['date'] = datetime;
-    console.log(datetime)
-
-    createEmergency(form)
-    .then( res => {
-
-      const { emergency } = res.data    // Destructure updated preferences document from response
-
-      // Send UIkit success notification
-      UIkit.notification({
-        message: `<span uk-icon='close'></span> '¡La urgencia fue creada exitosamente!'`,
-        pos: 'bottom-center',
-        status: 'success'
-      });
-
-      setRoute('emergencies');
-      setIsButtonDisabled(false);
-
-    })
-    .catch( error => {
-
-      console.log(error);
-
-      // Send UIkit error notification
-      UIkit.notification({
-        message: `<span uk-icon='close'></span> ${error}`,
-        pos: 'bottom-center',
-        status: 'danger'
-      });
-      
-      setIsButtonDisabled(false);
-
-    });
-
-  }
-
-  // const toggleButton = () => setIsButtonDisabled(!isButtonDisabled);
-  
-  const loadEmergency = (emergency) => {
-    setEmergency(emergency);
-    setRoute('read');
-  }
-
-  const goToPrescription = (event, emergency, newRoute) => {
-    event.preventDefault();
-    setEmergency(emergency);
-    setObjectHandler(emergency);
-    setRoute(newRoute);
-    console.log(objectHandler)
-  }
-
-  const goToStudies = (event, emergency, newRoute) => {
-    event.preventDefault();
-    setObjectHandler(emergency);
-    setRoute(newRoute);
-    console.log(objectHandler);
-  }
+  }, []);
 
   return (
-    <div className="content">
-      
-        { route === 'emergencies' ? (
-          <div className="uk-section">
-            <h2>Urgencias</h2>
-            <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin" onClick={event => setRoute('create')} >
-              + Nueva Urgencia
-            </button>
-            <div className="uk-overflow-auto">
-              { emergencies.length < 1 ? (
-                  <h4 className="uk-text-danger">No has agregado urgencias</h4>
-                ) : null
-              }
-              <table className="uk-table uk-table-striped uk-table-hover uk-table-middle">
-                <thead>
-                  <tr>
-                    <th className="uk-text-center">Fecha</th>
-                    <th className="uk-text-center">Hora</th>
-                    <th className="uk-text-center uk-visible@s">Motivo de visita</th>
-                    <th className="uk-text-center uk-visible@s">Diagnóstico</th>
-                    <th className="uk-text-center uk-visible@s">Doctor</th>
-                    <th className="uk-text-center">Detalles</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  { emergencies ? 
-                      emergencies.map( (emergency, index) => 
-                        <tr key={index} >
-                          <td className="uk-text-center">{moment(emergency.date).locale('es').format('l')}</td>
-                          <td className="uk-text-center">{moment(emergency.date).locale('es').format('LT')}</td>
-                          <td className="uk-text-center uk-visible@s">{emergency.chief_complaint}</td>
-                          <td className="uk-text-center uk-visible@s">{emergency.diagnosis}</td>
-                          <td className="uk-text-center uk-visible@s">{`Dr. ${emergency.doctor}`}</td>
-                          <td className="uk-text-center">
-                            <button className="uk-button uk-button-default uk-button-small uk-border-pill" onClick={event => loadEmergency({emergency})} >
-                              Ver
-                            </button>
-                          </td>
-                          <td>
-                            <a href={`#modal-sections-${index}`} uk-toggle={`target: #modal-sections-${index}`}>
-                              <span className="uk-margin-small-right" uk-icon="more-vertical"></span>
-                            </a>
-                            <div id={`modal-sections-${index}`} className="uk-flex-top" uk-modal="true">
-                              <div className="uk-modal-dialog uk-margin-auto-vertical">
-                                <button className="uk-modal-close-default" type="button" uk-close="true" />
-                                <div className="uk-modal-header">
-                                  <h3 className="uk-text-center">Datos de la Urgencia</h3>
-                                  <p>Fecha: {moment(emergency.date).locale('es').format('LL')}</p>
-                                  <p>Clínica: {emergency.facility_name}</p>
-                                </div>
-                                <div className="uk-modal-body uk-flex uk-flex-column">
-                                  { emergency.treatment ? (
-                                      <button className="uk-button uk-button-default uk-border-pill uk-margin" onClick={event => goToPrescription(event, emergency, 'read')} >
-                                        <NavLink to="/recetas">Ver Receta</NavLink>
-                                      </button>
-                                    ) : (
-                                      <button className="uk-button uk-button-default uk-border-pill uk-margin" onClick={event => goToPrescription(event, emergency, 'create')} >
-                                        <NavLink to="/recetas">Agregar Receta</NavLink>
-                                      </button>
-                                    )
-                                  }
-                                  { emergency.treatment ? (
-                                      <button className="uk-button uk-button-default uk-border-pill uk-margin" onClick={event => goToStudies(event, emergency, 'read')} >
-                                        <NavLink to="/estudios">Ver Estudios</NavLink>
-                                      </button>
-                                    ) : (
-                                      <button className="uk-button uk-button-default uk-border-pill uk-margin" onClick={event => goToStudies(event, emergency, 'create')} >
-                                        <NavLink to="/estudios">Agregar Estudios</NavLink>
-                                      </button>
-                                    )
-                                  }
-                                </div>
-                              </div>
-                            </div>
-                          </td>
-                        </tr>
-                      )
-                    : <tr>
-                        <td>Cargando</td>
-                        <td>Cargando</td>
-                        <td>Cargando</td>
-                        <td>Cargando</td>
-                        <td>Cargando</td>
-                      </tr>
-                }
-                </tbody>
-              </table>
-            </div>
-          </div>
-          ) : (
-            route === 'create' ? (
-              <div className="uk-section">
-                <div className="uk-container">
-                  <h2>Nueva Urgencia</h2>
-                  <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin" onClick={event => setRoute('emergencies')} >
-                    Regresar
-                  </button>
-                  <EmergencyForm handleSubmit={handleSubmit} handleInput={handleInput} form={form} isButtonDisabled={isButtonDisabled} />
-                </div>
-              </div>
-            ) : (
-              route === 'read' ? (
-                <div className="uk-section">
-                  <h2>Ver Urgencia</h2>
-                  <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin" onClick={event => setRoute('emergencies')} >
-                    Regresar
-                  </button>
-                  <EmergencyInfo {...emergency} />
-                </div>
-              ) : (
-                <div className="uk-section">
-                  <h2>Cargando...</h2>
-                  <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin" onClick={event => setRoute('emergencies')} >
-                    Regresar
-                  </button>
-                </div> 
-              )
-            )
-          )
+
+    <Fragment>
+      <h2>Urgencias</h2>
+      <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin" onClick={event => push(`${url}/crear`)} >
+        + Nueva Urgencia
+      </button>
+      <div className="uk-overflow-auto">
+        { consultations.length < 1 ? (
+            <h4 className="uk-text-danger">No has agregado urgencias</h4>
+          ) : null
         }
-      
-    </div>
+        <table className="uk-table uk-table-striped uk-table-hover uk-table-middle">
+          <thead>
+            <tr>
+              <th className="uk-text-center">Fecha</th>
+              <th className="uk-text-center">Hora</th>
+              <th className="uk-text-center uk-visible@s">Motivo de consulta</th>
+              <th className="uk-text-center uk-visible@s">Diagnóstico</th>
+              <th className="uk-text-center uk-visible@s">Médico</th>
+              <th className="uk-text-center">Detalles</th>
+              <th className="uk-text-center uk-visible@s">Modificar</th>
+            </tr>
+          </thead>
+          <tbody>
+            { consultations ? 
+                consultations.map( (consultation, index) => 
+                  <tr key={index} >
+                    <td className="uk-text-center">{moment(consultation.date).locale('es').format('LL')}</td>
+                    <td className="uk-text-center">{moment(consultation.date).locale('es').format('LT')}</td>
+                    <td className="uk-text-center uk-visible@s">{consultation.chief_complaint}</td>
+                    <td className="uk-text-center uk-visible@s uk-width-1-3@s">{consultation.diagnosis}</td>
+                    <td className="uk-text-center uk-visible@s">{`${consultation.doctor}`}</td>
+                    <td className="uk-text-center">
+                      <button className="uk-button uk-button-default uk-button-small uk-border-pill" onClick={event => push({pathname: `${url}/ver`, state: {consultation: consultation}}) } >
+                        Ver
+                      </button>
+                    </td>
+                    <td className="uk-width-1-6 uk-width-auto@s">
+                      <a href={`#modal-sections-${index}`} uk-toggle={`target: #modal-sections-${index}`}>
+                        <span className="uk-margin-small-right uk-text-primary" uk-icon="more-vertical"></span>
+                      </a>
+                      <div id={`modal-sections-${index}`} className="uk-flex-top" uk-modal="true">
+                        <div className="uk-modal-dialog uk-margin-auto-vertical">
+                          <button className="uk-modal-close-default" type="button" uk-close="true" />
+                          <div className="uk-modal-header">
+                            <h3 className="uk-text-center">Datos de la Consulta</h3>
+                            <p className="uk-text-center">Fecha: {moment(consultation.date).locale('es').format('LL')}</p>
+                            <p className="uk-text-center">Doctor: {consultation.doctor}</p>
+                          </div>
+                          <div className="uk-modal-body uk-padding-small uk-flex uk-flex-column uk-flex-middle">
+                            { consultation.treatment ? (
+                                <button className="uk-modal-close uk-button uk-button-default uk-border-pill uk-margin-small uk-width-4-5 uk-width-1-2@s" onClick={event => push({ pathname: '/recetas/ver', state: {prescriptionID: consultation.treatment} }) } >
+                                  Ver Receta
+                                </button>
+                              ) : (
+                                <Fragment>
+                                  <p className="uk-margin-remove">Agregar:</p>
+                                  <button className="uk-modal-close uk-button uk-button-default uk-border-pill uk-margin-small uk-width-4-5 uk-width-1-2@s" onClick={event => push({ pathname: '/recetas/crear', state: {consultation: consultation} }) } >
+                                    Receta
+                                  </button>
+                                </Fragment>
+                              )
+                            }
+                            { consultation.studies.length > 0 ? (
+                                <button className="uk-modal-close uk-button uk-button-default uk-border-pill uk-margin-small uk-width-4-5 uk-width-1-2@s" onClick={event => push('/laboratorio')} >
+                                  Ver Estudios
+                                </button>
+                              ) : (
+                                <Fragment>
+                                  <p className="uk-margin-remove">{ !consultation.treatment ? "o Estudio:" : "Agregar Estudio:"}</p>
+                                  <button className="uk-modal-close uk-button uk-button-default uk-border-pill uk-margin-small uk-width-4-5 uk-width-1-2@s" onClick={event => push({ pathname: '/laboratorio/crear', state: {consultation: consultation} }) } >
+                                    Laboratorio
+                                  </button>
+                                  <button className="uk-modal-close uk-button uk-button-default uk-border-pill uk-margin-small uk-width-4-5 uk-width-1-2@s" onClick={event => push({ pathname: '/imagenologia/crear', state: {consultation: consultation} }) } >
+                                    Rayos X
+                                  </button>
+                                </Fragment>
+                              )
+                            }
+                            </div>
+                            <div className="uk-modal-footer uk-flex uk-flex-column uk-flex-middle">
+                              <button className="uk-modal-close uk-button uk-button-primary uk-border-pill uk-margin-small uk-width-4-5 uk-width-1-2@s"  onClick={event => push({pathname: `${url}/editar`, state: {consultation: consultation}}) } >
+                                Modificar
+                              </button>
+                              <button className="uk-modal-close uk-button uk-button-danger uk-border-pill uk-margin-small uk-width-4-5 uk-width-1-2@s" onClick={event => push({pathname: `${url}/eliminar`, state: {consultation: consultation}}) } >
+                                Eliminar
+                              </button>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                )
+              : <tr>
+                  <td className="uk-text-center">Cargando</td>
+                  <td className="uk-text-center uk-visible@s">Cargando</td>
+                  <td className="uk-text-center uk-visible@s">Cargando</td>
+                  <td className="uk-text-center uk-visible@s">Cargando</td>
+                  <td className="uk-text-center">Cargando</td>
+                </tr>
+          }
+          </tbody>
+        </table>
+      </div>  
+    </Fragment>
   )
 }
 
