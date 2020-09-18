@@ -66,3 +66,15 @@ export const editVitalSigns = (vitalSignsID, data) => {
   });
 
 }
+
+export const deleteVitalSigns = (vitalSignsID) => {
+
+  const token = localStorage.getItem('token');  // Get token from localStorage
+
+  return axios.delete(`${base_url}/${vitalSignsID}`, {
+    headers: {
+      Authorization: token,                     // Send token in request headers (check api/helpers/auth-helper)
+    }
+  });
+
+}

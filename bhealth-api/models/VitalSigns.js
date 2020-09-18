@@ -37,6 +37,10 @@ const vitalsSchema = new Schema(
       type: Number,
       default: null
     },
+    spo2: {
+      type: Number,
+      default: null
+    },
     blood_sugar: {
       type: Number,
       default: null

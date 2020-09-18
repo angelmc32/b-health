@@ -180,7 +180,7 @@ const ConsultationInfo = ({ url, action }) => {
                       Laboratorio
                     </button>
                     <button className="uk-modal-close uk-button uk-button-default uk-border-pill uk-margin-small uk-width-4-5 uk-width-2-3@s" onClick={event => push({ pathname: '/imagenologia/crear', state: {consultation: state.consultation} }) } >
-                      Rayos X
+                      Imagen y/o Rayos X
                     </button>
                   </div>
                 )

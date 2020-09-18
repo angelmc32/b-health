@@ -27,9 +27,12 @@ router.get('/', verifyToken, (req, res, next) => {
 router.post('/', verifyToken, (req, res, next) => {
 
   const { id } = req.user;
+  console.log(req.body)
 
   VitalSigns.create({ ...req.body, user: id })
   .then( vitalSigns => {
+
+    console.log(vitalSigns)
 
     res.status(200).json({ vitalSigns });
 
@@ -99,6 +102,24 @@ router.patch('/:vitalsignsID', verifyToken, (req, res, next) => {
   .catch( error => {
 
     res.status(500).json({ error, msg: 'Unable to retrieve data' }); // Respond 500 status, error and message
+
+  });
+
+});
+
+router.delete('/:vitalsignsID', verifyToken, (req, res, next) => {
+
+  const { vitalsignsID } = req.params;
+
+  VitalSigns.findByIdAndDelete(vitalsignsID)
+  .then( vitalsigns => {
+
+    res.status(200).json({ vitalsigns });
+
+  })
+  .catch( error => {
+
+    res.status(500).json({ error, msg: 'Unable to delete Vital Signs' }); // Respond 500 status, error and message
 
   });
 

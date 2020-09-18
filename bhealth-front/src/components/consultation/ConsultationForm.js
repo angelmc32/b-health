@@ -78,6 +78,11 @@ const ConsultationForm = ({ url, action }) => {
       }
       return;
     }
+
+    if (!form['only-date']) form['only-date'] = moment().format('YYYY-MM-DD')
+    if (!form['time-hours']) form['time-hours'] = "12"
+    if (!form['time-minutes']) form['time-minutes'] = "00"
+    if (!form['time-period']) form['time-period'] = "PM"
     
     if ( form['time-period'] === 'AM' ) { // Editing date and time inputs for mongodb date
       if ( form['time-hours'] == '12' )
@@ -195,10 +200,10 @@ const ConsultationForm = ({ url, action }) => {
             <label className="uk-form-label" htmlFor="date">Fecha y hora de consulta:</label>
             <div className="uk-form-controls uk-flex uk-flex-wrap uk-flex-between uk-width-1-1 uk-margin-small-bottom">
               <div className="uk-width-1-1 uk-width-1-2@s uk-margin-small">
-                <input className="uk-input uk-border-pill uk-text-center" type="date" name="only-date" onChange={handleInput} max={moment().format('YYYY-MM-DD')} required />
+                <input className="uk-input uk-border-pill uk-text-center" type="date" name="only-date" onChange={handleInput} defaultValue={moment().format('YYYY-MM-DD')} max={moment().format('YYYY-MM-DD')} required />
               </div>
               <div className="uk-width-1-1 uk-width-1-2@s uk-flex uk-flex-around">
-                <select name="time-hours" onChange={handleInput} className="uk-select uk-border-pill uk-width-1-3" defaultValue="" required >
+                <select name="time-hours" onChange={handleInput} className="uk-select uk-border-pill uk-width-1-3" defaultValue="12" required >
                   <option disabled={true} value="">Hora</option>
                   <option>1</option>
                   <option>2</option>
@@ -213,15 +218,14 @@ const ConsultationForm = ({ url, action }) => {
                   <option>11</option>
                   <option>12</option>
                 </select>
-                <select name="time-minutes" onChange={handleInput} className="uk-select uk-border-pill uk-width-1-3" defaultValue="" required >
+                <select name="time-minutes" onChange={handleInput} className="uk-select uk-border-pill uk-width-1-3" defaultValue="00" required >
                   <option disabled={true} value="">Minutos</option>
                   <option>00</option>
                   <option>15</option>
                   <option>30</option>
                   <option>45</option>
                 </select>
-                <select name="time-period" onChange={handleInput} className="uk-select uk-border-pill uk-width-1-4" defaultValue="" required >
-                  <option disabled={true} value="">AM/PM</option>
+                <select name="time-period" onChange={handleInput} className="uk-select uk-border-pill uk-width-1-4" defaultValue="PM" required >
                   <option>AM</option>
                   <option>PM</option>
                 </select>

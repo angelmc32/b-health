@@ -51,7 +51,6 @@ const StudyInfo = ({ url, action }) => {
     if ( location.state && !state.study._id ) {
       if ( location.state.study ){
         setState( prevState => ({...prevState, study: location.state.study}) );
-        console.log(location.state.study)
         }
       if ( location.state.studyID )
       studyID = location.state.studyID;
@@ -61,7 +60,6 @@ const StudyInfo = ({ url, action }) => {
       .then( res => {
         const { study } = res.data;
         setState( prevState => ({...prevState, study: study}) );
-        console.log(study)
         studyID = null;
       })
       .catch( res => {

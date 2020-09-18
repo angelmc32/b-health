@@ -4,6 +4,8 @@ import { AppContext } from '../../AppContext';
 
 import VitalSigns from './VitalSigns'
 import VitalSignsForm from './VitalSignsForm'
+import VitalSignsInfo from './VitalSignsInfo'
+import NoMatch from '../common/NoMatch'
 
 const VitalSignsIndex = () => {
 
@@ -21,6 +23,18 @@ const VitalSignsIndex = () => {
           </Route>
           <Route path={`${path}/registrar`}>
             <VitalSignsForm push={push} url={url} />
+          </Route>
+          <Route path={`${path}/ver`}>  
+            <VitalSignsInfo url={url} action={'read'} />
+          </Route>
+          <Route path={`${path}/editar`}>  
+            <VitalSignsInfo url={url} action={'update'} />
+          </Route>
+          <Route path={`${path}/eliminar`}>  
+            <VitalSignsInfo url={url} action={'delete'} />
+          </Route>
+          <Route path="*">
+            <NoMatch />
           </Route>
         </Switch>
       </div>

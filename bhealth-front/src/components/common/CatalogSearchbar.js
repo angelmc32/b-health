@@ -144,13 +144,16 @@ const Autocomplete = ({ suggestions, propertyName, type, form, inputValue = null
     if (filteredSuggestions.length) {
       suggestionsListComponent = (
         <ul className="suggestions uk-height-small uk-border-rounded">
+          <li className="suggestion-active" key={-1} onClick={onClick}>
+            {state.userInput}
+          </li>
           {filteredSuggestions.map((suggestion, index) => {
             let className;
 
             // Flag the active suggestion with a class
-            if (index === activeSuggestion) {
-              className = "suggestion-active";
-            }
+            // if (index === activeSuggestion) {
+            //   className = "suggestion-active";
+            // }
 
             return (
               <li className={className} key={index} onClick={onClick}>
@@ -163,16 +166,22 @@ const Autocomplete = ({ suggestions, propertyName, type, form, inputValue = null
     } else {
       if ( userInput.length < 8) {
         suggestionsListComponent = (
-          <div className="no-suggestions uk-text-center">
-            <em>Buscando, continua escribiendo...</em>
-          </div>
+          <ul className="suggestions uk-height-small uk-border-rounded">
+            <li className="suggestion-active" key={0} onClick={onClick}>
+              {state.userInput}
+            </li>
+            <li className="uk-text-danger" key={1} >Buscando, continua escribiendo...</li>
+          </ul>
         );
       }
       else {
         suggestionsListComponent = (
-          <div className="no-suggestions uk-text-center">
-            <em>No se encuentra en el catálogo, intenta otra palabra...</em>
-          </div>
+          <ul className="suggestions uk-height-small uk-border-rounded">
+            <li className="suggestion-active" key={0} onClick={onClick}>
+              {state.userInput}
+            </li>
+            <li className="uk-text-danger" key={1} >No se encuentra en el catálogo, intenta otra palabra...</li>
+          </ul>
         );
       }
       
