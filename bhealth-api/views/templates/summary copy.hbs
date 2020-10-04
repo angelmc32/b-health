@@ -1,0 +1,82 @@
+<style type="text/css">
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  .centered-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2.5%;
+  }
+  .stretch-div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%
+  }
+  .icon-img-div {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    max-width: 80px
+  }
+  .icon-img-div>img {
+    max-width: 100%;
+    height: auto;
+  }
+</style>
+<html>
+  <body>
+    <div class="icon-img-div">
+      <img src="https://res.cloudinary.com/angelmc32/image/upload/v1601604466/icon_un5c0x.png" alt="Eva-salud.png" /> 
+    </div>
+    <div class="centered-div">
+      <h1>Mi Historial Clínico</h1>
+    </div>
+    <hr>
+      <h3>Ficha de Identificación del Paciente</h3>
+    <div class="stretch-div">
+      <p>Nombres: {{user.first_name}}</p>
+      <p>Apellidos: {{user.last_name1}}</p>
+      <p>Apellido Materno: {{user.last_name2}}</p>
+    </div>
+    <div class="stretch-div">
+      <p>Fecha de nacimiento: {{user.date_of_birth}}</p>
+      {{#ifEquals user.gender 'Femenino' }}
+        <p>Género: Femenino</p>
+      {{/ifEquals}}
+      {{#ifEquals user.gender 'Masculino' }}
+        <p>Género: Masculino</p>
+      {{/ifEquals}}
+      {{#ifEquals user.gender 'No especificado' }}
+        <p>Género: No especificado</p>
+      {{/ifEquals}}
+    </div>
+    <hr>
+      <h3>Antecedentes Personales Patológicos</h3>
+    <div class="stretch-div">
+      <p>Nombres: {{user.first_name}}</p>
+      <p>Apellido Paterno: {{user.last_name1}}</p>
+      <p>Apellido Materno: {{user.last_name2}}</p>
+    </div>
+    <div class="stretch-div">
+      <p>Fecha de nacimiento: {{user.date_of_birth}}</p>
+      {{#ifEquals user.gender 'Femenino' }}
+        <p>Género: Femenino</p>
+      {{/ifEquals}}
+      {{#ifEquals user.gender 'Masculino' }}
+        <p>Género: Masculino</p>
+      {{/ifEquals}}
+      {{#ifEquals user.gender 'No especificado' }}
+        <p>Género: No especificado</p>
+      {{/ifEquals}}
+    </div>
+  </body>
+</html>

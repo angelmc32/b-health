@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const pdfKit = require('pdfkit');
-const path         = require('path');
+const path = require('path');
 
 const fs = require('fs');
 const moment = require('moment')
@@ -23,11 +23,13 @@ const Consultation = require('../models/Consultation')
 const Drug = require('../models/Drug')
 const Study = require('../models/Study') 
 
+const { createPDF } = require('../helpers/pdf-summary-helper')
+
 // Import helper for token verification (jwt)
 const { verifyToken } = require('../helpers/auth-helper');
 // const { document } = require('pdfkit/js/reference');
 
-router.get('/all', verifyToken, (req, res, next) => {
+router.get('/all', verifyToken, async (req, res, next) => {
 
   const { id } = req.user;
   const { user } = req;
@@ -62,20 +64,7 @@ router.get('/all', verifyToken, (req, res, next) => {
     .catch( error => console.log(error))
   ;
 
-  // let doc = new pdfKit(
-  //   { 
-  //     layout : 'portrait',
-  //     margins: { top: 50, bottom: 50, left: 72, right: 72 },
-  //     info: {
-  //       Title 	: 'Mi Historia Clínica',
-  //       Author 	: req.user.email,
-  //       Subject 	: 'Historia Clínica del Paciente',
-  //       ModDate   : new Date(Date.now()).toLocaleString()
-  //     }
-  //   }
-  // );
-
-  const AllPromises = () => Promise.allSettled([promise1, promise2, promise3, promise4])
+  const AllPromises = async () => Promise.allSettled([promise1, promise2, promise3, promise4])
   .then( res => {
 
     res.map( (object, index) => {
@@ -106,72 +95,13 @@ router.get('/all', verifyToken, (req, res, next) => {
 
     });
 
-    // let documentDefinition = {
-    //   content: [
-    //     {
-    //       text: [
-    //         {text: 'Eva Salud', style: 'header'},
-    //         {text: 'La salud de tu familia, en tus manos', style: 'subheader'}
-    //       ]
-    //     },
-		//     'Official documentation is in progress, this document is just a glimpse of what is possible with pdfmake and its layout engine.',
-    //   ]
-    // }
-
-    // const pdfDoc =  pdfMake.createPdf(documentDefinition);
-    // pdfDoc.getBase64( (data) => {
-    //   res.writeHead(200, 
-    //     {
-    //       'Content-Type': 'application/pdf',
-    //       'Content-Disposition': 'attachment; filename="MiHistorial.pdf'
-    //     });
-    // });
-
-    // const download = Buffer.from(data.toString('utf-8'), 'base64');
-
   });
 
-  // endPDF();
-
-  // async function endPDF() {
-  //   await AllPromises();
-  //   res.writeHead(200, {
-  //     'Content-Type': 'application/pdf',
-  //     'Content-Disposition': 'attachment; filename=sample.pdf',
-  //     'Content-Transfer-Encoding': 'Binary'
-  //   });
-  //   doc.pipe( fs.createWriteStream('out.pdf') );
-  //   doc.pipe( res );
-  //   doc.end();
-  // }
-  let documentDefinition = {
-    content: [
-      {
-        text: [
-          {text: 'Eva Salud', style: 'header'},
-          {text: 'La salud de tu familia, en tus manos', style: 'subheader'}
-        ]
-      },
-      'Official documentation is in progress, this document is just a glimpse of what is possible with pdfmake and its layout engine.',
-    ]
-  }
-
+  const filename = await createPDF(id, user);
+  res.contentType("application/pdf");
+  console.log(filename)
+  res.sendFile(path.join(__dirname, `../${filename}`));
   
-  createPdfBinary(documentDefinition)
-  .then( (binary) => {
-		res.contentType('application/pdf');
-		res.send(binary);
-  })
-  .catch( (error) => {
-		res.send('ERROR:' + error);
-	});
-
-
-
-  // const pdfDoc = printer.createPdfKitDocument(documentDefinition);
-  // pdfDoc.pipe(fs.createWriteStream('document.pdf'));
-  // pdfDoc.end();
-
 });
 
 router.get('/pdfkit', verifyToken, (req, res, next) => {
@@ -376,9 +306,9 @@ const generateHR = (doc, yPosition) => doc
   .lineTo(550, yPosition)
   .stroke();
 
-  const createPdfBinary = (documentDefinition) => {
-    const pdf = pdfMake.createPdfKitDocument(documentDefinition)
-    return pdf.getDataUrl();
-  }
+const createPdfBinary = (documentDefinition) => {
+  const pdf = pdfMake.createPdfKitDocument(documentDefinition)
+  return pdf.getDataUrl();
+}
 
 module.exports = router;
