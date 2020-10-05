@@ -94,7 +94,7 @@ exports.createPDF = async (id, user) => {
     const browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox']});
     const page = await browser.newPage();
     const clinicalSummary = await AllPromises();
-    console.log('CONSULTATIONS', clinicalSummary.consultations_array)
+    // console.log('CONSULTATIONS', clinicalSummary.consultations_array)
     const content = await compile('summary', clinicalSummary)
 
     await page.setContent(content);
@@ -105,7 +105,7 @@ exports.createPDF = async (id, user) => {
       printBackground: true
     });
 
-    console.log('pdf generated');
+    // console.log('pdf generated');
     await browser.close();
     return filename
 

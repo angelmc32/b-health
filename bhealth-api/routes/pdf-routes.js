@@ -73,7 +73,7 @@ router.get('/all', verifyToken, async (req, res, next) => {
       switch (index) {
         case 0: {
           medhistory_var = Object.values(object.value)[0];
-          console.log(medhistory_var)
+          // console.log(medhistory_var)
           break;
         }
         case 1: {
@@ -99,7 +99,6 @@ router.get('/all', verifyToken, async (req, res, next) => {
 
   const filename = await createPDF(id, user);
   res.contentType("application/pdf");
-  console.log(filename)
   res.sendFile(path.join(__dirname, `../${filename}`));
   
 });
