@@ -193,6 +193,18 @@ span.uk-text-secondary {
   margin: 2.5% 0
 }
 
+.uk-card-secondary.uk-card-hover {
+  background: rgba(255,255,255,.7) !important;
+  color: #333333 !important;
+  border: #4F39BF 2px solid;
+  border-radius: 15px;
+  margin: 2.5% 0
+}
+
+.uk-card-secondary.uk-card-hover>p,h5 {
+  color: #333333 !important;
+}
+
 .uk-card-primary {
   border: #4F39BF 1px solid;
   background: #6448F2 !important;

@@ -296,7 +296,7 @@ const PrescriptionInfo = ({ url, action }) => {
   }
 
   return (
-    <div className="uk-container">
+    <Fragment>
       <h2>{action !== 'delete' ? 'Ver Receta' : 'Eliminar Receta'}</h2>
       { action !== 'delete' ?
           <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin" onClick={ event => { push(url) } } >
@@ -323,7 +323,7 @@ const PrescriptionInfo = ({ url, action }) => {
             </button>
           
       }
-      <div className="uk-margin uk-flex uk-flex-column uk-flex-middle">
+      <div className="uk-container uk-margin uk-flex uk-flex-column uk-flex-middle">
         
         <div className="uk-width-1-1 uk-child-width-1-2@s uk-child-width-1-1 uk-grid-small uk-grid-match uk-flex uk-flex-around"  uk-grid="true">
           <div>
@@ -522,7 +522,7 @@ const PrescriptionInfo = ({ url, action }) => {
           }
         </div> */}
       </div>
-    </div>
+    </Fragment>
   )
 }
 

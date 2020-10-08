@@ -100,11 +100,11 @@ const DrugsForm = ({push, url}) => {
             <form onSubmit={handleSubmit} className="uk-form-stacked uk-text-left uk-width-3-5@s">
               <label className="uk-form-label uk-margin-small-top" htmlFor="name">Nombre:</label>
               <div className="uk-form-controls">
-                <input className="uk-input uk-border-pill uk-text-center" name="name" onChange={handleInput} placeholder="Nombre del medicamento..." required />
+                <input className="uk-input uk-border-pill uk-text-center" type="text" name="name" onChange={handleInput} placeholder="Nombre del medicamento..." required />
               </div>
               <label className="uk-form-label uk-margin-top" htmlFor="dosage_form">Presentación <span className="uk-text-italic">(opcional)</span>:</label>
               <div className="uk-form-controls">
-                <input className="uk-input uk-border-pill uk-text-center" name="dosage_form" onChange={handleInput} placeholder="Jarabe, tabletas, crema..." />
+                <input className="uk-input uk-border-pill uk-text-center" type="text" name="dosage_form" onChange={handleInput} placeholder="Jarabe, tabletas, crema..." />
               </div> 
               <label className="uk-form-label uk-margin-top" htmlFor="directions">Indicaciones <span className="uk-text-italic">(opcional)</span>:</label>
               <div className="uk-form-controls">
