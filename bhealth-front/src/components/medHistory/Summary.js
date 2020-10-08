@@ -43,7 +43,6 @@ const Summary = () => {
 
     createSummary()
     .then( res => {
-      console.log(res)
       setState( prevState => ({...prevState, isButtonDisabled: false, spinnerState: false}));
       setPdfFile(res.data)
       // var file = new Blob([res.data], { type: 'application/pdf' });

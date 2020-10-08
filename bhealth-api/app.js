@@ -16,7 +16,7 @@ const cloudDB      = process.env.DB;
 
 
 mongoose
-  .connect(cloudDB, {useNewUrlParser: true, useUnifiedTopology: true})
+  .connect(cloudDB, {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true})
   .then(x => {
     console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`)
   })
@@ -72,6 +72,7 @@ const prescriptionRoutes = require('./routes/prescription-routes');
 const studyRoutes = require('./routes/study-routes');
 const vitalSignsRoutes = require('./routes/vitalsigns-routes');
 const drugRoutes = require('./routes/drug-routes');
+const treatmentRoutes = require('./routes/treatment-routes');
 const pdfRoutes = require('./routes/pdf-routes')
 
 app.use('/api', authRoutes);
@@ -84,6 +85,7 @@ app.use('/api/prescriptions', prescriptionRoutes);
 app.use('/api/studies', studyRoutes);
 app.use('/api/vitalsigns', vitalSignsRoutes);
 app.use('/api/drugs', drugRoutes);
+app.use('/api/treatments', treatmentRoutes);
 app.use('/api/pdf', pdfRoutes);
 
 module.exports = app;

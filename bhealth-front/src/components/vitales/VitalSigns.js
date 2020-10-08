@@ -62,8 +62,6 @@ const VitalSigns = ({ push, url }) => {
       let weight = 0, weightCounter = 0;
       let height = 0, heightCounter = 0;
 
-      console.log(vitalsigns)
-
       if ( state.showLastRecords ) {
         vitalsigns.map( record => {
 

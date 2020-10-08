@@ -83,13 +83,16 @@ const Navbar = () => {
                   <NavLink to="/home">Mi Salud</NavLink>
                 </li>
                 <li className="uk-active" onClick={event => handleRoute(event, "none")} >
+                  <NavLink to="/tratamientos">Mis Tratamientos</NavLink>
+                </li>
+                <li className="uk-active" onClick={event => handleRoute(event, "none")} >
                   <NavLink to="/antecedentes">Antecedentes</NavLink>
                 </li>
                 <li className="uk-active" onClick={event => handleRoute(event, "none")} >
                   <NavLink to="/signosvitales">Signos Vitales</NavLink>
                 </li>
                 <li className="uk-active" onClick={event => handleRoute(event, "none")} >
-                  <NavLink to="/medicamentos">Mis Medicamentos</NavLink>
+                  <NavLink to="/medicamentos">Medicamentos</NavLink>
                 </li>
                 <li className="uk-active" onClick={event => handleRoute(event, "none")} >
                   <NavLink to="/consultas">Consultas</NavLink>
