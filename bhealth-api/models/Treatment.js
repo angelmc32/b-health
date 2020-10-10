@@ -29,9 +29,13 @@ const treatmentSchema = new Schema(
       type: Boolean,
       default: true
     },
-    drugs: [{ 
-      type : Schema.Types.ObjectId,
-      ref: 'Drug'
+    drugs: [{
+      name: String,
+      dose: String,
+      dosage_form: String,
+      schedule: String,
+      periodicity: String,
+      directions: String
     }],
     extra_instructions: {
       type: [String],

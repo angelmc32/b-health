@@ -28,11 +28,12 @@ router.post('/', verifyToken, (req, res, next) => {
 
   const { id } = req.user;
   const body  = req.body;               // Extract body from request
-  const { drugsJSON, extraInstructionsJSON } = req.body
+  console.log(body)
+  const { drugsJSON, instructionsJSON } = req.body
   // Agregar el código de abajo si tienes problemas para hacer el parse del JSON que se envía desde el front-end
   // Treatment.create({ drugs: JSON.parse(drugsJSON), extra_instructions: JSON.parse(extraInstructionsJSON), ...req.body, user: id })
 
-  Treatment.create({...req.body, user: id })
+  Treatment.create({ ...req.body, user: id })
   .then( treatment => {
 
     res.status(200).json({ treatment });
@@ -40,6 +41,7 @@ router.post('/', verifyToken, (req, res, next) => {
   })
   .catch( error => {
 
+    console.log(error)
     res.status(500).json({ error, msg: 'Unable to create treatment' }); // Respond 500 status, error and message
 
   });

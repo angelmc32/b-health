@@ -16,7 +16,6 @@ const Treatments = ({ push }) => {
   let { path, url } = useRouteMatch();
   const { user, route, setRoute, objectHandler, setObjectHandler, resetUserContext } = useContext(AppContext);
   let currentHour = moment().format('H');
-  console.log(currentHour)
 
   const [ treatments, setTreatments ] = useState([]);
   const [ drugs, setDrugs ] = useState([]);

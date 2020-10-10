@@ -42,7 +42,7 @@ const TreatmentsForm = ({ url }) => {
       const { treatment } = res.data;
       // Send UIkit success notification
       UIkit.notification({
-        message: '<p className="uk-text-center">¡Tu tratamiento fue creado exitosamente!</p>',
+        message: '<p class="uk-text-center">¡Tu tratamiento fue creado exitosamente!</p>',
         pos: 'bottom-center',
         status: 'success'
       });
@@ -84,8 +84,11 @@ const TreatmentsForm = ({ url }) => {
   const addElementToArray = (event, name) => {
     event.preventDefault()
     const newArray = [...state[name]]
-    if ( !form[name] || form[name].length < 1 ) return null
-    newArray.push(form[name])
+    if ( !form[name] || form[name].length < 1 ) return null;
+    if ( name === 'drugs' )
+      newArray.push({name: form[name]})  
+    else
+      newArray.push(form[name])
     setState( prevState => ({...prevState, arrayModified: true, [name]: newArray}))
     delete form[name]
   }
@@ -126,14 +129,14 @@ const TreatmentsForm = ({ url }) => {
                   { state.drugs.length > 0 ?
                     state.drugs.map( (drug, index) =>
                       <li className="uk-margin-left uk-flex" key={index}>
-                        <p className="uk-width-4-5 uk-margin-remove">{index+1}. {drug}</p>
+                        <p className="uk-width-4-5 uk-margin-remove">{index+1}. {drug.name}</p>
                         <a className="uk-width-1-5 uk-text-danger uk-text-right" uk-icon="trash" hidden={false /*!state.isUserEditing*/} onClick={ (event) => removeElementFromArray(event, 'drugs', index) }></a>
                       </li>
                     )
                     : <li className={state.errorMessage ? "uk-text-danger uk-text-center" : "uk-text-center"}>No has agregado medicamentos</li>
                   }
                   <li className="uk-flex uk-flex-between uk-flex-middle" hidden={false /*!state.isUserEditing || state.isButtonDisabled*/}>
-                    <input className="uk-input uk-text-center uk-width-5-6 uk-border-pill" onChange={handleInput} name="drugs" type="text" value={ form['drugs'] ? form['drugs'] : ""} placeholder="Nombre del medicamento"/>
+                    <input className="uk-input uk-text-center uk-width-5-6 uk-border-pill" onChange={handleInput} name="drugs" type="text" value={ form['drugs'] && !state.isButtonDisabled ? form['drugs'] : ""} placeholder="Nombre del medicamento"/>
                     <a className={ form['drugs'] ? "uk-width-1-6 eva-edit uk-text-right" : "uk-width-1-6 uk-text-muted uk-text-right"} uk-icon="plus-circle" hidden={false /*!state.isUserEditing*/} onClick={ (event) => addElementToArray(event, 'drugs') }></a>
                   </li>
                 </ul>
