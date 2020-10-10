@@ -105,10 +105,6 @@ exports.createPDF = async (id, user) => {
       printBackground: true
     });
 
-<<<<<<< HEAD
-    // console.log('pdf generated');
-=======
->>>>>>> c18bc9bfcd6a45769e5d369c1e2e3982323288f4
     await browser.close();
     return filename
 
