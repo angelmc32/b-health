@@ -28,13 +28,16 @@ const Sidebar = () => {
           <NavLink to="/home">Mi Salud</NavLink>
         </li>
         <li className="uk-active">
+          <NavLink to="/tratamientos">Mis Tratamientos</NavLink>
+        </li>
+        <li className="uk-active">
           <NavLink to="/antecedentes">Antecedentes</NavLink>
         </li>
         <li className="uk-active">
           <NavLink to="/signosvitales">Signos Vitales</NavLink>
         </li>
         <li className="uk-active">
-          <NavLink to="/medicamentos">Mis Medicamentos</NavLink>
+          <NavLink to="/medicamentos">Medicamentos</NavLink>
         </li>
         <li className="uk-active">
           <NavLink to="/consultas">Consultas</NavLink>

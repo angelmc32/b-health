@@ -47,6 +47,10 @@ const drugSchema = new Schema(
       type: String,
       default: null
     },
+    directions: {
+      type: String,
+      default: null
+    },
     shape: {
       type: String,
       default: null

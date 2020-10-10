@@ -2,7 +2,7 @@ import React from 'react'
 import { Switch, Route, useRouteMatch, useHistory } from 'react-router-dom'
 
 import Drugs from './Drugs'
-import DrugsForm from './DrugsForm'
+import DrugsInfo from './DrugsInfo'
 import DrugsTimeDay from './DrugsTimeDay'
 
 const DrugIndex = () => {
@@ -17,7 +17,7 @@ const DrugIndex = () => {
           <Drugs push={push} />
         </Route>
         <Route path={`${path}/registrar`}>  
-          <DrugsForm push={push} url={url} />
+          <DrugsInfo push={push} url={url} />
         </Route>
         <Route path={`${path}/manana`}>
           <DrugsTimeDay title={'Mañana'} push={push} url={url} />

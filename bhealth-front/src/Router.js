@@ -19,6 +19,7 @@ import Home from './components/home/Home';
 // import Patients from './components/doctor/myPatients/Patients'
 import StudyIndex from './components/study/StudyIndex';
 import Disease from './components/disease/Disease';
+import TreatmentsIndex from './components/treatment/TreatmentsIndex';
 import ConsultationIndex from './components/consultation/ConsultationIndex';
 import PrescriptionIndex from './components/prescription/PrescriptionIndex';
 import MedHistoryIndex from './components/medHistory/MedHistoryIndex'
@@ -36,6 +37,7 @@ import NoMatch from './components/common/NoMatch'
 // import Calendar from './components/schedule/Calendar';
 import drugs from './catalogs/drugs.json'
 import diseases from './catalogs/cie10.json'
+import DrugsForm from './components/drug/DrugsFormPrev';
 
 const Router = () => {
 
@@ -80,6 +82,10 @@ const Router = () => {
 
       <Route path="/perfil">
         <ProfileIndex />
+      </Route>
+
+      <Route path="/tratamientos">
+        <TreatmentsIndex />
       </Route>
 
       <Route path="/antecedentes">
@@ -134,9 +140,9 @@ const Router = () => {
         <Consent />
       </Route>
 
-      {/* <Route path="/test">
-        <PrescriptionIndex />
-      </Route> */}
+      <Route path="/test">
+        <DrugsForm />
+      </Route>
       
       <Route path="*">
         <NoMatch />

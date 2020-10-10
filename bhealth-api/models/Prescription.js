@@ -24,9 +24,9 @@ const prescriptionSchema = new Schema (
     },
     drugs: [{
       name: String,
-      dose: String,
       dosage_form: String,
-      schedule: String,
+      start_date: Date,
+      end_date: Date,
       periodicity: String,
       directions: String
     }],

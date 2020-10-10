@@ -40,6 +40,14 @@ main {
   scroll-snap-align: start;
 }
 
+.uk-section.section-special {
+  width: 100%;
+  min-height: 90vh;
+  padding: 0;
+  text-align: center;
+  scroll-snap-align: start;
+}
+
 .content {
   width: 100%;
   height: 90vh;
@@ -183,6 +191,18 @@ span.uk-text-secondary {
   border-radius: 15px;
   padding: 2.5%;
   margin: 2.5% 0
+}
+
+.uk-card-secondary.uk-card-hover {
+  background: rgba(255,255,255,.7) !important;
+  color: #333333 !important;
+  border: #4F39BF 2px solid;
+  border-radius: 15px;
+  margin: 2.5% 0
+}
+
+.uk-card-secondary.uk-card-hover>p,h5 {
+  color: #333333 !important;
 }
 
 .uk-card-primary {

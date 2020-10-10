@@ -296,7 +296,7 @@ const PrescriptionInfo = ({ url, action }) => {
   }
 
   return (
-    <div className="uk-container">
+    <Fragment>
       <h2>{action !== 'delete' ? 'Ver Receta' : 'Eliminar Receta'}</h2>
       { action !== 'delete' ?
           <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin" onClick={ event => { push(url) } } >
@@ -323,7 +323,7 @@ const PrescriptionInfo = ({ url, action }) => {
             </button>
           
       }
-      <div className="uk-margin uk-flex uk-flex-column uk-flex-middle">
+      <div className="uk-container uk-margin uk-flex uk-flex-column uk-flex-middle">
         
         <div className="uk-width-1-1 uk-child-width-1-2@s uk-child-width-1-1 uk-grid-small uk-grid-match uk-flex uk-flex-around"  uk-grid="true">
           <div>
@@ -416,7 +416,7 @@ const PrescriptionInfo = ({ url, action }) => {
                 <h4 className="uk-margin-small">Medicamentos</h4>
                 <ul className="uk-flex uk-flex-column uk-flex-center uk-flex-middle" uk-accordion="true">
                   { state.prescription.drugs.map( (drug, index) =>
-                    <li className={"uk-width-5-6 uk-width-2-5@s uk-margin-small"} key={index}>
+                    <li className={"uk-width-5-6 uk-width-3-5@s uk-margin-small"} key={index}>
                       <a className="uk-accordion-title uk-text-left uk-text-middle" href="#" onClick={ state.isUserEditing ? toggleIsUserEditing : event => setState(prevState => ({...prevState, isUserAdding: false})) }><h5 className="uk-margin-remove">{index+1}. {state.prescription.drugs[index].name}</h5></a>
                       <div className="uk-accordion-content uk-margin-small-top">
                         <div className="uk-width-1-1 uk-flex uk-flex-between">
@@ -522,7 +522,7 @@ const PrescriptionInfo = ({ url, action }) => {
           }
         </div> */}
       </div>
-    </div>
+    </Fragment>
   )
 }
 

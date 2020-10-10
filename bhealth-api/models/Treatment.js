@@ -8,14 +8,39 @@ const treatmentSchema = new Schema(
       required: true,
       ref: 'User'
     },
-    prescription: {
-      type: Schema.Types.ObjectId,
-      ref: 'Prescription'
+    start_date: {
+      type: Date,
+      default: null
     },
-    study: {
-      type: Schema.Types.ObjectId,
-      ref: 'Prescription'
-    }
+    end_date: {
+      type: Date,
+      default: null
+    },
+    name: {
+      type: String,
+      required: true,
+      unique: true
+    },
+    description: {
+      type: String,
+      default: null
+    },
+    isActive: {
+      type: Boolean,
+      default: true
+    },
+    drugs: [{
+      name: String,
+      dose: String,
+      dosage_form: String,
+      schedule: String,
+      periodicity: String,
+      directions: String
+    }],
+    extra_instructions: {
+      type: [String],
+      default: null
+    },
   }
 );
 

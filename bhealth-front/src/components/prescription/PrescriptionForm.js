@@ -23,7 +23,7 @@ const PrescriptionForm = ({ url, action }) => {
     checkboxState: false
   })
   const [ imgPreviewState, setImgPreviewState ] = useState({file: '',imagePreviewUrl: ''})
-  const [ drugs, setDrugs ] = useState([])
+  const [ drugs, setDrugs ] = useState([]);
   const [ drugFields, setDrugFields ] = useState([]);
   const [ drugQuantity, setDrugQuantity] = useState(0);
   let drug = {'generic_name': null, 'brand_name': null, 'dosage_form': null, 'dose': null, 'directions': null};
@@ -126,6 +126,12 @@ const PrescriptionForm = ({ url, action }) => {
           });
         }
         else {
+          // Send UIkit success notification
+          UIkit.notification({
+            message: '<p className="uk-text-center">¡Tu receta fue creada exitosamente!</p>',
+            pos: 'bottom-center',
+            status: 'success'
+          });
           setState( prevState => ({...prevState, isButtonDisabled: false, spinnerState: false}));
           push({pathname: url, state: {prescription: prescription}})
         }
