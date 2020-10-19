@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
+import { useHistory } from 'react-router-dom'
 import { AppContext } from '../../AppContext';                      // Import AppContext to use created context
 import useForm from '../../hooks/useForm';
 import UIkit from 'uikit';                                          // Import UIkit for notifications
@@ -7,10 +8,11 @@ import moment from 'moment';                                        // Import mo
 
 import { createDrug } from '../../services/drug-services'
 
-const DrugsForm = ({push, url}) => {
+const DrugsForm = ({url}) => {
 
   const { user, resetUserContext } = useContext(AppContext);
   const { form, setForm, resetForm, handleInput } = useForm();
+  const { push } = useHistory();
   const [ state, setState ] = useState({
     isButtonDisabled: true,
     spinnerState: false,
@@ -267,30 +269,30 @@ const DrugsForm = ({push, url}) => {
           <div className="uk-width-1-1">
             <label className="uk-form-label" htmlFor="form-stacked-text">{ state.isCurrentTreatment ? "Duración del tratamiento actual:" : "Duración del tratamiento anterior:"}</label>
             <div className="uk-flex uk-flex-around">
-                <div className="uk-form-controls uk-width-2-3">
-                  <select name="duration_units" onChange={handleInput} className="uk-select uk-border-pill" defaultValue=" Uso único" >
-                    <option> Uso único</option>
-                    <option>{ form.duration_number > 1 ? "Días" : "Día" }</option>
-                    <option>{ form.duration_number > 1 ? "Semanas" : "Semana" }</option>
-                    <option>{ form.duration_number > 1 ? "Meses" : "Mes" }</option>
-                    <option>Según sea necesario</option>
-                  </select>
-                </div>
-                <div className="uk-form-controls uk-width-1-4">
-                  { form.duration_units && form.duration_units !== "Uso único" && form.duration_units !== "Según sea necesario"?
-                      <select name="duration_number" onChange={handleInput} className="uk-select uk-border-pill" defaultValue={1} disabled={ form.duration_units === "Uso único"}>
-                        <option value={1}>1</option>
-                        <option value={2}>2</option>
-                        <option value={3}>3</option>
-                        <option value={4}>4</option>
-                        <option value={5}>5</option>
-                        <option value={6}>6</option>
-                      </select>
-                    : null
-                  }
-                </div>
-                
+              <div className="uk-form-controls uk-width-2-3">
+                <select name="duration_units" onChange={handleInput} className="uk-select uk-border-pill" defaultValue=" Uso único" >
+                  <option> Uso único</option>
+                  <option>{ form.duration_number > 1 ? "Días" : "Día" }</option>
+                  <option>{ form.duration_number > 1 ? "Semanas" : "Semana" }</option>
+                  <option>{ form.duration_number > 1 ? "Meses" : "Mes" }</option>
+                  <option>Según sea necesario</option>
+                </select>
               </div>
+              <div className="uk-form-controls uk-width-1-4">
+                { form.duration_units && form.duration_units !== "Uso único" && form.duration_units !== "Según sea necesario"?
+                    <select name="duration_number" onChange={handleInput} className="uk-select uk-border-pill" defaultValue={1} disabled={ form.duration_units === "Uso único"}>
+                      <option value={1}>1</option>
+                      <option value={2}>2</option>
+                      <option value={3}>3</option>
+                      <option value={4}>4</option>
+                      <option value={5}>5</option>
+                      <option value={6}>6</option>
+                    </select>
+                  : null
+                }
+              </div>
+              
+            </div>
           </div>
           <div className="uk-width-1-1">
             <div className="uk-width-1-1">

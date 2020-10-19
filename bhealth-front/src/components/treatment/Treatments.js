@@ -16,8 +16,10 @@ const Treatments = ({ push }) => {
   let { path, url } = useRouteMatch();
   const { user, route, setRoute, objectHandler, setObjectHandler, resetUserContext } = useContext(AppContext);
   let currentHour = moment().format('H');
+  let today = moment().format();
 
   const [ treatments, setTreatments ] = useState([]);
+  const [ prevTreatments, setPrevTreatments ] = useState([]);
   const [ drugs, setDrugs ] = useState([]);
   const [ state, setState ] = useState({
     isButtonDisabled: false,
@@ -41,84 +43,94 @@ const Treatments = ({ push }) => {
       
       return push('/login');         // If not logged in, "redirect" user to login
 
-    };
+    }
 
-    currentHour = moment().format('H');
+    else {
 
-    getTreatments()
-    .then( res => {
-      const { treatments } = res.data;
-      setTreatments(treatments);
-    })
-    .catch( res => {
+      currentHour = moment().format('H');
+      let previousTreatments = [], currentTreatments = [];
 
-      console.log(res.response)
-
-      let { msg } = res.response.data
-
-      if (res.response.status === 401) {
-        localStorage.clear();
-        resetUserContext();
-        UIkit.notification({
-          message: '<p class="uk-text-center">Por favor inicia sesión</p>',
-          pos: 'bottom-center',
-          status: 'warning'
+      getTreatments()
+      .then( res => {
+        const { treatments } = res.data;
+        treatments.map( treatment => {
+          if ( moment(treatment.end_date).isBefore(today, 'day') )
+            previousTreatments.push(treatment);
+          else
+            currentTreatments.push(treatment);
         });
-        push('/login');
-      } else
-          UIkit.notification({
-            message: `<p class="uk-text-center">${msg}</p>`,
-            pos: 'bottom-center',
-            status: 'danger'
-          });
-    });
-    
-    getDrugs()
-    .then( res => {
-      
-      const { drugs } = res.data;
-      setDrugs(drugs);
-
-      drugs.map( drug => {
-        if ( drug.isCurrentTreatment ) {
-          if ( drug.schedule.some( scheduleElement => scheduleElement.slice(0,2) >= 4 && scheduleElement.slice(0,2) < 12 ) )
-            state.morningArray.push(drug)
-          if ( drug.schedule.some( scheduleElement => scheduleElement.slice(0,2) >= 12 && scheduleElement.slice(0,2) < 20 ) )
-            state.afternoonArray.push(drug)
-          if ( drug.schedule.some( scheduleElement => scheduleElement.slice(0,2) >= 20 || scheduleElement.slice(0,2) < 4 ) )
-            state.nightArray.push(drug)
-          if ( drug.frequency === 'Uso único' || drug.frequency === 'Según sea necesario' )
-            state.anytimeArray.push(drug)
-        }
-        else return null
+        setPrevTreatments(previousTreatments);
+        setTreatments(currentTreatments);
       })
+      .catch( res => {
 
-      setState( prevState => ({...prevState, spinnerState: false}))
+        console.log(res.response)
 
-    })
-    .catch( res => {
+        let { msg } = res.response.data
 
-      console.log(res.response)
-
-      let { msg } = res.response.data
-
-      if (res.response.status === 401) {
-        localStorage.clear();
-        resetUserContext();
-        UIkit.notification({
-          message: '<p class="uk-text-center">Por favor inicia sesión</p>',
-          pos: 'bottom-center',
-          status: 'warning'
-        });
-        push('/login');
-      } else
+        if (res.response.status === 401) {
+          localStorage.clear();
+          resetUserContext();
           UIkit.notification({
-            message: `<p class="uk-text-center">${msg}</p>`,
+            message: '<p class="uk-text-center">Por favor inicia sesión</p>',
             pos: 'bottom-center',
-            status: 'danger'
+            status: 'warning'
           });
-    });
+          push('/login');
+        } else
+            UIkit.notification({
+              message: `<p class="uk-text-center">${msg}</p>`,
+              pos: 'bottom-center',
+              status: 'danger'
+            });
+      });
+      
+      getDrugs()
+      .then( res => {
+        
+        const { drugs } = res.data;
+        setDrugs(drugs);
 
+        drugs.map( drug => {
+          if ( drug.isCurrentTreatment ) {
+            if ( drug.schedule.some( scheduleElement => scheduleElement.slice(0,2) >= 4 && scheduleElement.slice(0,2) < 12 ) )
+              state.morningArray.push(drug)
+            if ( drug.schedule.some( scheduleElement => scheduleElement.slice(0,2) >= 12 && scheduleElement.slice(0,2) < 20 ) )
+              state.afternoonArray.push(drug)
+            if ( drug.schedule.some( scheduleElement => scheduleElement.slice(0,2) >= 20 || scheduleElement.slice(0,2) < 4 ) )
+              state.nightArray.push(drug)
+            if ( drug.frequency === 'Uso único' || drug.frequency === 'Según sea necesario' )
+              state.anytimeArray.push(drug)
+          }
+          else return null
+        })
+
+        setState( prevState => ({...prevState, spinnerState: false}))
+
+      })
+      .catch( res => {
+
+        console.log(res.response)
+
+        let { msg } = res.response.data
+
+        if (res.response.status === 401) {
+          localStorage.clear();
+          resetUserContext();
+          UIkit.notification({
+            message: '<p class="uk-text-center">Por favor inicia sesión</p>',
+            pos: 'bottom-center',
+            status: 'warning'
+          });
+          push('/login');
+        } else
+            UIkit.notification({
+              message: `<p class="uk-text-center">${msg}</p>`,
+              pos: 'bottom-center',
+              status: 'danger'
+            });
+      });
+    }
   }, [])
 
   const openTimeOfTheDay = (time, drugsArray) => {
@@ -136,22 +148,104 @@ const Treatments = ({ push }) => {
       <div className="uk-margin">
         <div className="uk-width-1-1 uk-flex uk-flex-center uk-margin-small-top">
           <ul className="uk-flex uk-flex-center uk-width-1-1 uk-margin-remove@s" uk-tab="connect: #my-id" >
-            <li><a href="#">Anteriores</a></li>
+            <li><a href="#">Previos</a></li>
             <li className="uk-active"><a href="#">Actuales</a></li>
             <li><a href="#">Pastillero</a></li>
           </ul>
         </div>
         <div id="my-id" className="uk-switcher" uk-switcher="true">
-          <div>1</div>
-          <div>
+        <div className="uk-overflow-auto">
+            { prevTreatments.length > 0 ?
+              <table className="uk-table uk-table-striped uk-table-hover uk-table-middle">
+                <thead>
+                  <tr>
+                    <th className="uk-text-center">Nombre</th>
+                    <th className="uk-text-center uk-visible@s">Inicio</th>
+                    <th className="uk-text-center uk-visible@s">Fin</th>
+                    <th className="uk-text-center">Detalles</th>
+                    <th className="uk-text-center">Modificar</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  { prevTreatments.length > 0 ? 
+                      prevTreatments.map( (treatment, index) => 
+                        <tr key={index} >
+                          <td className="uk-text-center">{treatment.name}</td>
+                          <td className="uk-text-center uk-visible@s">{moment(treatment.start_date).locale('es').format('L')}</td>
+                          <td className="uk-text-center uk-visible@s">
+                            { treatment.end_date ? moment(treatment.end_date).locale('es').format('L') :
+                            <a className="eva-edit" onClick={event => push({pathname: `${url}/editar`, state: {treatment: treatment}}) } >
+                              No registrada
+                            </a>
+                            }
+                          </td>
+                          <td className="uk-text-center">
+                            <button className="uk-button uk-button-default uk-button-small uk-border-pill" onClick={event =>  push({pathname: '/tratamientos/ver', state: {treatment: treatment} }) } >
+                              Ver
+                            </button>
+                          </td>
+                          <td className="uk-width-1-6 uk-width-auto@s">
+                            <a href={`#modal-sections-${index}`} uk-toggle={`target: #modal-sections-${index}`}>
+                              <span className="uk-margin-small-right uk-text-primary" uk-icon="more-vertical"></span>
+                            </a>
+                            <div id={`modal-sections-${index}`} className="uk-flex-top" uk-modal="true">
+                              <div className="uk-modal-dialog uk-margin-auto-vertical">
+                                <button className="uk-modal-close-default" type="button" uk-close="true" />
+                                <div className="uk-modal-header">
+                                  <h3 className="uk-text-center">Datos del Tratamiento</h3>
+                                  <p className="uk-text-center">Nombre: {treatment.name}</p>
+                                  <p className="uk-text-center">Fecha Inicio: {moment(treatment.start_date).locale('es').format('LL')}</p>
+                                  { treatment.end_date ? 
+                                    <p className="uk-text-center">Fecha Fin: {moment(treatment.end_date).locale('es').format('LL')}</p>
+                                    : 
+                                    <Fragment>
+                                      <p className="uk-text-center">Fecha Fin: <span className="uk-text-danger">No registrada</span></p>
+                                      <div className="uk-flex uk-flex-center">
+                                        <button className="uk-modal-close uk-button uk-button-default uk-border-pill" onClick={event => push({pathname: `${url}/editar`, state: {treatment: treatment}}) } >
+                                          Completar Información
+                                        </button>
+                                      </div>
+                                    </Fragment>
+                                  }
+                                  
+                                </div>
+                                <div className="uk-modal-body uk-padding-small uk-flex uk-flex-column uk-flex-middle">
+                                  { treatment.prescription ? (
+                                      <button className="uk-modal-close uk-button uk-button-default uk-border-pill uk-margin-small uk-width-4-5 uk-width-1-2@s" onClick={event => push({ pathname: '/recetas/ver', state: {prescriptionID: treatment.prescription} }) } >
+                                        Ver Receta
+                                      </button>
+                                    ) : null
+                                  }
+                                </div>
+                                <div className="uk-modal-footer uk-flex uk-flex-column uk-flex-middle">
+                                  <button className="uk-modal-close uk-button uk-button-primary uk-border-pill uk-margin-small uk-width-4-5 uk-width-1-2@s"  onClick={event => push({pathname: `${url}/editar`, state: {treatment: treatment}}) } >
+                                    Modificar
+                                  </button>
+                                  <button className="uk-modal-close uk-button uk-button-danger uk-border-pill uk-margin-small uk-width-4-5 uk-width-1-2@s" onClick={event => push({pathname: `${url}/eliminar`, state: {treatment: treatment}}) } >
+                                    Eliminar
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      ) : 
+                      null
+                  }
+                </tbody>
+              </table>
+            : <h5>No tienes tratamientos previos registrados</h5>
+          }</div>
+          <div className="uk-overflow-auto">
             { treatments.length > 0 ?
               <table className="uk-table uk-table-striped uk-table-hover uk-table-middle">
                 <thead>
                   <tr>
                     <th className="uk-text-center">Nombre</th>
-                    <th className="uk-text-center">Inicio</th>
-                    <th className="uk-text-center">Fin</th>
+                    <th className="uk-text-center uk-visible@s">Inicio</th>
+                    <th className="uk-text-center uk-visible@s">Fin</th>
                     <th className="uk-text-center">Detalles</th>
+                    <th className="uk-text-center">Modificar</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -159,13 +253,18 @@ const Treatments = ({ push }) => {
                       treatments.map( (treatment, index) => 
                         <tr key={index} >
                           <td className="uk-text-center">{treatment.name}</td>
-                          <td className="uk-text-center">{moment(treatment.start_date).locale('es').format('LL')}</td>
-                          <td className="uk-text-center">
-                            { treatment.end_date ? moment(treatment.end_date).locale('es').format('LT') :
+                          <td className="uk-text-center uk-visible@s">{moment(treatment.start_date).locale('es').format('L')}</td>
+                          <td className="uk-text-center uk-visible@s">
+                            { treatment.end_date ? moment(treatment.end_date).locale('es').format('L') :
                             <a className="eva-edit" onClick={event => push({pathname: `${url}/editar`, state: {treatment: treatment}}) } >
                               No registrada
                             </a>
                             }
+                          </td>
+                          <td className="uk-text-center">
+                            <button className="uk-button uk-button-default uk-button-small uk-border-pill" onClick={event =>  push({pathname: '/tratamientos/ver', state: {treatment: treatment} }) } >
+                              Ver
+                            </button>
                           </td>
                           <td className="uk-width-1-6 uk-width-auto@s">
                             <a href={`#modal-sections-${index}`} uk-toggle={`target: #modal-sections-${index}`}>

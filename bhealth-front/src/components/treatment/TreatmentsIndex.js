@@ -21,13 +21,13 @@ const TreatmentsIndex = () => {
           <TreatmentsForm push={push} url={url} />
         </Route>
         <Route path={`${path}/ver`}>  
-          <TreatmentsInfo url={url} action={'create'} />
-        </Route>
-        <Route path={`${path}/editar`}>  
           <TreatmentsInfo url={url} action={'read'} />
         </Route>
-        <Route path={`${path}/eliminar`}>  
+        <Route path={`${path}/editar`}>  
           <TreatmentsInfo url={url} action={'update'} />
+        </Route>
+        <Route path={`${path}/eliminar`}>  
+          <TreatmentsInfo url={url} action={'delete'} />
         </Route>
         <Route path={`${path}/manana`}>
           <TreatmentPillcase title={'Mañana'} push={push} url={url} />

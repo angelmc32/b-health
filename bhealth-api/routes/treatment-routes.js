@@ -73,7 +73,9 @@ router.get('/:treatmentID', verifyToken, (req, res, next) => {
 router.patch('/:treatmentID', verifyToken, (req, res, next) => {
 
   const { treatmentID } = req.params;
-  const { drugsJSON } = req.body
+  const { drugs, extra_instructions } = req.body
+
+  console.log(req.body)
 
   const body  = req.body;               // Extract body from request
   // Agregar el código de abajo si tienes problemas para hacer el parse del JSON que se envía desde el front-end

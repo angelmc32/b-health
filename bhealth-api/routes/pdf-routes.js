@@ -99,10 +99,7 @@ router.get('/all', verifyToken, async (req, res, next) => {
 
   const filename = await createPDF(id, user);
   res.contentType("application/pdf");
-<<<<<<< HEAD
-=======
   // console.log(filename)
->>>>>>> c18bc9bfcd6a45769e5d369c1e2e3982323288f4
   res.sendFile(path.join(__dirname, `../${filename}`));
   
 });

@@ -465,62 +465,47 @@ const PrescriptionInfo = ({ url, action }) => {
                   }
                 </ul>
                     
-                  <div className="uk-margin-small-top uk-flex uk-flex-column uk-flex-middle">
-                    <button className="uk-button uk-button-default uk-border-pill uk-width-3-4 uk-width-1-4@s" onClick={ event => setState( prevState => ({...prevState, isUserAdding: !prevState.isUserAdding, isUserEditing: false, isUserEditingImg: false})) }>
-                      { !state.isUserAdding ? "Agregar" : "Cancelar" }<span className="uk-margin-small-left" uk-icon={ !state.isUserAdding ? "plus-circle" : "ban" }></span>
-                    </button>
-                    <form onSubmit={event => handleUpdate(event, -1, 'add')} className="uk-form-stacked uk-text-left uk-margin uk-width-5-6 uk-width-2-5@s" hidden={!state.isUserAdding}>
-                      <label className="uk-margin-remove">Nombre:</label>
-                      <div className="uk-form-controls uk-margin-small">
-                        <input className="uk-input uk-border-pill uk-text-center" type="text" name="name" onChange={handleInput} value={form.name || ""} required />
-                      </div>
-                      <label className="uk-margin-remove">Presentación:</label>
-                      <div className="uk-form-controls uk-margin-small">
-                        <input className="uk-input uk-border-pill uk-text-center" type="text" name="dosage_form" onChange={handleInput} value={form.dosage_form || ""} />
-                      </div>
-                      <label className="uk-margin-remove">Dosis:</label>
-                      <div className="uk-form-controls uk-margin-small">
-                        <input className="uk-input uk-border-pill uk-text-center" type="text" name="dose" onChange={handleInput} value={form.dose || ""} />
-                      </div>
-                      <label className="uk-margin-remove">Horario:</label>
-                      <div className="uk-form-controls uk-margin-small">
-                        <input className="uk-input uk-border-pill uk-text-center" type="text" name="schedule" onChange={handleInput} value={form.schedule || ""} />
-                      </div>
-                      <label className="uk-margin-remove">Número de días:</label>
-                      <div className="uk-form-controls uk-margin-small">
-                        <input className="uk-input uk-border-pill uk-text-center" type="text" name="periodicity" onChange={handleInput} value={form.periodicity || ""} />
-                      </div>
-                      <label className="uk-margin-remove">Indicaciones:</label>
-                      <div className="uk-form-controls uk-margin-small">
-                        <input className="uk-input uk-border-pill uk-text-center" type="text" name="directions" onChange={handleInput} value={form.directions || ""} />
-                      </div>
-                      <p className="uk-text-center uk-text-danger">{state.errorMessage}</p>
-                      <div className="uk-width-1-1 uk-text-right uk-margin">
-                        <button type="submit" className="uk-button uk-button-link eva-edit" href="#">
-                          Agregar<span className="uk-margin-small-left" uk-icon="plus-circle"></span>
-                        </button>
-                      </div>
-                    </form>
+                <div className="uk-margin-small-top uk-flex uk-flex-column uk-flex-middle">
+                  <button className="uk-button uk-button-default uk-border-pill uk-width-3-4 uk-width-1-4@s" onClick={ event => setState( prevState => ({...prevState, isUserAdding: !prevState.isUserAdding, isUserEditing: false, isUserEditingImg: false})) }>
+                    { !state.isUserAdding ? "Agregar" : "Cancelar" }<span className="uk-margin-small-left" uk-icon={ !state.isUserAdding ? "plus-circle" : "ban" }></span>
+                  </button>
+                  <form onSubmit={event => handleUpdate(event, -1, 'add')} className="uk-form-stacked uk-text-left uk-margin uk-width-5-6 uk-width-2-5@s" hidden={!state.isUserAdding}>
+                    <label className="uk-margin-remove">Nombre:</label>
+                    <div className="uk-form-controls uk-margin-small">
+                      <input className="uk-input uk-border-pill uk-text-center" type="text" name="name" onChange={handleInput} value={form.name || ""} required />
                     </div>
+                    <label className="uk-margin-remove">Presentación:</label>
+                    <div className="uk-form-controls uk-margin-small">
+                      <input className="uk-input uk-border-pill uk-text-center" type="text" name="dosage_form" onChange={handleInput} value={form.dosage_form || ""} />
+                    </div>
+                    <label className="uk-margin-remove">Dosis:</label>
+                    <div className="uk-form-controls uk-margin-small">
+                      <input className="uk-input uk-border-pill uk-text-center" type="text" name="dose" onChange={handleInput} value={form.dose || ""} />
+                    </div>
+                    <label className="uk-margin-remove">Horario:</label>
+                    <div className="uk-form-controls uk-margin-small">
+                      <input className="uk-input uk-border-pill uk-text-center" type="text" name="schedule" onChange={handleInput} value={form.schedule || ""} />
+                    </div>
+                    <label className="uk-margin-remove">Número de días:</label>
+                    <div className="uk-form-controls uk-margin-small">
+                      <input className="uk-input uk-border-pill uk-text-center" type="text" name="periodicity" onChange={handleInput} value={form.periodicity || ""} />
+                    </div>
+                    <label className="uk-margin-remove">Indicaciones:</label>
+                    <div className="uk-form-controls uk-margin-small">
+                      <input className="uk-input uk-border-pill uk-text-center" type="text" name="directions" onChange={handleInput} value={form.directions || ""} />
+                    </div>
+                    <p className="uk-text-center uk-text-danger">{state.errorMessage}</p>
+                    <div className="uk-width-1-1 uk-text-right uk-margin">
+                      <button type="submit" className="uk-button uk-button-link eva-edit" href="#">
+                        Agregar<span className="uk-margin-small-left" uk-icon="plus-circle"></span>
+                      </button>
+                    </div>
+                  </form>
+                </div>
               </div>
             </div>
           </div>
-        {/* <div className="uk-width-1-1 uk-child-width-1-3@m uk-child-width-1-1 uk-grid-small uk-grid-match" uk-grid="true">
-          { state.prescription.drugs.map( (drug, index) =>
-            <div key={index}>
-              <div className="uk-card uk-card-hover uk-card-body uk-padding-small">
-                <h4>Medicamento {index+1}: {state.prescription.drugs[index].name}</h4>
-                <p className="uk-margin-remove uk-text-left">Nombre: {state.prescription.drugs[index].name}</p>
-                <p className="uk-margin-remove uk-text-left">Presentación: {state.prescription.drugs[index].dosage_form}</p>
-                <p className="uk-margin-remove uk-text-left">Dosis: {state.prescription.drugs[index].dose}</p>
-                <p className="uk-margin-remove uk-text-left">Horario: {state.prescription.drugs[index].schedule}</p>
-                <p className="uk-margin-remove uk-text-left">Número de días: {state.prescription.drugs[index].periodicity}</p>
-                <p className="uk-margin-remove uk-text-left">Indicaciones : {state.prescription.drugs[index].directions}</p>
-              </div>
-            </div>
-            )
-          }
-        </div> */}
+
       </div>
     </Fragment>
   )

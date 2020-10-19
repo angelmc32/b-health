@@ -285,43 +285,43 @@ const ConsultationForm = ({ url, action }) => {
         </button>
         <form onSubmit={handleSubmit} className="uk-form-stacked uk-text-left uk-container">
           <div className="uk-margin">
-                <div>
-                  <label className="uk-form-label" htmlFor="date">Fecha y hora de consulta:</label>
-                  <div className="uk-form-controls uk-flex uk-flex-wrap uk-flex-between uk-width-1-1 uk-margin-small-bottom">
-                    <div className="uk-width-1-1 uk-width-1-2@s uk-margin-small">
-                      <input className="uk-input uk-border-pill uk-text-center" type="date" name="only-date" onChange={handleInput} defaultValue={originalDate} max={moment().format('YYYY-MM-DD')} required />
-                    </div>
-                    <div className="uk-width-1-1 uk-width-1-2@s uk-flex uk-flex-around">
-                      <select name="time-hours" onChange={handleInput} className="uk-select uk-border-pill uk-width-1-3" defaultValue={originalHours} required>
-                        <option disabled={true}>Hora</option>
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                        <option>6</option>
-                        <option>7</option>
-                        <option>8</option>
-                        <option>9</option>
-                        <option>10</option>
-                        <option>11</option>
-                        <option>12</option>
-                      </select>
-                      <select name="time-minutes" onChange={handleInput} className="uk-select uk-border-pill uk-width-1-3" defaultValue={originalMinutes} required>
-                        <option disabled={true}>Minutos</option>
-                        <option>00</option>
-                        <option>15</option>
-                        <option>30</option>
-                        <option>45</option>
-                      </select>
-                      <select name="time-period" onChange={handleInput} className="uk-select uk-border-pill uk-width-1-4" defaultValue={originalPeriod} required>
-                        <option disabled={true}>AM/PM</option>
-                        <option>AM</option>
-                        <option>PM</option>
-                      </select>
-                    </div>
-                  </div>
+            <div>
+              <label className="uk-form-label" htmlFor="date">Fecha y hora de consulta:</label>
+              <div className="uk-form-controls uk-flex uk-flex-wrap uk-flex-between uk-width-1-1 uk-margin-small-bottom">
+                <div className="uk-width-1-1 uk-width-1-2@s uk-margin-small">
+                  <input className="uk-input uk-border-pill uk-text-center" type="date" name="only-date" onChange={handleInput} defaultValue={originalDate} max={moment().format('YYYY-MM-DD')} required />
                 </div>
+                <div className="uk-width-1-1 uk-width-1-2@s uk-flex uk-flex-around">
+                  <select name="time-hours" onChange={handleInput} className="uk-select uk-border-pill uk-width-1-3" defaultValue={originalHours} required>
+                    <option disabled={true}>Hora</option>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>6</option>
+                    <option>7</option>
+                    <option>8</option>
+                    <option>9</option>
+                    <option>10</option>
+                    <option>11</option>
+                    <option>12</option>
+                  </select>
+                  <select name="time-minutes" onChange={handleInput} className="uk-select uk-border-pill uk-width-1-3" defaultValue={originalMinutes} required>
+                    <option disabled={true}>Minutos</option>
+                    <option>00</option>
+                    <option>15</option>
+                    <option>30</option>
+                    <option>45</option>
+                  </select>
+                  <select name="time-period" onChange={handleInput} className="uk-select uk-border-pill uk-width-1-4" defaultValue={originalPeriod} required>
+                    <option disabled={true}>AM/PM</option>
+                    <option>AM</option>
+                    <option>PM</option>
+                  </select>
+                </div>
+              </div>
+            </div>
             
             <label className="uk-form-label" htmlFor="form-stacked-text">Motivo de consulta:</label>
             <div className="uk-form-controls uk-margin-small-bottom">

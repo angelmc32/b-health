@@ -128,7 +128,6 @@ const MedHistory = () => {
 
     if (name && name !== 'personal_habits') {
       form[name] = familyHistoryState[name]
-      console.log(name, form[name])
     }
     else if (name === 'personal_habits') {
       if ( !form['smoking_status'] && !form['alcoholism'] && !form['weekly_exercise_hours'] && !form['nutritional_status'] && !form['sleep_status'] && !form['oral_hygiene'] ) {

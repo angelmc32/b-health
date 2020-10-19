@@ -31,10 +31,10 @@ const treatmentSchema = new Schema(
     },
     drugs: [{
       name: String,
-      dose: String,
       dosage_form: String,
-      schedule: String,
-      periodicity: String,
+      duration_number: Number,
+      duration_units: String,
+      days: Number,
       directions: String
     }],
     extra_instructions: {

@@ -33,13 +33,13 @@ const Landing = () => {
             <h1>La <span className="uk-text-secondary uk-text-bold">salud</span> de tu <span className="uk-text-primary uk-text-bold">familia</span>, <br/> en tus manos.</h1>
             <h3 className="uk-margin-small">Tus datos. Tus medicamentos. Tu salud.</h3>
             
-            <button className="uk-button uk-button-primary uk-button-large uk-width-3-5 uk-width-1-3@s uk-width-1-4@m uk-width-1-5@xl uk-border-pill uk-margin-large">
+            <button className="uk-button uk-button-primary uk-button-large uk-width-2-3 uk-width-1-3@s uk-width-1-5@xl uk-border-pill uk-margin-large">
               <NavLink to="/registro" className="uk-width-1-1">
                 Regístrate Gratis
               </NavLink>
             </button>
             
-            <button className="uk-button uk-button-muted uk-button-large uk-width-3-5 uk-border-pill uk-hidden@s">
+            <button className="uk-button uk-button-muted uk-button-large uk-width-2-3 uk-border-pill uk-hidden@s">
               <NavLink to="/login" className="uk-width-1-1">
                 Inicia Sesión
               </NavLink>
@@ -48,9 +48,10 @@ const Landing = () => {
         </div>
       </div>
 
-      <div className="uk-section section-special uk-flex uk-flex-middle ">
-        <div className="uk-container uk-height-1-1@s">
+      <div className="uk-section uk-flex uk-flex-middle uk-visible@s">
+
           <div className="uk-grid uk-grid-medium uk-child-width-1-1 uk-child-width-expand@m">
+
             <div className="uk-margin-top">
               <div className="uk-card uk-flex uk-flex-column uk-flex-center uk-flex-middle">
                 <div className="uk-card-media-top uk-width-1-3 uk-flex uk-flex-center uk-flex-middle">
@@ -87,22 +88,44 @@ const Landing = () => {
               </div>
             </div>
 
-            <div className="uk-width-1-1 uk-visible@s">
+        </div>
+      </div>
+
+            <div className="uk-section uk-hidden@s uk-flex uk-flex-center uk-flex-middle">
               <div className="uk-card uk-flex uk-flex-column uk-flex-center uk-flex-middle">
-                <div className="uk-card-media-top uk-width-1-5 uk-flex uk-flex-center uk-flex-middle">
-                  <img className="uk-margin-small-top" src={privacyImg} alt="" />
+                <div className="uk-card-media-top uk-width-1-3 uk-flex uk-flex-center uk-flex-middle">
+                  <img className="uk-margin-small-top" src={peaceImg} alt="" />
                 </div>
                 <div className="uk-card-body uk-padding-small">
-                  <h3 className="uk-margin-small">Tú estás en control de tu información</h3>
-                  <p className="uk-margin-remove">Tú decides la información que quieras compartir con familiares o médicos. Tu <span className="uk-text-primary uk-text-bold">privacidad</span> y tu <span className="uk-text-primary uk-text-bold">salud</span> son nuestra prioridad.</p>
-                  <p className="uk-margin-remove">Todos los datos son encriptados, y solo tú puedes autorizar el acceso a tu información y la de tu familia.</p>
+                  <h3 className="uk-margin-small">Tranquilidad <br/>al alcance de un click</h3>
+                  <p className="uk-margin-remove">Más que un Expediente Clínico, creamos una <span className="uk-text-primary uk-text-bold">red de salud</span> que cuida a tu familia. Acceso a médicos y clínicas, desde tu teléfono.</p>
                 </div>
               </div>
             </div>
             
-          </div>
-        </div>
-      </div>
+            <div className="uk-section uk-hidden@s uk-flex uk-flex-center uk-flex-middle">
+              <div className="uk-card uk-flex uk-flex-column uk-flex-center uk-flex-middle">
+                <div className="uk-card-media-top uk-width-1-3 uk-flex uk-flex-center uk-flex-middle">
+                  <img className="uk-margin-small-top" src={remindersImg} alt="" />
+                </div>
+                <div className="uk-card-body uk-padding-small">
+                  <h3 className="uk-margin-small">Cumple tus objetivos, <br/>mejora tu salud</h3>
+                  <p className="uk-margin-remove">Recordatorios para <span className="uk-text-primary uk-text-bold">medicamentos</span> y <span className="uk-text-primary uk-text-bold">signos vitales.</span> <br/>Le recordamos a tus familiares por tí.</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="uk-section uk-hidden@s uk-flex uk-flex-center uk-flex-middle">
+              <div className="uk-card uk-flex uk-flex-column uk-flex-center uk-flex-middle">
+                <div className="uk-card-media-top uk-width-1-3 uk-flex uk-flex-center uk-flex-middle">
+                  <img className="uk-margin-small-top" src={medAppImg} alt="" />
+                </div>
+                <div className="uk-card-body uk-padding-small">
+                  <h3 className="uk-margin-small">Acceso 24/7 al perfil médico<br/>de tu familia</h3>
+                  <p className="uk-margin-remove">La información clínica de tu familia, <span className="uk-text-primary uk-text-bold">siempre segura y disponible.</span> Tus recetas, consultas y estudios, en donde estés.</p>
+                </div>
+              </div>
+            </div>
       
       {/* <div className="uk-section">
         <div className="uk-container">
@@ -139,7 +162,7 @@ const Landing = () => {
           </div>
         </div>
       </div> */}
-      <div className="uk-section uk-flex uk-flex-center uk-flex-middle uk-hidden@s">
+      <div className="uk-section uk-flex uk-flex-center uk-flex-middle">
         <div className="uk-card uk-flex uk-flex-column uk-flex-center uk-flex-middle">
           <div className="uk-card-media-top uk-width-2-5 uk-flex uk-flex-center uk-flex-middle">
             <img className="uk-margin-small-top" src={privacyImg} alt="" />

@@ -184,16 +184,22 @@ const VitalSigns = ({ push, url }) => {
   return (
     <div>
       <h2>Signos Vitales</h2>
-      <button className="uk-button uk-button-default uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin-small" onClick={event => push(`${url}/registrar`)} >
-        + Nuevo Registro
-      </button>
-      <button className="uk-button uk-button-primary uk-border-pill uk-width-2-3 uk-width-1-4@m uk-margin-small" onClick={event => setState(prevState => ({...prevState, showGraph: !prevState.showGraph}))} disabled={state.spinnerState}>
-        { !state.showGraph ? "Ver Gráfica" : "Ver Signos Vitales"}  <div className={ state.spinnerState ? 'uk-visible' : 'uk-hidden'} uk-spinner="true"></div>
-      </button>
+      <div className="uk-grid-small uk-grid-match uk-flex uk-flex-center" uk-grid="true">
+        <div className="uk-width-2-3 uk-width-1-4@m">
+          <button className="uk-button uk-button-default uk-border-pill" onClick={event => push(`${url}/registrar`)} >
+            + Nuevo Registro
+          </button>
+        </div>
+        <div className="uk-width-2-3 uk-width-1-4@m">
+          <button className="uk-button uk-button-primary uk-border-pill uk-margin" onClick={event => setState(prevState => ({...prevState, showGraph: !prevState.showGraph}))} disabled={state.spinnerState}>
+            { !state.showGraph ? "Ver Gráfica" : "Ver Signos Vitales"}  <div className={ state.spinnerState ? 'uk-visible' : 'uk-hidden'} uk-spinner="true"></div>
+          </button>
+        </div>
+      </div>
       
       { !state.showGraph ?
         <Fragment>
-          <div className="uk-width-1-1 uk-flex uk-flex-center uk-margin-small-top">
+          <div className="uk-width-1-1 uk-flex uk-flex-center uk-margin-top">
             <ul className="uk-flex uk-flex-center uk-width-1-1 uk-margin-remove@s" uk-tab="connect: #my-id" >
               <li className="uk-active"><a href="#" onClick={ event=> setState( prevState => ({...prevState, showLastRecords: true, showGraph: false, showAllRecords: false}) ) }>Resumen</a></li>
               <li><a href="#" onClick={ event=> setState( prevState => ({...prevState, showLastRecords: false, showGraph: false, showAllRecords: true}) ) }>Todos</a></li>

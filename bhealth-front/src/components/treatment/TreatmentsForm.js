@@ -86,7 +86,7 @@ const TreatmentsForm = ({ url }) => {
     const newArray = [...state[name]]
     if ( !form[name] || form[name].length < 1 ) return null;
     if ( name === 'drugs' )
-      newArray.push({name: form[name]})  
+      newArray.push({name: form[name], duration_units: 'Uso único', duration_units: 0})  
     else
       newArray.push(form[name])
     setState( prevState => ({...prevState, arrayModified: true, [name]: newArray}))
@@ -109,11 +109,14 @@ const TreatmentsForm = ({ url }) => {
               <div className="uk-form-controls uk-width-3-5@s">
                 <input className="uk-input uk-border-pill uk-text-center" type="text" name="name" onChange={handleInput} placeholder="Introduce un nombre..." required />
               </div>
-              <label className="uk-form-label uk-text-left uk-margin-small-top uk-width-3-5@s" htmlFor="start_date">Fecha de inicio:</label>
+              <label className="uk-form-label uk-text-left uk-margin-small-top uk-width-3-5@s" htmlFor="start_date">Inicio:</label>
               <div className="uk-form-controls uk-width-3-5@s">
                 <input className="uk-input uk-border-pill uk-text-center" type="date" name="start_date" onChange={handleInput} defaultValue={moment().format('YYYY-MM-DD')} required />
               </div>
-              
+              <label className="uk-form-label uk-text-left uk-margin-small-top uk-width-3-5@s" htmlFor="end_date">Fin:</label>
+              <div className="uk-form-controls uk-width-3-5@s">
+                <input className="uk-input uk-border-pill uk-text-center" type="date" name="end_date" onChange={handleInput} defaultValue={moment().format('YYYY-MM-DD')} required />
+              </div>
             </div>
           </div>
 
