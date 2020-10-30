@@ -12,7 +12,7 @@ exports.registerEmailParams = (email, token) => {
           Charset: 'UTF-8',
           Data: 
             `<html>
-              <h1>Bienvenido a Beesalud</h1>
+              <h1>Bienvenido a Archivo Salud</h1>
               <h3>Verifica tu dirección de correo electrónico</h3>
               <p>Por favor utiliza la siguiente liga para verificar tu correo, ¡y así podrás utilizar la plataforma!</p>
               <p>${process.env.CLIENT_URL}/activate/${token}</p>
@@ -21,7 +21,7 @@ exports.registerEmailParams = (email, token) => {
       },
       Subject: {
         Charset: 'UTF-8',
-        Data: 'Completa tu registro a Beesalud'
+        Data: 'Completa tu registro a Archivo Salud'
       }
     }
   }

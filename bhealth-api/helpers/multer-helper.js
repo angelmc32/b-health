@@ -14,7 +14,7 @@ cloudinary.config({
 // Cloudinary storage configuration
 const storage = cloudinaryStorage({
   cloudinary,
-  folder: 'bhealth-api',
+  folder: 'archivosalud-api',
   allowedFormats: ['jpg', 'png', 'jpeg', 'pdf'],
   filename: function(req, file, cb) {
     cb(null, file.originalname);

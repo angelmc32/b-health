@@ -1,22 +1,28 @@
 <style type="text/css">
   html {
-    font-size: 15px!important;
+    font-size: 15px !important;
   }
+
   h1 {
     font-size: 18px;
   }
+
   h2 {
     font-size: 16px;
   }
+
   h3 {
     font-size: 14px;
   }
+
   h4 {
     font-size: 12px;
   }
+
   h5 {
     font-size: 10px;
   }
+
   body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
       'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -28,7 +34,7 @@
   .page {
     page-break-after: always;
   }
-  
+
   .centered-div {
     display: flex;
     flex-direction: column;
@@ -36,6 +42,7 @@
     justify-content: center;
     margin-top: 2.5%;
   }
+
   .stretch-div {
     display: flex;
     flex-direction: row;
@@ -43,16 +50,19 @@
     align-items: center;
     width: 100%
   }
+
   .icon-img-div {
     position: absolute;
     top: 20px;
     left: 20px;
     max-width: 80px
   }
+
   .icon-img-div>img {
     max-width: 100%;
     height: auto;
   }
+
   .pdf-image {
     max-width: 100%;
     max-height: 100%;
@@ -60,652 +70,649 @@
   }
 </style>
 <html>
-    <!-- UIkit CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.5.8/dist/css/uikit.min.css" />
+<!-- UIkit CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.5.8/dist/css/uikit.min.css" />
 
-  <!-- UIkit JS -->
-  <script src="https://cdn.jsdelivr.net/npm/uikit@3.5.8/dist/js/uikit.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/uikit@3.5.8/dist/js/uikit-icons.min.js"></script>
-  <body class="uk-padding">
-    <div class="uk-container uk-padding page">
-      <div class="icon-img-div">
-        <img src="https://res.cloudinary.com/angelmc32/image/upload/v1601604466/icon_un5c0x.png" alt="Eva-salud.png" /> 
+<!-- UIkit JS -->
+<script src="https://cdn.jsdelivr.net/npm/uikit@3.5.8/dist/js/uikit.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/uikit@3.5.8/dist/js/uikit-icons.min.js"></script>
+
+<body class="uk-padding">
+  <div class="uk-container uk-padding page">
+    <div class="icon-img-div">
+      <img src="https://res.cloudinary.com/angelmc32/image/upload/v1601604466/icon_un5c0x.png" alt="ArchivoSalud.png" />
+    </div>
+    <div class="uk-flex uk-flex-center uk-margin-medium">
+      <h1>Mi Historial Clínico</h1>
+    </div>
+    <hr>
+    <h3 class="uk-margin-small">Ficha de Identificación del Paciente</h3>
+    <div class="uk-flex uk-flex-around uk-flex-middle uk-margin-remove">
+      <p class="uk-margin-remove">Nombres: {{user.first_name}}</p>
+      <p class="uk-margin-remove">Apellidos: {{user.last_name1}} {{user.last_name2}}</p>
+    </div>
+    <div class="uk-flex uk-flex-around uk-flex-middle uk-margin-remove">
+      <p class="uk-margin-remove">Fecha de nacimiento: {{user.date_of_birth}}</p>
+      {{#ifEquals user.gender 'Femenino' }}
+      <p class="uk-margin-remove">Género: Femenino</p>
+      {{/ifEquals}}
+      {{#ifEquals user.gender 'Masculino' }}
+      <p class="uk-margin-remove">Género: Masculino</p>
+      {{/ifEquals}}
+      {{#ifEquals user.gender 'No especificado' }}
+      <p class="uk-margin-remove">Género: No especificado</p>
+      {{/ifEquals}}
+    </div>
+    <hr>
+    <h3 class="uk-margin-small">Antecedentes Personales Patológicos</h3>
+    <table class="uk-table">
+      <caption>Padecimientos Actuales</caption>
+      <thead>
+        <tr>
+          <th class="uk-width-1-5">Padecimiento</th>
+          <th class="uk-width-1-5">Estatus</th>
+          <th class="uk-width-1-6"></th>
+          <th class="uk-width-3-6">Padecimiento</th>
+          <th class="uk-width-1-5">Estatus</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="uk-margin-remove">
+          <td class="uk-margin-small">Diabetes</td>
+          {{#if medhistory_var.health_history.[Diabetes] }}
+          <td class="uk-text-danger uk-margin-small">
+            PRESENTE
+          </td>
+          {{else}}
+          <td class="uk-text-meta uk-margin-small">
+            negado
+          </td>
+          {{/if}}
+          <td class="uk-margin-small"></td>
+          <td class="uk-margin-small">Enfermedades del Corazón:</td>
+          {{#if medhistory_var.health_history.[Enfermedades del Corazón] }}
+          <td class="uk-text-danger uk-margin-small">
+            PRESENTE
+          </td>
+          {{else}}
+          <td class="uk-text-meta uk-margin-small">
+            negado
+          </td>
+          {{/if}}
+        </tr>
+        <tr>
+          <td>Hipertensión</td>
+          {{#if medhistory_var.health_history.[Hipertensión] }}
+          <td class="uk-text-danger">
+            PRESENTE
+          </td>
+          {{else}}
+          <td class="uk-text-meta">
+            negado
+          </td>
+          {{/if}}
+          <td></td>
+          <td>Enfermedades del Hígado:</td>
+          {{#if medhistory_var.health_history.[Enfermedades del Hígado] }}
+          <td class="uk-text-danger">
+            PRESENTE
+          </td>
+          {{else}}
+          <td class="uk-text-meta">
+            negado
+          </td>
+          {{/if}}
+        </tr>
+        <tr>
+          <td>Cáncer</td>
+          {{#if medhistory_var.health_history.[Cáncer] }}
+          <td class="uk-text-danger">
+            PRESENTE
+          </td>
+          {{else}}
+          <td class="uk-text-meta">
+            negado
+          </td>
+          {{/if}}
+          <td></td>
+          <td>Enfermedades del Riñón:</td>
+          {{#if medhistory_var.health_history.[Enfermedades del Riñón] }}
+          <td class="uk-text-danger">
+            PRESENTE
+          </td>
+          {{else}}
+          <td class="uk-text-meta">
+            negado
+          </td>
+          {{/if}}
+        </tr>
+        <tr>
+          <td>Asma</td>
+          {{#if medhistory_var.health_history.[Asma] }}
+          <td class="uk-text-danger">
+            PRESENTE
+          </td>
+          {{else}}
+          <td class="uk-text-meta">
+            negado
+          </td>
+          {{/if}}
+          <td></td>
+          <td>Enfermedades Endócrinas:</td>
+          {{#if medhistory_var.health_history.[Enfermedades Endócrinas] }}
+          <td class="uk-text-danger">
+            PRESENTE
+          </td>
+          {{else}}
+          <td class="uk-text-meta">
+            negado
+          </td>
+          {{/if}}
+        </tr>
+        <tr>
+          <td>Alergias</td>
+          {{#if medhistory_var.health_history.[Alergias] }}
+          <td class="uk-text-danger">
+            PRESENTE
+          </td>
+          {{else}}
+          <td class="uk-text-meta">
+            negado
+          </td>
+          {{/if}}
+          <td></td>
+          <td>Enfermedades del Sist. Digestivo:</td>
+          {{#if medhistory_var.health_history.[Enfermedades del Sist. Digestivo] }}
+          <td class="uk-text-danger">
+            PRESENTE
+          </td>
+          {{else}}
+          <td class="uk-text-meta">
+            negado
+          </td>
+          {{/if}}
+        </tr>
+        <tr>
+          <td>Otras</td>
+          {{#if medhistory_var.health_history.[Otras] }}
+          <td class="uk-text-danger">
+            PRESENTE
+          </td>
+          {{else}}
+          <td class="uk-text-meta">
+            negado
+          </td>
+          {{/if}}
+          <td></td>
+          <td>Enfermedades Mentales:</td>
+          {{#if medhistory_var.health_history.[Enfermedades Mentales] }}
+          <td class="uk-text-danger">
+            PRESENTE
+          </td>
+          {{else}}
+          <td class="uk-text-meta">
+            negado
+          </td>
+          {{/if}}
+        </tr>
+      </tbody>
+    </table>
+    <h4 class="uk-margin-remove">Alergias Registradas</h4>
+    <ul class="uk-list uk-list-disc uk-margin-large-bottom">
+      {{#each medhistory_var.allergies}}
+      <li>{{this}}</li>
+      {{/each}}
+    </ul>
+
+  </div>
+  <div class="uk-container uk-padding page">
+    <hr>
+    <h3 class="uk-margin-small">Antecedentes Personales NO Patológicos</h3>
+    <table class="uk-table uk-margin-small">
+      <tbody>
+        <tr>
+          <td class="uk-width-2-5">Horas de Actividad Física Semanal:</td>
+          <td class="uk-width-1-5">{{ medhistory_var.weekly_exercise_hours }}</td>
+          <td class="uk-width-1-6"></td>
+          <td class="uk-width-1-5">Tabaquismo:</td>
+          <td class="uk-width-1-5">{{ medhistory_var.smoking_status }}</td>
+        </tr>
+        <tr>
+          <td>Hábitos de Sueño:</td>
+          <td>{{ medhistory_var.sleep_status }}</td>
+          <td></td>
+          <td>Alcoholismo:</td>
+          <td>{{ medhistory_var.alcoholism }}</td>
+        </tr>
+        <tr>
+          <td>Hábitos Alimenticios:</td>
+          <td>{{ medhistory_var.nutritional_status }}</td>
+          <td></td>
+          <td>Higiene Bucal:</td>
+          <td>{{ medhistory_var.oral_hygiene }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <hr>
+    <h3 class="uk-margin-small">Antecedentes Heredo-Familiares</h3>
+    <div class="uk-flex uk-child-width-1-2 uk-margin-remove">
+      <div>
+        <h5 class="uk-margin-remove">Diabéticos</h5>
+        <ul class="uk-list uk-list-disc uk-margin-small-bottom">
+          {{#each medhistory_var.family_diabetes as |member index|}}
+          {{#if this}}
+          {{#ifEquals index 0}}
+          <li>Madre</li>
+          {{/ifEquals}}
+          {{#ifEquals index 1}}
+          <li>Padre</li>
+          {{/ifEquals}}
+          {{#ifEquals index 2}}
+          <li>Hermano(a)</li>
+          {{/ifEquals}}
+          {{#ifEquals index 3}}
+          <li>Abuelo(a) Materno</li>
+          {{/ifEquals}}
+          {{#ifEquals index 4}}
+          <li>Abuelo(a) Paterno</li>
+          {{/ifEquals}}
+          {{#ifEquals index 5}}
+          <li>Tío(a) Materno</li>
+          {{/ifEquals}}
+          {{#ifEquals index 6}}
+          <li>Tío(a) Paterno</li>
+          {{/ifEquals}}
+          {{/if}}
+          {{/each}}
+        </ul>
       </div>
-      <div class="uk-flex uk-flex-center uk-margin-medium">
-        <h1>Mi Historial Clínico</h1>
+      <div>
+        <h5 class="uk-margin-remove">Asmáticos</h5>
+        <ul class="uk-list uk-list-disc uk-margin-small-bottom">
+          {{#each medhistory_var.family_asthma as |member index|}}
+          {{#if this}}
+          {{#ifEquals index 0}}
+          <li>Madre</li>
+          {{/ifEquals}}
+          {{#ifEquals index 1}}
+          <li>Padre</li>
+          {{/ifEquals}}
+          {{#ifEquals index 2}}
+          <li>Hermano(a)</li>
+          {{/ifEquals}}
+          {{#ifEquals index 3}}
+          <li>Abuelo(a) Materno</li>
+          {{/ifEquals}}
+          {{#ifEquals index 4}}
+          <li>Abuelo(a) Paterno</li>
+          {{/ifEquals}}
+          {{#ifEquals index 5}}
+          <li>Tío(a) Materno</li>
+          {{/ifEquals}}
+          {{#ifEquals index 6}}
+          <li>Tío(a) Paterno</li>
+          {{/ifEquals}}
+          {{/if}}
+          {{/each}}
+        </ul>
       </div>
-      <hr>
-      <h3 class="uk-margin-small">Ficha de Identificación del Paciente</h3>
-      <div class="uk-flex uk-flex-around uk-flex-middle uk-margin-remove">
-        <p class="uk-margin-remove">Nombres: {{user.first_name}}</p>
-        <p class="uk-margin-remove">Apellidos: {{user.last_name1}} {{user.last_name2}}</p>
+    </div>
+    <div class="uk-flex uk-child-width-1-2 uk-margin-remove">
+      <div>
+        <h5 class="uk-margin-remove">Hipertensos</h5>
+        <ul class="uk-list uk-list-disc uk-margin-small-bottom">
+          {{#each medhistory_var.family_hypertension as |member index|}}
+          {{#if this}}
+          {{#ifEquals index 0}}
+          <li>Madre</li>
+          {{/ifEquals}}
+          {{#ifEquals index 1}}
+          <li>Padre</li>
+          {{/ifEquals}}
+          {{#ifEquals index 2}}
+          <li>Hermano(a)</li>
+          {{/ifEquals}}
+          {{#ifEquals index 3}}
+          <li>Abuelo(a) Materno</li>
+          {{/ifEquals}}
+          {{#ifEquals index 4}}
+          <li>Abuelo(a) Paterno</li>
+          {{/ifEquals}}
+          {{#ifEquals index 5}}
+          <li>Tío(a) Materno</li>
+          {{/ifEquals}}
+          {{#ifEquals index 6}}
+          <li>Tío(a) Paterno</li>
+          {{/ifEquals}}
+          {{/if}}
+          {{/each}}
+        </ul>
       </div>
-      <div class="uk-flex uk-flex-around uk-flex-middle uk-margin-remove">
-        <p class="uk-margin-remove">Fecha de nacimiento: {{user.date_of_birth}}</p>
-        {{#ifEquals user.gender 'Femenino' }}
-          <p class="uk-margin-remove">Género: Femenino</p>
-        {{/ifEquals}}
-        {{#ifEquals user.gender 'Masculino' }}
-          <p class="uk-margin-remove">Género: Masculino</p>
-        {{/ifEquals}}
-        {{#ifEquals user.gender 'No especificado' }}
-          <p class="uk-margin-remove">Género: No especificado</p>
-        {{/ifEquals}}
+      <div>
+        <h5 class="uk-margin-remove">Con Alergias</h5>
+        <ul class="uk-list uk-list-disc uk-margin-small-bottom">
+          {{#each medhistory_var.family_allergies as |member index|}}
+          {{#if this}}
+          {{#ifEquals index 0}}
+          <li>Madre</li>
+          {{/ifEquals}}
+          {{#ifEquals index 1}}
+          <li>Padre</li>
+          {{/ifEquals}}
+          {{#ifEquals index 2}}
+          <li>Hermano(a)</li>
+          {{/ifEquals}}
+          {{#ifEquals index 3}}
+          <li>Abuelo(a) Materno</li>
+          {{/ifEquals}}
+          {{#ifEquals index 4}}
+          <li>Abuelo(a) Paterno</li>
+          {{/ifEquals}}
+          {{#ifEquals index 5}}
+          <li>Tío(a) Materno</li>
+          {{/ifEquals}}
+          {{#ifEquals index 6}}
+          <li>Tío(a) Paterno</li>
+          {{/ifEquals}}
+          {{/if}}
+          {{/each}}
+        </ul>
       </div>
-      <hr>
-      <h3 class="uk-margin-small">Antecedentes Personales Patológicos</h3>
+    </div>
+    <div class="uk-flex uk-child-width-1-2 uk-margin-remove">
+      <div>
+        <h5 class="uk-margin-remove">Cáncer</h5>
+        <ul class="uk-list uk-list-disc uk-margin-small-bottom">
+          {{#each medhistory_var.family_cancer as |member index|}}
+          {{#if this}}
+          {{#ifEquals index 0}}
+          <li>Madre</li>
+          {{/ifEquals}}
+          {{#ifEquals index 1}}
+          <li>Padre</li>
+          {{/ifEquals}}
+          {{#ifEquals index 2}}
+          <li>Hermano(a)</li>
+          {{/ifEquals}}
+          {{#ifEquals index 3}}
+          <li>Abuelo(a) Materno</li>
+          {{/ifEquals}}
+          {{#ifEquals index 4}}
+          <li>Abuelo(a) Paterno</li>
+          {{/ifEquals}}
+          {{#ifEquals index 5}}
+          <li>Tío(a) Materno</li>
+          {{/ifEquals}}
+          {{#ifEquals index 6}}
+          <li>Tío(a) Paterno</li>
+          {{/ifEquals}}
+          {{/if}}
+          {{/each}}
+        </ul>
+      </div>
+      <div>
+        <h5 class="uk-margin-remove">Enfermedades del Corazón</h5>
+        <ul class="uk-list uk-list-disc uk-margin-small-bottom">
+          {{#each medhistory_var.family_heart_disease as |member index|}}
+          {{#if this}}
+          {{#ifEquals index 0}}
+          <li>Madre</li>
+          {{/ifEquals}}
+          {{#ifEquals index 1}}
+          <li>Padre</li>
+          {{/ifEquals}}
+          {{#ifEquals index 2}}
+          <li>Hermano(a)</li>
+          {{/ifEquals}}
+          {{#ifEquals index 3}}
+          <li>Abuelo(a) Materno</li>
+          {{/ifEquals}}
+          {{#ifEquals index 4}}
+          <li>Abuelo(a) Paterno</li>
+          {{/ifEquals}}
+          {{#ifEquals index 5}}
+          <li>Tío(a) Materno</li>
+          {{/ifEquals}}
+          {{#ifEquals index 6}}
+          <li>Tío(a) Paterno</li>
+          {{/ifEquals}}
+          {{/if}}
+          {{/each}}
+        </ul>
+      </div>
+    </div>
+    <div class="uk-flex uk-child-width-1-2 uk-margin-remove">
+      <div>
+        <h5 class="uk-margin-remove">Enfermedades del Hígado</h5>
+        <ul class="uk-list uk-list-disc uk-margin-small-bottom">
+          {{#each medhistory_var.family_liver_disease as |member index|}}
+          {{#if this}}
+          {{#ifEquals index 0}}
+          <li>Madre</li>
+          {{/ifEquals}}
+          {{#ifEquals index 1}}
+          <li>Padre</li>
+          {{/ifEquals}}
+          {{#ifEquals index 2}}
+          <li>Hermano(a)</li>
+          {{/ifEquals}}
+          {{#ifEquals index 3}}
+          <li>Abuelo(a) Materno</li>
+          {{/ifEquals}}
+          {{#ifEquals index 4}}
+          <li>Abuelo(a) Paterno</li>
+          {{/ifEquals}}
+          {{#ifEquals index 5}}
+          <li>Tío(a) Materno</li>
+          {{/ifEquals}}
+          {{#ifEquals index 6}}
+          <li>Tío(a) Paterno</li>
+          {{/ifEquals}}
+          {{/if}}
+          {{/each}}
+        </ul>
+      </div>
+      <div>
+        <h5 class="uk-margin-remove">Enfermedades del Sist. Digestivo</h5>
+        <ul class="uk-list uk-list-disc uk-margin-small-bottom">
+          {{#each medhistory_var.family_digestive_disease as |member index|}}
+          {{#if this}}
+          {{#ifEquals index 0}}
+          <li>Madre</li>
+          {{/ifEquals}}
+          {{#ifEquals index 1}}
+          <li>Padre</li>
+          {{/ifEquals}}
+          {{#ifEquals index 2}}
+          <li>Hermano(a)</li>
+          {{/ifEquals}}
+          {{#ifEquals index 3}}
+          <li>Abuelo(a) Materno</li>
+          {{/ifEquals}}
+          {{#ifEquals index 4}}
+          <li>Abuelo(a) Paterno</li>
+          {{/ifEquals}}
+          {{#ifEquals index 5}}
+          <li>Tío(a) Materno</li>
+          {{/ifEquals}}
+          {{#ifEquals index 6}}
+          <li>Tío(a) Paterno</li>
+          {{/ifEquals}}
+          {{/if}}
+          {{/each}}
+        </ul>
+      </div>
+    </div>
+    <div class="uk-flex uk-child-width-1-2 uk-margin-remove">
+      <div>
+        <h5 class="uk-margin-remove">Enfermedades del Riñón</h5>
+        <ul class="uk-list uk-list-disc uk-margin-small-bottom">
+          {{#each medhistory_var.family_kidney_disease as |member index|}}
+          {{#if this}}
+          {{#ifEquals index 0}}
+          <li>Madre</li>
+          {{/ifEquals}}
+          {{#ifEquals index 1}}
+          <li>Padre</li>
+          {{/ifEquals}}
+          {{#ifEquals index 2}}
+          <li>Hermano(a)</li>
+          {{/ifEquals}}
+          {{#ifEquals index 3}}
+          <li>Abuelo(a) Materno</li>
+          {{/ifEquals}}
+          {{#ifEquals index 4}}
+          <li>Abuelo(a) Paterno</li>
+          {{/ifEquals}}
+          {{#ifEquals index 5}}
+          <li>Tío(a) Materno</li>
+          {{/ifEquals}}
+          {{#ifEquals index 6}}
+          <li>Tío(a) Paterno</li>
+          {{/ifEquals}}
+          {{/if}}
+          {{/each}}
+        </ul>
+      </div>
+      <div>
+        <h5 class="uk-margin-remove">Enfermedades Endócrinas</h5>
+        <ul class="uk-list uk-list-disc uk-margin-small-bottom">
+          {{#each medhistory_var.family_endocrin_disease as |member index|}}
+          {{#if this}}
+          {{#ifEquals index 0}}
+          <li>Madre</li>
+          {{/ifEquals}}
+          {{#ifEquals index 1}}
+          <li>Padre</li>
+          {{/ifEquals}}
+          {{#ifEquals index 2}}
+          <li>Hermano(a)</li>
+          {{/ifEquals}}
+          {{#ifEquals index 3}}
+          <li>Abuelo(a) Materno</li>
+          {{/ifEquals}}
+          {{#ifEquals index 4}}
+          <li>Abuelo(a) Paterno</li>
+          {{/ifEquals}}
+          {{#ifEquals index 5}}
+          <li>Tío(a) Materno</li>
+          {{/ifEquals}}
+          {{#ifEquals index 6}}
+          <li>Tío(a) Paterno</li>
+          {{/ifEquals}}
+          {{/if}}
+          {{/each}}
+        </ul>
+      </div>
+    </div>
+    <div class="uk-flex uk-child-width-1-2 uk-margin-remove">
+      <div>
+        <h5 class="uk-margin-remove">Enfermedades Mentales</h5>
+        <ul class="uk-list uk-list-disc uk-margin-small-bottom">
+          {{#each medhistory_var.family_mental_disease as |member index|}}
+          {{#if this}}
+          {{#ifEquals index 0}}
+          <li>Madre</li>
+          {{/ifEquals}}
+          {{#ifEquals index 1}}
+          <li>Padre</li>
+          {{/ifEquals}}
+          {{#ifEquals index 2}}
+          <li>Hermano(a)</li>
+          {{/ifEquals}}
+          {{#ifEquals index 3}}
+          <li>Abuelo(a) Materno</li>
+          {{/ifEquals}}
+          {{#ifEquals index 4}}
+          <li>Abuelo(a) Paterno</li>
+          {{/ifEquals}}
+          {{#ifEquals index 5}}
+          <li>Tío(a) Materno</li>
+          {{/ifEquals}}
+          {{#ifEquals index 6}}
+          <li>Tío(a) Paterno</li>
+          {{/ifEquals}}
+          {{/if}}
+          {{/each}}
+        </ul>
+      </div>
+      <div>
+        <h5 class="uk-margin-remove">Otras Enfermedades</h5>
+        <ul class="uk-list uk-list-disc uk-margin-small-bottom">
+          {{#each medhistory_var.family_other_disease as |member index|}}
+          {{#if this}}
+          {{#ifEquals index 0}}
+          <li>Madre</li>
+          {{/ifEquals}}
+          {{#ifEquals index 1}}
+          <li>Padre</li>
+          {{/ifEquals}}
+          {{#ifEquals index 2}}
+          <li>Hermano(a)</li>
+          {{/ifEquals}}
+          {{#ifEquals index 3}}
+          <li>Abuelo(a) Materno</li>
+          {{/ifEquals}}
+          {{#ifEquals index 4}}
+          <li>Abuelo(a) Paterno</li>
+          {{/ifEquals}}
+          {{#ifEquals index 5}}
+          <li>Tío(a) Materno</li>
+          {{/ifEquals}}
+          {{#ifEquals index 6}}
+          <li>Tío(a) Paterno</li>
+          {{/ifEquals}}
+          {{/if}}
+          {{/each}}
+        </ul>
+      </div>
+    </div>
+  </div>
+  {{#each consultations_array as |consultation|}}
+  <div class="uk-container uk-padding page">
+    <hr>
+    <div class="uk-flex uk-flex-column">
+      <h4 class="uk-margin-small">Consulta del {{dateFormat consultation.date 'LL'}}</h4>
+      <p class="uk-margin-small">Diagnóstico: <span class="uk-text-bold">{{consultation.diagnosis}}</span> </p>
+      <p class="uk-margin-small">Síntomas indicados por paciente: {{consultation.chief_complaint}}</p>
+      <hr class="uk-divider-small">
+      <h5 class="uk-margin-small">Medicamentos recetados</h5>
+      {{#if consultation.treatment.drug}}
       <table class="uk-table">
-        <caption>Padecimientos Actuales</caption>
-        <thead>
-          <tr>
-            <th class="uk-width-1-5">Padecimiento</th>
-            <th class="uk-width-1-5">Estatus</th>
-            <th class="uk-width-1-6"></th>
-            <th class="uk-width-3-6">Padecimiento</th>
-            <th class="uk-width-1-5">Estatus</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="uk-margin-remove">
-            <td class="uk-margin-small">Diabetes</td>
-            {{#if medhistory_var.health_history.[Diabetes] }}
-              <td class="uk-text-danger uk-margin-small">
-                PRESENTE
-              </td>
-            {{else}}
-              <td class="uk-text-meta uk-margin-small">
-                negado
-              </td>
-            {{/if}}
-            <td class="uk-margin-small"></td>
-            <td class="uk-margin-small">Enfermedades del Corazón:</td>
-            {{#if medhistory_var.health_history.[Enfermedades del Corazón] }}
-              <td class="uk-text-danger uk-margin-small">
-                PRESENTE
-              </td>
-            {{else}}
-              <td class="uk-text-meta uk-margin-small">
-                negado
-              </td>
-            {{/if}}
-          </tr>
-          <tr>
-            <td>Hipertensión</td>
-            {{#if medhistory_var.health_history.[Hipertensión] }}
-              <td class="uk-text-danger">
-                PRESENTE
-              </td>
-            {{else}}
-              <td class="uk-text-meta">
-                negado
-              </td>
-            {{/if}}
-            <td></td>
-            <td>Enfermedades del Hígado:</td>
-            {{#if medhistory_var.health_history.[Enfermedades del Hígado] }}
-              <td class="uk-text-danger">
-                PRESENTE
-              </td>
-            {{else}}
-              <td class="uk-text-meta">
-                negado
-              </td>
-            {{/if}}
-          </tr>
-          <tr>
-            <td>Cáncer</td>
-            {{#if medhistory_var.health_history.[Cáncer] }}
-              <td class="uk-text-danger">
-                PRESENTE
-              </td>
-            {{else}}
-              <td class="uk-text-meta">
-                negado
-              </td>
-            {{/if}}
-            <td></td>
-            <td>Enfermedades del Riñón:</td>
-            {{#if medhistory_var.health_history.[Enfermedades del Riñón] }}
-              <td class="uk-text-danger">
-                PRESENTE
-              </td>
-            {{else}}
-              <td class="uk-text-meta">
-                negado
-              </td>
-            {{/if}}
-          </tr>
-          <tr>
-            <td>Asma</td>
-            {{#if medhistory_var.health_history.[Asma] }}
-              <td class="uk-text-danger">
-                PRESENTE
-              </td>
-            {{else}}
-              <td class="uk-text-meta">
-                negado
-              </td>
-            {{/if}}
-            <td></td>
-            <td>Enfermedades Endócrinas:</td>
-            {{#if medhistory_var.health_history.[Enfermedades Endócrinas] }}
-              <td class="uk-text-danger">
-                PRESENTE
-              </td>
-            {{else}}
-              <td class="uk-text-meta">
-                negado
-              </td>
-            {{/if}}
-          </tr>
-          <tr>
-            <td>Alergias</td>
-            {{#if medhistory_var.health_history.[Alergias] }}
-              <td class="uk-text-danger">
-                PRESENTE
-              </td>
-            {{else}}
-              <td class="uk-text-meta">
-                negado
-              </td>
-            {{/if}}
-            <td></td>
-            <td>Enfermedades del Sist. Digestivo:</td>
-            {{#if medhistory_var.health_history.[Enfermedades del Sist. Digestivo] }}
-              <td class="uk-text-danger">
-                PRESENTE
-              </td>
-            {{else}}
-              <td class="uk-text-meta">
-                negado
-              </td>
-            {{/if}}
-          </tr>
-          <tr>
-            <td>Otras</td>
-            {{#if medhistory_var.health_history.[Otras] }}
-              <td class="uk-text-danger">
-                PRESENTE
-              </td>
-            {{else}}
-              <td class="uk-text-meta">
-                negado
-              </td>
-            {{/if}}
-            <td></td>
-            <td>Enfermedades Mentales:</td>
-            {{#if medhistory_var.health_history.[Enfermedades Mentales] }}
-              <td class="uk-text-danger">
-                PRESENTE
-              </td>
-            {{else}}
-              <td class="uk-text-meta">
-                negado
-              </td>
-            {{/if}}
-          </tr>
-        </tbody>
-      </table>
-      <h4 class="uk-margin-remove">Alergias Registradas</h4>
-      <ul class="uk-list uk-list-disc uk-margin-large-bottom">
-        {{#each medhistory_var.allergies}}
-          <li>{{this}}</li>
+        <tr class="uk-margin-small">
+          <th class="uk-width-1-5">Nombre</th>
+          <th class="uk-width-1-5">Presentación</th>
+          <th class="uk-width-1-5">Dosis</th>
+          <th class="uk-width-1-5">Días</th>
+          <th class="uk-width-2-5">Indicaciones</th>
+        </tr>
+        {{#each consultation.treatment.drugs as |drug|}}
+        <tr class="uk-margin-small">
+          <td>{{drug.name}}</td>
+          <td>{{drug.dosage_form}}</td>
+          <td>{{drug.dose}}</td>
+          <td>{{drug.periodicity}}</td>
+          <td>{{drug.directions}}</td>
+        </tr>
         {{/each}}
-      </ul>
-      {{!-- <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br> --}}
-      
-    </div>
-    <div class="uk-container uk-padding page">
-        <hr>
-        <h3 class="uk-margin-small">Antecedentes Personales NO Patológicos</h3>
-        <table class="uk-table uk-margin-small">
-          <tbody>
-            <tr>
-              <td class="uk-width-2-5">Horas de Actividad Física Semanal:</td>
-              <td class="uk-width-1-5">{{ medhistory_var.weekly_exercise_hours }}</td>
-              <td class="uk-width-1-6"></td>
-              <td class="uk-width-1-5">Tabaquismo:</td>
-              <td class="uk-width-1-5">{{ medhistory_var.smoking_status }}</td>
-            </tr>
-            <tr>
-              <td>Hábitos de Sueño:</td>
-              <td>{{ medhistory_var.sleep_status }}</td>
-              <td></td>
-              <td>Alcoholismo:</td>
-              <td>{{ medhistory_var.alcoholism }}</td>
-            </tr>
-            <tr>
-              <td>Hábitos Alimenticios:</td>
-              <td>{{ medhistory_var.nutritional_status }}</td>
-              <td></td>
-              <td>Higiene Bucal:</td>
-              <td>{{ medhistory_var.oral_hygiene }}</td>
-            </tr>
-          </tbody>
-        </table>
-        <hr>
-        <h3 class="uk-margin-small">Antecedentes Heredo-Familiares</h3>
-        <div class="uk-flex uk-child-width-1-2 uk-margin-remove">
-          <div>
-            <h5 class="uk-margin-remove">Diabéticos</h5>
-              <ul class="uk-list uk-list-disc uk-margin-small-bottom">
-              {{#each medhistory_var.family_diabetes as |member index|}}
-                {{#if this}}
-                  {{#ifEquals index 0}}
-                    <li>Madre</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 1}}
-                    <li>Padre</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 2}}
-                    <li>Hermano(a)</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 3}}
-                    <li>Abuelo(a) Materno</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 4}}
-                    <li>Abuelo(a) Paterno</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 5}}
-                    <li>Tío(a) Materno</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 6}}
-                    <li>Tío(a) Paterno</li>
-                  {{/ifEquals}}
-                {{/if}}
-              {{/each}}
-            </ul>
-          </div>
-          <div>
-            <h5 class="uk-margin-remove">Asmáticos</h5>
-              <ul class="uk-list uk-list-disc uk-margin-small-bottom">
-              {{#each medhistory_var.family_asthma as |member index|}}
-                {{#if this}}
-                  {{#ifEquals index 0}}
-                    <li>Madre</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 1}}
-                    <li>Padre</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 2}}
-                    <li>Hermano(a)</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 3}}
-                    <li>Abuelo(a) Materno</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 4}}
-                    <li>Abuelo(a) Paterno</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 5}}
-                    <li>Tío(a) Materno</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 6}}
-                    <li>Tío(a) Paterno</li>
-                  {{/ifEquals}}
-                {{/if}}
-              {{/each}}
-            </ul>
-          </div>
-        </div>
-        <div class="uk-flex uk-child-width-1-2 uk-margin-remove">
-          <div>
-            <h5 class="uk-margin-remove">Hipertensos</h5>
-              <ul class="uk-list uk-list-disc uk-margin-small-bottom">
-              {{#each medhistory_var.family_hypertension as |member index|}}
-                {{#if this}}
-                  {{#ifEquals index 0}}
-                    <li>Madre</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 1}}
-                    <li>Padre</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 2}}
-                    <li>Hermano(a)</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 3}}
-                    <li>Abuelo(a) Materno</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 4}}
-                    <li>Abuelo(a) Paterno</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 5}}
-                    <li>Tío(a) Materno</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 6}}
-                    <li>Tío(a) Paterno</li>
-                  {{/ifEquals}}
-                {{/if}}
-              {{/each}}
-            </ul>
-          </div>
-          <div>
-            <h5 class="uk-margin-remove">Con Alergias</h5>
-              <ul class="uk-list uk-list-disc uk-margin-small-bottom">
-              {{#each medhistory_var.family_allergies as |member index|}}
-                {{#if this}}
-                  {{#ifEquals index 0}}
-                    <li>Madre</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 1}}
-                    <li>Padre</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 2}}
-                    <li>Hermano(a)</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 3}}
-                    <li>Abuelo(a) Materno</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 4}}
-                    <li>Abuelo(a) Paterno</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 5}}
-                    <li>Tío(a) Materno</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 6}}
-                    <li>Tío(a) Paterno</li>
-                  {{/ifEquals}}
-                {{/if}}
-              {{/each}}
-            </ul>
-          </div>
-        </div>
-        <div class="uk-flex uk-child-width-1-2 uk-margin-remove">
-          <div>
-            <h5 class="uk-margin-remove">Cáncer</h5>
-              <ul class="uk-list uk-list-disc uk-margin-small-bottom">
-              {{#each medhistory_var.family_cancer as |member index|}}
-                {{#if this}}
-                  {{#ifEquals index 0}}
-                    <li>Madre</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 1}}
-                    <li>Padre</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 2}}
-                    <li>Hermano(a)</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 3}}
-                    <li>Abuelo(a) Materno</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 4}}
-                    <li>Abuelo(a) Paterno</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 5}}
-                    <li>Tío(a) Materno</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 6}}
-                    <li>Tío(a) Paterno</li>
-                  {{/ifEquals}}
-                {{/if}}
-              {{/each}}
-            </ul>
-          </div>
-          <div>
-            <h5 class="uk-margin-remove">Enfermedades del Corazón</h5>
-              <ul class="uk-list uk-list-disc uk-margin-small-bottom">
-              {{#each medhistory_var.family_heart_disease as |member index|}}
-                {{#if this}}
-                  {{#ifEquals index 0}}
-                    <li>Madre</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 1}}
-                    <li>Padre</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 2}}
-                    <li>Hermano(a)</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 3}}
-                    <li>Abuelo(a) Materno</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 4}}
-                    <li>Abuelo(a) Paterno</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 5}}
-                    <li>Tío(a) Materno</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 6}}
-                    <li>Tío(a) Paterno</li>
-                  {{/ifEquals}}
-                {{/if}}
-              {{/each}}
-            </ul>
-          </div>
-        </div>
-        <div class="uk-flex uk-child-width-1-2 uk-margin-remove">
-          <div>
-            <h5 class="uk-margin-remove">Enfermedades del Hígado</h5>
-              <ul class="uk-list uk-list-disc uk-margin-small-bottom">
-              {{#each medhistory_var.family_liver_disease as |member index|}}
-                {{#if this}}
-                  {{#ifEquals index 0}}
-                    <li>Madre</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 1}}
-                    <li>Padre</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 2}}
-                    <li>Hermano(a)</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 3}}
-                    <li>Abuelo(a) Materno</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 4}}
-                    <li>Abuelo(a) Paterno</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 5}}
-                    <li>Tío(a) Materno</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 6}}
-                    <li>Tío(a) Paterno</li>
-                  {{/ifEquals}}
-                {{/if}}
-              {{/each}}
-            </ul>
-          </div>
-          <div>
-            <h5 class="uk-margin-remove">Enfermedades del Sist. Digestivo</h5>
-              <ul class="uk-list uk-list-disc uk-margin-small-bottom">
-              {{#each medhistory_var.family_digestive_disease as |member index|}}
-                {{#if this}}
-                  {{#ifEquals index 0}}
-                    <li>Madre</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 1}}
-                    <li>Padre</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 2}}
-                    <li>Hermano(a)</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 3}}
-                    <li>Abuelo(a) Materno</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 4}}
-                    <li>Abuelo(a) Paterno</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 5}}
-                    <li>Tío(a) Materno</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 6}}
-                    <li>Tío(a) Paterno</li>
-                  {{/ifEquals}}
-                {{/if}}
-              {{/each}}
-            </ul>
-          </div>
-        </div>
-        <div class="uk-flex uk-child-width-1-2 uk-margin-remove">
-          <div>
-            <h5 class="uk-margin-remove">Enfermedades del Riñón</h5>
-              <ul class="uk-list uk-list-disc uk-margin-small-bottom">
-              {{#each medhistory_var.family_kidney_disease as |member index|}}
-                {{#if this}}
-                  {{#ifEquals index 0}}
-                    <li>Madre</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 1}}
-                    <li>Padre</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 2}}
-                    <li>Hermano(a)</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 3}}
-                    <li>Abuelo(a) Materno</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 4}}
-                    <li>Abuelo(a) Paterno</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 5}}
-                    <li>Tío(a) Materno</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 6}}
-                    <li>Tío(a) Paterno</li>
-                  {{/ifEquals}}
-                {{/if}}
-              {{/each}}
-            </ul>
-          </div>
-          <div>
-            <h5 class="uk-margin-remove">Enfermedades Endócrinas</h5>
-              <ul class="uk-list uk-list-disc uk-margin-small-bottom">
-              {{#each medhistory_var.family_endocrin_disease as |member index|}}
-                {{#if this}}
-                  {{#ifEquals index 0}}
-                    <li>Madre</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 1}}
-                    <li>Padre</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 2}}
-                    <li>Hermano(a)</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 3}}
-                    <li>Abuelo(a) Materno</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 4}}
-                    <li>Abuelo(a) Paterno</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 5}}
-                    <li>Tío(a) Materno</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 6}}
-                    <li>Tío(a) Paterno</li>
-                  {{/ifEquals}}
-                {{/if}}
-              {{/each}}
-            </ul>
-          </div>
-        </div>
-        <div class="uk-flex uk-child-width-1-2 uk-margin-remove">
-          <div>
-            <h5 class="uk-margin-remove">Enfermedades Mentales</h5>
-              <ul class="uk-list uk-list-disc uk-margin-small-bottom">
-              {{#each medhistory_var.family_mental_disease as |member index|}}
-                {{#if this}}
-                  {{#ifEquals index 0}}
-                    <li>Madre</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 1}}
-                    <li>Padre</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 2}}
-                    <li>Hermano(a)</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 3}}
-                    <li>Abuelo(a) Materno</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 4}}
-                    <li>Abuelo(a) Paterno</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 5}}
-                    <li>Tío(a) Materno</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 6}}
-                    <li>Tío(a) Paterno</li>
-                  {{/ifEquals}}
-                {{/if}}
-              {{/each}}
-            </ul>
-          </div>
-          <div>
-            <h5 class="uk-margin-remove">Otras Enfermedades</h5>
-              <ul class="uk-list uk-list-disc uk-margin-small-bottom">
-              {{#each medhistory_var.family_other_disease as |member index|}}
-                {{#if this}}
-                  {{#ifEquals index 0}}
-                    <li>Madre</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 1}}
-                    <li>Padre</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 2}}
-                    <li>Hermano(a)</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 3}}
-                    <li>Abuelo(a) Materno</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 4}}
-                    <li>Abuelo(a) Paterno</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 5}}
-                    <li>Tío(a) Materno</li>
-                  {{/ifEquals}}
-                  {{#ifEquals index 6}}
-                    <li>Tío(a) Paterno</li>
-                  {{/ifEquals}}
-                {{/if}}
-              {{/each}}
-            </ul>
-          </div>
-        </div>
-    </div>
-    {{#each consultations_array as |consultation|}}
-      <div class="uk-container uk-padding page">
-        <hr>
-        <div class="uk-flex uk-flex-column">
-          <h4 class="uk-margin-small">Consulta del {{dateFormat consultation.date 'LL'}}</h4>
-          <p class="uk-margin-small">Diagnóstico: <span class="uk-text-bold">{{consultation.diagnosis}}</span> </p>
-          <p class="uk-margin-small">Síntomas indicados por paciente: {{consultation.chief_complaint}}</p>
-          <hr class="uk-divider-small">
-          <h5 class="uk-margin-small">Medicamentos recetados</h5>
-          {{#if consultation.treatment.drug}}
-            <table class="uk-table">
-              <tr class="uk-margin-small">
-                <th class="uk-width-1-5">Nombre</th>
-                <th class="uk-width-1-5">Presentación</th>
-                <th class="uk-width-1-5">Dosis</th>
-                <th class="uk-width-1-5">Días</th>
-                <th class="uk-width-2-5">Indicaciones</th>
-              </tr>
-              {{#each consultation.treatment.drugs as |drug|}}
-                <tr class="uk-margin-small">
-                  <td>{{drug.name}}</td>
-                  <td>{{drug.dosage_form}}</td>
-                  <td>{{drug.dose}}</td>
-                  <td>{{drug.periodicity}}</td>
-                  <td>{{drug.directions}}</td>
-                </tr>
-              {{/each}}
-            </table>
-          {{else}}
-            <h5 class="uk-text-center uk-text-danger uk-margin-small">No se registro ningún medicamento en la receta correspondiente</h5>
-          {{/if}}
-          {{#if consultation.treatment.image}}
-            <h5 class="uk-text-center uk-margin-small">Imagen de la receta</h5>
-            <div class="uk-flex uk-flex-center">
-              <div class="uk-width-4-5 uk-flex uk-flex-center uk-height-max-large">
-                <img class="pdf-image" src={{consultation.treatment.image}} alt="">
-              </div>
-            </div>
-          {{else}}
-            <h5 class="uk-text-center uk-text-danger uk-margin-small">No hay imagen de receta disponible</h5>
-          {{/if}}
+      </table>
+      {{else}}
+      <h5 class="uk-text-center uk-text-danger uk-margin-small">No se registro ningún medicamento en la receta
+        correspondiente</h5>
+      {{/if}}
+      {{#if consultation.treatment.image}}
+      <h5 class="uk-text-center uk-margin-small">Imagen de la receta</h5>
+      <div class="uk-flex uk-flex-center">
+        <div class="uk-width-4-5 uk-flex uk-flex-center uk-height-max-large">
+          <img class="pdf-image" src={{consultation.treatment.image}} alt="">
         </div>
       </div>
-    {{/each}}
-  </body>
+      {{else}}
+      <h5 class="uk-text-center uk-text-danger uk-margin-small">No hay imagen de receta disponible</h5>
+      {{/if}}
+    </div>
+  </div>
+  {{/each}}
+</body>
+
 </html>

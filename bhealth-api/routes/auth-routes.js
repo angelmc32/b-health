@@ -17,7 +17,7 @@ AWS.config.update({
 });
 
 const ses = new AWS.SES({ apiVersion: '2010-12-01' })
-const mailer = 'sendgrid'
+const mailer = 'sendgrid' // select 'aws' or 'sendgrid' according to e-mail service requirements
 
 router.post('/signup', (req, res, next) => {
 
@@ -65,8 +65,8 @@ router.post('/signup', (req, res, next) => {
       const options = {
         filename: 'signup',
         email,
-        text: 'Completa tu registro a Eva',
-        subject: 'Completa tu registro a Eva',
+        text: 'Completa tu registro a Archivo Salud',
+        subject: 'Completa tu registro a Archivo Salud',
         token
       };
 
@@ -97,81 +97,9 @@ router.get('/activate/:activationToken', (req, res, next) => {
 
   jwt.verify(activationToken, process.env.SECRET, (error, decoded) => {
 
-
     console.log(decoded);
-
-    // // Respond with 401 status and failed authentication message in case of an error detected by jwt.verify method
-    // if ( error ) return res.status(401).json({ error, msg: 'Token authentication failed'});
-
-    // // Search for user in database using decoded data (in our app, saved as id for user._id when creating token)
-    // User.findById(decoded.id)
-    // .then( user => {                // Rename the found patient document as "user"
-
-    //   // Save data into the request as user property (req.user), execute next step with next()
-    //   req.user = user;
-    //   next();
-
-    // });
     
   });
-
-  // const params = registerEmailParams(email, token);
-    
-  // // Call mongoose create method, pass the request body (which includes the email, but it's possible to send any
-  // // other additional data from the front-end) and the hashed password as parameters, to be saved in the database
-  // User.create({ ...req.body, password: hashedPassword })
-  // .then( user => {          // Rename the found user document as "user"
-    
-  //   // // Configure options variable to pass as parameter to the mailer send method
-  //   // const options = {
-  //   //   filename: 'signup',
-  //   //   email: user.email,
-  //   //   message: 'Please verify your email',
-  //   //   subject: 'Please verify your email'
-  //   // };
-
-  //   // // Call mailer send method with options variable as parameter for e-mail verification
-  //   // send(options);
-
-  //   const sendEmailOnSignup = ses.sendEmail(params).promise()
-
-  //   sendEmailOnSignup
-  //   .then( data => {
-  //     console.log('email submitted to SES', data);
-  //   })
-  //   .catch( error => {
-  //     console.log('error while sending email', error);
-  //     return res.status(500).json({ error, msg: 'No fue posible verificar su dirección de correo electrónico' })
-  //   })
-
-  //   // // Create a token with jwt: first parameter is data to be serialized into the token, second parameter
-  //   // // is app secret (used as key to create a token signature), third is a callback that passes the error or token
-  //   // jwt.sign({ id: user._id }, process.env.SECRET, (error, token) => {
-
-  //   //   // Delete the password from the user document (returned by mongoose) before sending to front-end
-  //   //   delete user._doc.password;
-
-  //   //   // If there's an error creating the token, respond to the request with a 500 status, the error and a message
-  //   //   if ( error ) return res.status(500).json({ error, msg: 'Error creando el token' });
-
-  //   //   // Respond to the request with a 200 status, the user data and a success message
-  //   //   res.status(200).json({ user, token, msg: 'Su usuario ha sido creado exitosamente, y ha iniciado sesión' });
-
-  //   // });
-
-    
-    
-  // })
-  // .catch( error => {
-    
-  //   if (error.code === 11000)
-  //     res.status(500).json({ error, msg: 'Ya existe una cuenta asociada al correo electrónico' });
-  //   // Respond with 500 status, the error and a message
-    
-  //   res.status(500).json({ error, msg: 'Error durante la creación del usuario' });
-  //   console.log(error);
-  
-  // });
   
 });
 

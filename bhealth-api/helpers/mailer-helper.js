@@ -24,7 +24,7 @@ exports.send = (options) => {
 
   const html = `
     <html>
-      <h1>Bienvenido a Eva</h1>
+      <h1>Bienvenido a Archivo Salud</h1>
       <h3>Verifica tu dirección de correo electrónico</h3>
       <p>Por favor utiliza la siguiente liga para verificar tu correo, ¡y así podrás utilizar la plataforma!</p>
       <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -48,7 +48,7 @@ exports.send = (options) => {
     </html>
   `
   const plainText = `
-    Bienvenido a Eva
+    Bienvenido a Archivo Salud
 
     Verifica tu dirección de correo electrónico
     Por favor utiliza la siguiente liga para verificar tu correo, ¡y así podrás utilizar la plataforma!
@@ -57,7 +57,7 @@ exports.send = (options) => {
   `
 
   const mailOptions = {
-    from: 'Equipo de Eva Salud <noreply@eva-salud.com',
+    from: 'Equipo de Eva Salud <no-reply@archivosalud.com',
     to: options.email,
     subject: options.subject,
     text: plainText,
@@ -72,7 +72,7 @@ exports.sendResetPassword = (options) => {
 
   const html = `
     <html>
-      <h1>Restablecer Contraseña - Eva Salud</h1>
+      <h1>Restablecer Contraseña - Archivo Salud</h1>
       <p>Este mensaje es en respuesta a tu solicitud de restablecer una contraseña olvidada. Para restablecerla, da clic en el siguiente vínculo y sigue las instrucciones proporcionadas.</p>
       <table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
@@ -96,7 +96,7 @@ exports.sendResetPassword = (options) => {
     </html>
   `
   const plainText = `
-    Restablecer Contraseña - Eva Salud
+    Restablecer Contraseña - Archivo Salud
 
     Este mensaje es en respuesta a tu solicitud de restablecer una contraseña olvidada. Para restablecerla, da clic en el siguiente vínculo y sigue las instrucciones proporcionadas.
     
@@ -104,7 +104,7 @@ exports.sendResetPassword = (options) => {
   `
 
   const mailOptions = {
-    from: 'Equipo de Beesalud <noreply@eva-salud.com',
+    from: 'Equipo de Archivo Salud <no-reply@archivosalud.com',
     to: options.email,
     subject: options.subject,
     text: plainText,

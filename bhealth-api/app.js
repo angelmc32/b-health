@@ -38,7 +38,7 @@ app.use(cookieParser());
 // cors package config to allow requests from the url's in the origin array
 app.use(
   cors({
-    origin: ['http://eva-salud.com', 'http://localhost:3001']
+    origin: ['http://archivosalud.com', 'http://eva-salud.com', 'http://localhost:3001']
   })
 );
 
@@ -59,7 +59,7 @@ app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
 
 
 // default value for title local
-app.locals.title = 'B-health API by Mel';
+app.locals.title = 'Archivo Salud API by Mel';
 
 // Routes declaration
 const authRoutes = require('./routes/auth-routes');
