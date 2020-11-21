@@ -55,7 +55,7 @@ const Activation = () => {
 
       // Send UIkit error notification
       UIkit.notification({
-        message: `<p class="uk-text-center">¡Bienvenido a Beesalud!</p>`,
+        message: `<p class="uk-text-center">¡Bienvenido a Archivo Salud!</p>`,
         pos: 'bottom-center',
         status: 'success'
       });
@@ -68,8 +68,14 @@ const Activation = () => {
     })
     .catch( res => {
 
-      setState({...state, buttonText: 'Expirado', errorMsg: res.response.data.msg})
-      const { msg } = res.response.data;
+      let msg;
+
+      if ( res.response ) {
+        msg = res.response.data.msg;
+        setState({...state, buttonText: 'Expirado', errorMsg: res.response.data.msg})
+      } 
+      else
+        msg = "Ocurrió un error, intenta de nuevo"
 
       // Send UIkit error notification
       UIkit.notification({
@@ -77,13 +83,26 @@ const Activation = () => {
         pos: 'bottom-center',
         status: 'danger'
       });
-    })
+
+    });
+    // .catch( res => {
+
+    //   setState({...state, buttonText: 'Expirado', errorMsg: res.response.data.msg})
+    //   const { msg } = res.response.data;
+
+    //   // Send UIkit error notification
+    //   UIkit.notification({
+    //     message: `<p class="uk-text-center">${msg}</p>`,
+    //     pos: 'bottom-center',
+    //     status: 'danger'
+    //   });
+    // })
   }
 
   return (
     <div className="uk-section">
       <div className="uk-container uk-margin-top uk-margin-remove-top@s">
-        <h2>¿Listo para empezar a utilizar Eva?</h2>
+        <h2>¿Listo para empezar a utilizar Archivo Salud?</h2>
         <h4>Haz click en el botón de abajo para activar tu cuenta</h4>
         { buttonText !== 'Expirado' ? 
             <button disabled={buttonText === 'Expirado' ? true : false} className={buttonText !== 'Expirado' ? "uk-button uk-button-primary uk-border-pill uk-width-3-5 uk-width-1-5@s uk-margin" : "uk-hidden"} onClick={clickActivate}>

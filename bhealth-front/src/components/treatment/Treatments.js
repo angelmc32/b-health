@@ -64,25 +64,16 @@ const Treatments = ({ push }) => {
       })
       .catch( res => {
 
-        console.log(res.response)
+        let msg = "Ocurrió un error, intenta de nuevo";
 
-        let { msg } = res.response.data
-
-        if (res.response.status === 401) {
-          localStorage.clear();
-          resetUserContext();
-          UIkit.notification({
-            message: '<p class="uk-text-center">Por favor inicia sesión</p>',
-            pos: 'bottom-center',
-            status: 'warning'
-          });
-          push('/login');
-        } else
-            UIkit.notification({
-              message: `<p class="uk-text-center">${msg}</p>`,
-              pos: 'bottom-center',
-              status: 'danger'
-            });
+        if ( res.response )
+          msg = res.response.data.msg;
+          
+        UIkit.notification({
+          message: `<p class="uk-text-center">${msg}</p>`,
+          pos: 'bottom-center',
+          status: 'danger'
+        });
       });
       
       getDrugs()
@@ -110,25 +101,12 @@ const Treatments = ({ push }) => {
       })
       .catch( res => {
 
-        console.log(res.response)
+        let msg = "Ocurrió un error, intenta de nuevo";
 
-        let { msg } = res.response.data
+        if ( res.response )
+          msg = res.response.data.msg;
 
-        if (res.response.status === 401) {
-          localStorage.clear();
-          resetUserContext();
-          UIkit.notification({
-            message: '<p class="uk-text-center">Por favor inicia sesión</p>',
-            pos: 'bottom-center',
-            status: 'warning'
-          });
-          push('/login');
-        } else
-            UIkit.notification({
-              message: `<p class="uk-text-center">${msg}</p>`,
-              pos: 'bottom-center',
-              status: 'danger'
-            });
+        setState( prevState => ({...prevState, spinnerState: false}))
       });
     }
   }, [])
@@ -236,88 +214,88 @@ const Treatments = ({ push }) => {
               </table>
             : <h5>No tienes tratamientos previos registrados</h5>
           }</div>
-          <div className="uk-overflow-auto">
-            { treatments.length > 0 ?
-              <table className="uk-table uk-table-striped uk-table-hover uk-table-middle">
-                <thead>
-                  <tr>
-                    <th className="uk-text-center">Nombre</th>
-                    <th className="uk-text-center uk-visible@s">Inicio</th>
-                    <th className="uk-text-center uk-visible@s">Fin</th>
-                    <th className="uk-text-center">Detalles</th>
-                    <th className="uk-text-center">Modificar</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  { treatments.length > 0 ? 
-                      treatments.map( (treatment, index) => 
-                        <tr key={index} >
-                          <td className="uk-text-center">{treatment.name}</td>
-                          <td className="uk-text-center uk-visible@s">{moment(treatment.start_date).locale('es').format('L')}</td>
-                          <td className="uk-text-center uk-visible@s">
-                            { treatment.end_date ? moment(treatment.end_date).locale('es').format('L') :
-                            <a className="eva-edit" onClick={event => push({pathname: `${url}/editar`, state: {treatment: treatment}}) } >
-                              No registrada
-                            </a>
-                            }
-                          </td>
-                          <td className="uk-text-center">
-                            <button className="uk-button uk-button-default uk-button-small uk-border-pill" onClick={event =>  push({pathname: '/tratamientos/ver', state: {treatment: treatment} }) } >
-                              Ver
-                            </button>
-                          </td>
-                          <td className="uk-width-1-6 uk-width-auto@s">
-                            <a href={`#modal-sections-${index}`} uk-toggle={`target: #modal-sections-${index}`}>
-                              <span className="uk-margin-small-right uk-text-primary" uk-icon="more-vertical"></span>
-                            </a>
-                            <div id={`modal-sections-${index}`} className="uk-flex-top" uk-modal="true">
-                              <div className="uk-modal-dialog uk-margin-auto-vertical">
-                                <button className="uk-modal-close-default" type="button" uk-close="true" />
-                                <div className="uk-modal-header">
-                                  <h3 className="uk-text-center">Datos del Tratamiento</h3>
-                                  <p className="uk-text-center">Nombre: {treatment.name}</p>
-                                  <p className="uk-text-center">Fecha Inicio: {moment(treatment.start_date).locale('es').format('LL')}</p>
-                                  { treatment.end_date ? 
-                                    <p className="uk-text-center">Fecha Fin: {moment(treatment.end_date).locale('es').format('LL')}</p>
-                                    : 
-                                    <Fragment>
-                                      <p className="uk-text-center">Fecha Fin: <span className="uk-text-danger">No registrada</span></p>
-                                      <div className="uk-flex uk-flex-center">
-                                        <button className="uk-modal-close uk-button uk-button-default uk-border-pill" onClick={event => push({pathname: `${url}/editar`, state: {treatment: treatment}}) } >
-                                          Completar Información
-                                        </button>
-                                      </div>
-                                    </Fragment>
-                                  }
-                                  
-                                </div>
-                                <div className="uk-modal-body uk-padding-small uk-flex uk-flex-column uk-flex-middle">
-                                  { treatment.prescription ? (
-                                      <button className="uk-modal-close uk-button uk-button-default uk-border-pill uk-margin-small uk-width-4-5 uk-width-1-2@s" onClick={event => push({ pathname: '/recetas/ver', state: {prescriptionID: treatment.prescription} }) } >
-                                        Ver Receta
+        <div className="uk-overflow-auto uk-active">
+          { treatments.length > 0 ?
+            <table className="uk-table uk-table-striped uk-table-hover uk-table-middle">
+              <thead>
+                <tr>
+                  <th className="uk-text-center">Nombre</th>
+                  <th className="uk-text-center uk-visible@s">Inicio</th>
+                  <th className="uk-text-center uk-visible@s">Fin</th>
+                  <th className="uk-text-center">Detalles</th>
+                  <th className="uk-text-center">Modificar</th>
+                </tr>
+              </thead>
+              <tbody>
+                { treatments.length > 0 ? 
+                    treatments.map( (treatment, index) => 
+                      <tr key={index} >
+                        <td className="uk-text-center">{treatment.name}</td>
+                        <td className="uk-text-center uk-visible@s">{moment(treatment.start_date).locale('es').format('L')}</td>
+                        <td className="uk-text-center uk-visible@s">
+                          { treatment.end_date ? moment(treatment.end_date).locale('es').format('L') :
+                          <a className="eva-edit" onClick={event => push({pathname: `${url}/editar`, state: {treatment: treatment}}) } >
+                            No registrada
+                          </a>
+                          }
+                        </td>
+                        <td className="uk-text-center">
+                          <button className="uk-button uk-button-default uk-button-small uk-border-pill" onClick={event =>  push({pathname: '/tratamientos/ver', state: {treatment: treatment} }) } >
+                            Ver
+                          </button>
+                        </td>
+                        <td className="uk-width-1-6 uk-width-auto@s">
+                          <a href={`#modal-sections-${index}`} uk-toggle={`target: #modal-sections-${index}`}>
+                            <span className="uk-margin-small-right uk-text-primary" uk-icon="more-vertical"></span>
+                          </a>
+                          <div id={`modal-sections-${index}`} className="uk-flex-top" uk-modal="true">
+                            <div className="uk-modal-dialog uk-margin-auto-vertical">
+                              <button className="uk-modal-close-default" type="button" uk-close="true" />
+                              <div className="uk-modal-header">
+                                <h3 className="uk-text-center">Datos del Tratamiento</h3>
+                                <p className="uk-text-center">Nombre: {treatment.name}</p>
+                                <p className="uk-text-center">Fecha Inicio: {moment(treatment.start_date).locale('es').format('LL')}</p>
+                                { treatment.end_date ? 
+                                  <p className="uk-text-center">Fecha Fin: {moment(treatment.end_date).locale('es').format('LL')}</p>
+                                  : 
+                                  <Fragment>
+                                    <p className="uk-text-center">Fecha Fin: <span className="uk-text-danger">No registrada</span></p>
+                                    <div className="uk-flex uk-flex-center">
+                                      <button className="uk-modal-close uk-button uk-button-default uk-border-pill" onClick={event => push({pathname: `${url}/editar`, state: {treatment: treatment}}) } >
+                                        Completar Información
                                       </button>
-                                    ) : null
-                                  }
-                                </div>
-                                <div className="uk-modal-footer uk-flex uk-flex-column uk-flex-middle">
-                                  <button className="uk-modal-close uk-button uk-button-primary uk-border-pill uk-margin-small uk-width-4-5 uk-width-1-2@s"  onClick={event => push({pathname: `${url}/editar`, state: {treatment: treatment}}) } >
-                                    Modificar
-                                  </button>
-                                  <button className="uk-modal-close uk-button uk-button-danger uk-border-pill uk-margin-small uk-width-4-5 uk-width-1-2@s" onClick={event => push({pathname: `${url}/eliminar`, state: {treatment: treatment}}) } >
-                                    Eliminar
-                                  </button>
-                                </div>
+                                    </div>
+                                  </Fragment>
+                                }
+                                
+                              </div>
+                              <div className="uk-modal-body uk-padding-small uk-flex uk-flex-column uk-flex-middle">
+                                { treatment.prescription ? (
+                                    <button className="uk-modal-close uk-button uk-button-default uk-border-pill uk-margin-small uk-width-4-5 uk-width-1-2@s" onClick={event => push({ pathname: '/recetas/ver', state: {prescriptionID: treatment.prescription} }) } >
+                                      Ver Receta
+                                    </button>
+                                  ) : null
+                                }
+                              </div>
+                              <div className="uk-modal-footer uk-flex uk-flex-column uk-flex-middle">
+                                <button className="uk-modal-close uk-button uk-button-primary uk-border-pill uk-margin-small uk-width-4-5 uk-width-1-2@s"  onClick={event => push({pathname: `${url}/editar`, state: {treatment: treatment}}) } >
+                                  Modificar
+                                </button>
+                                <button className="uk-modal-close uk-button uk-button-danger uk-border-pill uk-margin-small uk-width-4-5 uk-width-1-2@s" onClick={event => push({pathname: `${url}/eliminar`, state: {treatment: treatment}}) } >
+                                  Eliminar
+                                </button>
                               </div>
                             </div>
-                          </td>
-                        </tr>
-                      ) : 
-                      null
-                  }
-                </tbody>
-              </table>
+                          </div>
+                        </td>
+                      </tr>
+                    ) : 
+                    null
+                }
+              </tbody>
+            </table>
             : <h5 className="uk-text-danger">No tienes tratamientos actuales</h5>
-          }
+            }
           </div>
           <div className="uk-container">
             <div className="uk-child-width-1-4@m uk-child-width-1-2 uk-grid-small uk-grid-match" uk-grid="true">

@@ -17,6 +17,7 @@ const EmergencyForm = ({ url, action }) => {
   const { form, resetForm, handleInput, handleSearchbarInput } = useForm();
   const [ state, setState ] = useState({
     isButtonDisabled: false,
+    errorMsg: 'Ha ocurrido un error, intenta de nuevo',
     spinnerState: false,
     errorMessage: null,
     diagnosisInputClass: null,
@@ -125,22 +126,26 @@ const EmergencyForm = ({ url, action }) => {
 
       })
       .catch( res => {          // Error -> notification and redirect if unauthorized
-        const { msg } = res.response.data;
-        if ( msg === 'Sesión expirada. Reinicia sesión por favor.' ) {
+        let status;
+        if ( res.response ) {
+          setState( prevState => ({...prevState, errorMsg: res.response.data.msg}))
+          status = res.response.status;
+        }
+        if (status === 401) {
           localStorage.clear();
           resetUserContext();
-          UIkit.notification({  // Send UIkit error notification
-            message: `<p class="uk-text-center">${msg}</p>`,
+          UIkit.notification({
+            message: `<p class="uk-text-center">${state.errorMsg}</p>`,
             pos: 'bottom-center',
             status: 'warning'
           });
-          push('/login');
+          return push('/login');
         }
         else
-          UIkit.notification({  // Send UIkit error notification
-            message: `<p class="uk-text-center">${msg}</p>`,
+          UIkit.notification({
+            message: `<p class="uk-text-center">${state.errorMsg}</p>`,
             pos: 'bottom-center',
-            status: 'warning'
+            status: 'danger'
           });
         setState( prevState => ({...prevState, isButtonDisabled: false, spinnerState: false}))
       });
@@ -161,20 +166,24 @@ const EmergencyForm = ({ url, action }) => {
 
       })
       .catch( res => {          // Error -> notification and redirect if unauthorized
-        const { msg } = res.response.data;
-        if ( msg === 'Sesión expirada. Reinicia sesión por favor.' ) {
+        let status;
+        if ( res.response ) {
+          setState( prevState => ({...prevState, errorMsg: res.response.data.msg}))
+          status = res.response.status;
+        }
+        if (status === 401) {
           localStorage.clear();
           resetUserContext();
           UIkit.notification({
-            message: `<p class="uk-text-center">${msg}</p>`,
+            message: `<p class="uk-text-center">${state.errorMsg}</p>`,
             pos: 'bottom-center',
             status: 'warning'
           });
-          push('/login');
+          return push('/login');
         }
         else
-          UIkit.notification({  // Send UIkit error notification
-            message: `<p class="uk-text-center">${msg}</p>`,
+          UIkit.notification({
+            message: `<p class="uk-text-center">${state.errorMsg}</p>`,
             pos: 'bottom-center',
             status: 'danger'
           });

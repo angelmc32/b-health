@@ -14,6 +14,11 @@ const Emergency = ({ url }) => {
   const { user, resetUserContext } = useContext(AppContext);
   const { push } = useHistory();
   const [ consultations, setConsultations ] = useState([]);
+  const [ state, setState ] = useState({
+    isLoading: true,
+    isError: false,
+    errorMsg: 'Ha ocurrido un error, intenta de nuevo',
+  });
 
   useEffect( () => {
 
@@ -31,14 +36,33 @@ const Emergency = ({ url }) => {
       
       const { emergencies } = res.data;
       setConsultations(emergencies);
+      setState( prevState => ({...prevState, isLoading: false}))
 
     })
-    .catch( error => {
-      if (error.response.status === 401) {
+    .catch( res => {
+      let status;
+      if ( res.response ) {
+        setState( prevState => ({...prevState, errorMsg: res.response.data.msg}))
+        status = res.response.status;
+      }
+      if (status === 401) {
         localStorage.clear();
         resetUserContext();
-        push('/login');
+        UIkit.notification({
+          message: `<p class="uk-text-center">${state.errorMsg}</p>`,
+          pos: 'bottom-center',
+          status: 'warning'
+        });
+        return push('/login');
       }
+      else
+        UIkit.notification({
+          message: `<p class="uk-text-center">${state.errorMsg}</p>`,
+          pos: 'bottom-center',
+          status: 'danger'
+        });
+      
+      setState( prevState => ({...prevState, isLoading: false, isError: true}))
     })
     
   }, []);
@@ -51,8 +75,11 @@ const Emergency = ({ url }) => {
         + Nueva Urgencia
       </button>
       <div className="uk-overflow-auto">
-        { consultations.length < 1 ? (
-            <h4 className="uk-text-danger">No has agregado urgencias</h4>
+        { state.isLoading ?
+            <h4>Cargando <div uk-spinner="true"></div></h4>
+          :
+          consultations.length < 1 ? (
+            <h4 className="uk-text-danger">{ state.isError ? state.errorMsg : "No has agregado urgencias"}</h4>
           ) : null
         }
         <table className="uk-table uk-table-striped uk-table-hover uk-table-middle">

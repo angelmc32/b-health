@@ -51,9 +51,14 @@ const DrugsForm = ({push, url}) => {
     })
     .catch( res => {
 
-      let { msg } = res.response.data
+      let msg = "Ocurrió un error, intenta de nuevo";
+      let status;
+      if ( res.response ) {
+        msg = res.response.data.msg;
+        status = res.response.status
+      }
 
-      if (res.response.status === 401) {
+      if (status === 401) {
         localStorage.clear();
         resetUserContext();
         UIkit.notification({
@@ -63,13 +68,15 @@ const DrugsForm = ({push, url}) => {
         });
         resetForm();
         push('/login');
-      } else
-          UIkit.notification({
-            message: `<p class="uk-text-center">${msg}</p>`,
-            pos: 'bottom-center',
-            status: 'danger'
-          });
-          setState( prevState => ({...prevState, isButtonDisabled: false, spinnerState: false}))
+      } 
+      else
+        UIkit.notification({
+          message: `<p class="uk-text-center">${msg}</p>`,
+          pos: 'bottom-center',
+          status: 'danger'
+        });
+        
+        setState( prevState => ({...prevState, isButtonDisabled: false, spinnerState: false}))
     });
 
   }
@@ -125,7 +132,7 @@ const DrugsForm = ({push, url}) => {
                 <p className="uk-text-center uk-text-danger">{state.errorMessage}</p> : null 
               }
               <div className="uk-width-1-1 uk-flex uk-flex-center uk-margin-medium-top">
-                <button type="submit" className="uk-button uk-button-primary uk-button uk-border-pill uk-width-2-3 uk-width-1-4@m uk-align-center">
+                <button type="submit" className="uk-button uk-button-primary uk-button uk-border-pill uk-width-2-3 uk-width-1-3@m uk-align-center" disabled={state.spinnerState}>
                   { !state.spinnerState ? "Agregar" : "Guardando"}  <div className={ state.spinnerState ? 'uk-visible' : 'uk-hidden'} uk-spinner="true"></div>
                 </button>
               </div>

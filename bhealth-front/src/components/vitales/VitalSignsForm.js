@@ -137,14 +137,28 @@ const VitalSignsForm = ({push, url}) => {
     })
     .catch( res => {
 
-      const { msg } = res.response.data
-
-      // Send UIkit error notification
-      UIkit.notification({
-        message: `<p class="uk-text-center">${msg}</p>`,
-        pos: 'bottom-center',
-        status: 'danger'
-      });
+      let msg = "Ocurrió un error, intenta de nuevo";
+      let status;
+      if ( res.response ) {
+        msg = res.response.data.msg;
+        status = res.response.status
+      }
+      if (status === 401) {
+        localStorage.clear();
+        resetUserContext();
+        UIkit.notification({
+          message: `<p class="uk-text-center">${msg}</p>`,
+          pos: 'bottom-center',
+          status: 'warning'
+        });
+        return push('/login');
+      }
+      else
+        UIkit.notification({
+          message: `<p class="uk-text-center">${msg}</p>`,
+          pos: 'bottom-center',
+          status: 'danger'
+        });
       
       setState( prevState => ({...prevState, isButtonDisabled: false, spinnerState: false}))
 

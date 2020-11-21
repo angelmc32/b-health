@@ -99,7 +99,14 @@ const ResetPassword = () => {
       push('/login');
     })
     .catch( res => {
-      const { msg } = res.response.data;
+
+      let msg;
+      if ( res.response )
+        msg = res.response.data.msg;
+      else
+        msg = "Ocurrió un error, intenta de nuevo"
+
+      // Send UIkit error notification
       UIkit.notification({
         message: `<p class="uk-text-center">${msg}</p>`,
         pos: 'bottom-center',
@@ -108,7 +115,8 @@ const ResetPassword = () => {
       setIsButtonDisabled(false);
       setSpinnerState(false);
       push('/recuperar');
-    })
+
+    });
   }
 
   return (

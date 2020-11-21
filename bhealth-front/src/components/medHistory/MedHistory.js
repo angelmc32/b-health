@@ -99,8 +99,19 @@ const MedHistory = () => {
       setHealthHistoryState(medicalHistory.health_history)
     })
     .catch( res => {
-      console.log(res)
-      const { msg } = res.response.data
+      
+      let msg = "Ocurrió un error, intenta de nuevo";
+      if ( !res.response ) {
+        UIkit.notification({
+          message: `<p class="uk-text-center>${msg}</p>`,
+          pos: 'bottom-center',
+          status: 'danger'
+        });
+        return push('/')
+      }
+      else
+        msg = res.response.data.msg;
+
       if (res.response.status === 401) {
         localStorage.clear();
         resetUserContext();
@@ -156,7 +167,17 @@ const MedHistory = () => {
     })
     .catch( res => {
 
-      const { msg } = res.response.data
+      let msg = "Ocurrió un error, intenta de nuevo";
+      if ( !res.response ) {
+        UIkit.notification({
+          message: `<p class="uk-text-center>${msg}</p>`,
+          pos: 'bottom-center',
+          status: 'danger'
+        });
+        return push('/')
+      }
+      else
+        msg = res.response.data.msg;
       setState( prevState => ({...prevState, isButtonDisabled: false}))
       // Send UIkit error notification
       if (res.response.status === 401) {

@@ -10,6 +10,7 @@ router.get('/', verifyToken, (req, res, next) => {
   const { id } = req.user;    // Destructure the user id from the request
 
   Drug.find({ user: id })
+  .sort({createdAt: -1})
   .then( drugs => {
 
     res.status(200).json({ drugs });

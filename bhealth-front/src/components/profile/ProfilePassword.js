@@ -112,7 +112,12 @@ const ProfilePassword = ({ push, url }) => {
     })
     .catch( res => {
 
-      const { msg } = res.response.data;
+      let msg;
+
+      if ( res.response )
+        msg = res.response.data.msg;
+      else
+        msg = "Ocurrió un error, intenta de nuevo"
 
       setState( prevState => 
         ({

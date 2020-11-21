@@ -12,8 +12,6 @@ const Landing = () => {
   const { user, setUser, route, setRoute } = useContext(AppContext); // Destructure user state variable
   
   const { push } = useHistory();
-
-  console.log(useHistory())
   
   useEffect( () => {
 
@@ -33,17 +31,18 @@ const Landing = () => {
             <h1>La <span className="uk-text-secondary uk-text-bold">salud</span> de tu <span className="uk-text-primary uk-text-bold">familia</span>, <br/> en tus manos.</h1>
             <h3 className="uk-margin-small">Tus datos. Tus medicamentos. Tu salud.</h3>
             
-            <button className="uk-button uk-button-primary uk-button-large uk-width-2-3 uk-width-1-3@s uk-width-1-5@xl uk-border-pill uk-margin-large">
-              <NavLink to="/registro" className="uk-width-1-1">
+            <NavLink to="/registro" className="uk-width-1-1 uk-margin-large">
+              <button className="uk-button uk-button-primary uk-button-large uk-width-2-3 uk-width-1-3@s uk-width-1-5@xl uk-border-pill">
                 Regístrate Gratis
-              </NavLink>
-            </button>
-            
-            <button className="uk-button uk-button-muted uk-button-large uk-width-2-3 uk-border-pill uk-hidden@s">
-              <NavLink to="/login" className="uk-width-1-1">
+              </button>
+            </NavLink>
+
+            <NavLink to="/login" className="uk-width-1-1 uk-margin">
+              <button className="uk-button uk-button-muted uk-button-large uk-width-2-3 uk-border-pill uk-hidden@s">
                 Inicia Sesión
-              </NavLink>
-            </button>
+              </button>
+            </NavLink>
+            
             
         </div>
       </div>

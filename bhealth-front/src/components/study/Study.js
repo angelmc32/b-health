@@ -14,6 +14,12 @@ const Study = ({ studyType, url }) => {
   const { push } = useHistory();                    // Destructure push method from useHistory to "redirect" user
   const { user, resetUserContext } = useContext(AppContext);
   const [ studies, setStudies ] = useState([]);
+  const [ state, setState ] = useState({
+    loadingMsg: 'Cargando',
+    isLoading: true,
+    isError: false,
+    errorMsg: 'Ha ocurrido un error, intenta de nuevo',
+  });
 
   useEffect( () => {
 
@@ -35,12 +41,31 @@ const Study = ({ studyType, url }) => {
       const { studies } = res.data;
       setStudies(studies);
     })
-    .catch( error => {
-      if (error.response.status === 401) {
+    .catch( res => {
+
+      let status;
+      if ( res.response ) {
+        setState( prevState => ({...prevState, errorMsg: res.response.data.msg}))
+        status = res.response.status;
+      }
+      if (status === 401) {
         localStorage.clear();
         resetUserContext();
-        push('/login');
+        UIkit.notification({
+          message: `<p class="uk-text-center">${state.errorMsg}</p>`,
+          pos: 'bottom-center',
+          status: 'warning'
+        });
+        return push('/login');
       }
+      else
+        UIkit.notification({
+          message: `<p class="uk-text-center">${state.errorMsg}</p>`,
+          pos: 'bottom-center',
+          status: 'danger'
+        });
+      
+      setState( prevState => ({...prevState, isLoading: false, isError: true}))
 
     });
   }, [studyType]);
@@ -52,8 +77,11 @@ const Study = ({ studyType, url }) => {
         + Nuevo Estudio
       </button>
       <div className="uk-overflow-auto">
-        { studies.length < 1 ? (
-            <h4 className="uk-text-danger">No has agregado estudios</h4>
+        { state.isLoading ?
+            <h4>Cargando <div uk-spinner="true"></div></h4>
+          :
+          studies.length < 1 ? (
+            <h4 className="uk-text-danger">{ state.isError ? state.errorMsg : "No has agregado estudios"}</h4>
           ) : null
         }
         <table className="uk-table uk-table-striped uk-table-hover uk-table-middle">

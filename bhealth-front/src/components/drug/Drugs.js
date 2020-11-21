@@ -19,6 +19,9 @@ const Drugs = ({ push }) => {
   const [ state, setState ] = useState({
     isButtonDisabled: false,
     spinnerState: true,
+    isError: false,
+    errorMsg: 'Ha ocurrido un error, intenta de nuevo',
+    isLoading: true,
     morningArray: [],
     afternoonArray: [],
     nightArray: [],
@@ -46,30 +49,33 @@ const Drugs = ({ push }) => {
       const { drugs } = res.data;
       setDrugs(drugs);
 
-      setState( prevState => ({...prevState, spinnerState: false}))
+      setState( prevState => ({...prevState, spinnerState: false, isLoading: false}))
 
     })
     .catch( res => {
 
-      console.log(res.response)
+      let status;
+      if ( res.response ) {
+        setState( prevState => ({...prevState, errorMsg: res.response.data.msg}) );
+        status = res.response.status
+      }
 
-      let { msg } = res.response.data
-
-      if (res.response.status === 401) {
+      if (status === 401) {
         localStorage.clear();
         resetUserContext();
         UIkit.notification({
-          message: '<p class="uk-text-center">Por favor inicia sesión</p>',
+          message: `<p class="uk-text-center">${state.errorMsg}</p>`,
           pos: 'bottom-center',
           status: 'warning'
         });
         push('/login');
       } else
           UIkit.notification({
-            message: `<p class="uk-text-center">${msg}</p>`,
+            message: `<p class="uk-text-center">${state.errorMsg}</p>`,
             pos: 'bottom-center',
             status: 'danger'
           });
+      setState( prevState => ({...prevState, isLoading: false, isError: true}))
     });
 
   }, [])
@@ -87,8 +93,11 @@ const Drugs = ({ push }) => {
         + Medicamento
       </button>
       <div className="uk-overflow-auto">
-        { drugs.length < 1 ? (
-            <h4 className="uk-text-danger">No has agregado medicamentos</h4>
+        { state.isLoading ?
+            <h4>Cargando <div uk-spinner="true"></div></h4>
+          : 
+          drugs.length < 1 ? (
+            <h4 className="uk-text-danger">{ state.isError ? state.errorMsg : "No has agregado medicamentos"}</h4>
           ) : null
         }
         <table className="uk-table uk-table-striped uk-table-hover uk-table-middle">
@@ -96,7 +105,7 @@ const Drugs = ({ push }) => {
             <tr>
               
               <th className="uk-text-center uk-visible">Medicamento</th>
-              <th className="uk-text-center uk-visible">Presentación</th>
+              <th className="uk-text-center uk-visible@m">Presentación</th>
               <th className="uk-text-center">Fecha Agregada</th>
               <th className="uk-text-center">Detalles</th>
               

@@ -149,7 +149,6 @@ const TreatmentsInfo = ({url, action}) => {
     .then( res => {
 
       const { treatment } = res.data   // Destructure updated user document from response
-      console.log('TREATMENT', treatment)
       resetForm();
       setState( prevState => ({...prevState, isUserEditingTreatment: false, isUserEditingDrugs: false, isUserEditingIndications: false, isButtonDisabled: false, spinnerState: false, treatment: treatment, errorMessage: null, isUserAdding: false}));
       push({pathname: `${url}/ver`, state: {treatment: treatment}})
@@ -161,11 +160,17 @@ const TreatmentsInfo = ({url, action}) => {
     })
     .catch( res => {
 
-      const msg = res.response.data;
-      console.log(res.response)
+      let msg = "Ocurrió un error, intenta de nuevo";
+      let status;
+      if ( res.response ) {
+        msg = res.response.data.msg;
+        status = res.response.status
+      }
+      else
+        return push('/tratamientos')
 
       // const { msg } = res.response.data;
-      if ( msg === 'Sesión expirada. Reinicia sesión por favor.' ) {
+      if ( status === 401 ) {
         localStorage.clear();
         resetUserContext();
         UIkit.notification({

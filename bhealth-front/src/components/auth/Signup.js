@@ -27,7 +27,7 @@ const Signup = () => {
   const handleSubmit = (event) => {
 
     event.preventDefault();                     // Prevent page reloading after submit action
-    setSpinnerState(true)
+    setSpinnerState(true);
     
     // Call signup service with form state variable as parameter, which includes form data for e-mail and password
     signup(form)
@@ -48,9 +48,14 @@ const Signup = () => {
     })
     .catch( res => {
 
-      const { msg } = res.response.data;
+      let msg;
       setSpinnerState(false);
-      
+
+      if ( res.response )
+        msg = res.response.data.msg;
+      else
+        msg = "Ocurrió un error, intenta de nuevo"
+
       // Send UIkit error notification
       UIkit.notification({
         message: `<p class="uk-text-center">${msg}</p>`,

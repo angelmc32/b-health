@@ -229,13 +229,9 @@ const AuthForm = ( { submit, action, email = '', password = '', confirm_password
             </div>
             ) : null
           }
-            
-            
 
-          
-
-          <button disabled={action === 'signup' ? isButtonDisabled : false} className="uk-button uk-button-primary uk-border-pill uk-width-3-5 uk-width-1-5@s uk-margin" type="submit">
-            {action === "signup" ? spinnerState ? "Registrando" : "Registrar" : "Entrar"} <div className={ spinnerState ? 'uk-visible' : 'uk-hidden'} uk-spinner="true"></div>
+          <button disabled={action === 'signup' ? isButtonDisabled : spinnerState} className="uk-button uk-button-primary uk-border-pill uk-width-3-5 uk-width-1-5@s uk-margin" type="submit">
+            {action === "signup" ? spinnerState ? "Registrando" : "Registrar" : spinnerState ? "Entrando" : "Entrar"} <div className={ spinnerState ? 'uk-visible' : 'uk-hidden'} uk-spinner="true"></div>
           </button>
 
         </form>

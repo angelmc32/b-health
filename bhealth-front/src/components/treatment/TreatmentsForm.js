@@ -11,7 +11,7 @@ moment.locale('es')
 const TreatmentsForm = ({ url }) => {
 
   const { user, resetUserContext } = useContext(AppContext);
-  const { form, handleInput } = useForm();
+  const { form, handleInput, resetForm } = useForm();
   const { location, push } = useHistory();
   const [ state, setState ] = useState({
     isButtonDisabled: false,
@@ -34,8 +34,6 @@ const TreatmentsForm = ({ url }) => {
     if (!form['start_date']) form['start_date'] = moment().format();
     form['drugs'] = state.drugs;
     form['extra_instructions'] = state.extra_instructions;
-
-    console.log(form);
     
     createTreatment(form)
     .then( res => {
@@ -51,7 +49,12 @@ const TreatmentsForm = ({ url }) => {
     })
     .catch( res => {
 
-      const { msg } = res.response.data;
+      let msg = "Ocurrió un error, intenta de nuevo";
+      if ( res.response )
+        msg = res.response.data.msg;
+      else
+        return push('/tratamientos')
+      
       if ( msg === 'Sesión expirada. Reinicia sesión por favor.' ) {
         localStorage.clear();
         resetUserContext();
@@ -68,8 +71,8 @@ const TreatmentsForm = ({ url }) => {
           pos: 'bottom-center',
           status: 'danger'
         });
-
-      setState( prevState => ({...prevState, isButtonDisabled: false, spinnerState: false}))
+      resetForm();
+      setState( prevState => ({...prevState, isButtonDisabled: false, spinnerState: false}));
     });
 
   }

@@ -8,7 +8,7 @@ const MedicalHistory = require('../models/MedicalHistory')
 
 // Import send method from mailer helper to email verification through sendgrid (config in mailer-helper)
 const { send, sendResetPassword } = require('../helpers/mailer-helper');
-const { registerEmailParams } = require('../helpers/aws-mailer-helper')
+const { registerEmailParams, resetPasswordEmailParams } = require('../helpers/aws-mailer-helper')
 
 AWS.config.update({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -17,7 +17,7 @@ AWS.config.update({
 });
 
 const ses = new AWS.SES({ apiVersion: '2010-12-01' })
-const mailer = 'sendgrid' // select 'aws' or 'sendgrid' according to e-mail service requirements
+const mailer = 'aws' // select 'aws' or 'sendgrid' according to e-mail service requirements
 
 router.post('/signup', (req, res, next) => {
 
@@ -197,7 +197,7 @@ router.post('/login', (req, res, next) => {
     // Verify if password sent is correct, true. If password is incorrect, false and send 401 status
     const isPasswordValid = bcrypt.compareSync(password, user.password);
 
-    if (!isPasswordValid) return res.status(401).json({ msg: 'Contraseña incorrecta' });
+    if (!isPasswordValid) return res.status(401).json({ msg: 'Correo o contraseña incorrecta' });
 
     // Create a token with jwt: first parameter is data to be serialized into the token, second parameter
     // is app secret (used as key to create a token signature), third is a callback that passes the error or token
@@ -218,7 +218,7 @@ router.post('/login', (req, res, next) => {
   .catch( error => {
 
     // Respond with 404 status, the error and a message
-    res.status(404).json({ error, msg: 'Email o contraseña incorrecta' });
+    res.status(404).json({ error, msg: 'Correo o contraseña incorrecta' });
 
   });
   
@@ -231,7 +231,7 @@ router.post('/recover', (req, res, next) => {
   User.findOne({ email }).exec((error, user) => {
 
     if ( error || !user ) 
-      return res.status(400).json({ error, msg: 'No existe una cuenta asociada a este correo electrónico' });
+      return res.status(400).json({ error, msg: 'Revisa tu correo electrónico' });
 
     const { first_name } = user
     
@@ -241,7 +241,7 @@ router.post('/recover', (req, res, next) => {
 
     if ( mailer === 'aws' ) {
 
-      const params = registerEmailParams(email, token);
+      const params = resetPasswordEmailParams(email, token);
 
       const sendEmailOnSignup = ses.sendEmail(params).promise()
 

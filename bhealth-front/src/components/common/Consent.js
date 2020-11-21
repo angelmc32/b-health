@@ -34,7 +34,9 @@ const Consent = () => {
     })
     .catch( res => {
 
-      const { msg } = res.response.data;
+      let msg = "Ocurrió un error, intenta de nuevo";
+      if ( res.response )
+        msg = res.response.data.msg;
 
       // Send UIkit error notification
       UIkit.notification({

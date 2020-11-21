@@ -68,15 +68,23 @@ const RecoverPassword = () => {
       setRoute('success')
     })
     .catch( res => {
-      const { msg } = res.response.data;
+
+      let msg;
+      setSpinnerState(false);
+
+      if ( res.response )
+        msg = res.response.data.msg;
+      else
+        msg = "Ocurrió un error, intenta de nuevo"
+
       // Send UIkit error notification
       UIkit.notification({
         message: `<p class="uk-text-center">${msg}</p>`,
         pos: 'bottom-center',
         status: 'danger'
       });
-      setSpinnerState(false)
-    })
+
+    });
   }
 
   return (

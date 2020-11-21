@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';              // Import React and useContext hook
+import React, { useContext, useEffect, useState } from 'react';              // Import React and useContext hook
 import { useHistory } from 'react-router-dom';          // Import useHistory for "redirection"
 import { AppContext } from '../../AppContext';          // Import AppContext to use created context
 import { login } from '../../services/auth-services';   // Import login service for API call
@@ -12,6 +12,7 @@ const Login = () => {
   const { form, handleInput } = useForm();                // Destructure form state variable and handleInput function
   const { user, setUser, setRoute } = useContext(AppContext);   // Destructure setUser function for user state manipulation
   const { push } = useHistory();                          // Destructure push method from useHistory to "redirect" user
+  const [ spinnerState, setSpinnerState ] = useState(false)
 
   useEffect( () => {
 
@@ -24,13 +25,14 @@ const Login = () => {
   const handleSubmit = (event) => {
 
     event.preventDefault();                     // Prevent page reloading after submit action
+    setSpinnerState(true);
     
     // Call signup service with form state variable as parameter, which includes form data for e-mail and password
     login(form)
     .then( res => {
       
       const { user, token } = res.data;         // Destructure user and token from response, sent by API
-      
+      setSpinnerState(false);
       // Store user and token in localStorage
       localStorage.setItem('user', JSON.stringify(user));
       localStorage.setItem('token', token);
@@ -47,7 +49,13 @@ const Login = () => {
     })
     .catch( res => {
 
-      const { msg } = res.response.data;
+      let msg;
+      setSpinnerState(false);
+
+      if ( res.response )
+        msg = res.response.data.msg;
+      else
+        msg = "Ocurrió un error, intenta de nuevo"
 
       // Send UIkit error notification
       UIkit.notification({
@@ -69,6 +77,7 @@ const Login = () => {
           handleChange={handleInput}
           setRoute={setRoute}
           {...form}
+          spinnerState={spinnerState}
         />
       </div>
     </div>

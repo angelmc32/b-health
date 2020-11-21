@@ -16,6 +16,12 @@ const Prescription = ({ url }) => {
   const { push } = useHistory();                    // Destructure push method from useHistory to "redirect" user
   const { user, resetUserContext } = useContext(AppContext);
   const [ prescriptions, setPrescriptions ] = useState([]);
+  const [ state, setState ] = useState({
+    loadingMsg: 'Cargando',
+    isLoading: true,
+    isError: false,
+    errorMsg: 'Ha ocurrido un error, intenta de nuevo',
+  });
 
   useEffect( () => {
 
@@ -37,14 +43,35 @@ const Prescription = ({ url }) => {
     
       const { prescriptions } = res.data;
       setPrescriptions(prescriptions);
+      setState( prevState => ({...prevState, isLoading: false}))
 
     })
-    .catch( error => {
-      if (error.response.status === 401) {
+    .catch( res => {
+    
+      let status;
+      if ( res.response ) {
+        setState( prevState => ({...prevState, errorMsg: res.response.data.msg}))
+        // msg = res.response.data.msg;
+        status = res.response.status
+      }
+      if (status === 401) {
         localStorage.clear();
         resetUserContext();
-        push('/login');
+        UIkit.notification({
+          message: `<p class="uk-text-center">${state.errorMsg}</p>`,
+          pos: 'bottom-center',
+          status: 'warning'
+        });
+        return push('/login');
       }
+      else
+        UIkit.notification({
+          message: `<p class="uk-text-center">${state.errorMsg}</p>`,
+          pos: 'bottom-center',
+          status: 'danger'
+        });
+
+      setState( prevState => ({...prevState, isLoading: false, isError: true}))
     });
     
   }, []);
@@ -56,8 +83,11 @@ const Prescription = ({ url }) => {
           + Nueva Receta
         </button>
         <div className="uk-overflow-auto">
-          { prescriptions.length < 1 ? (
-              <h4 className="uk-text-danger">No has agregado recetas</h4>
+          { state.isLoading ?
+              <h4>Cargando <div uk-spinner="true"></div></h4>
+            :
+            prescriptions.length < 1 ? (
+              <h4 className="uk-text-danger">{ state.isError? state.errorMsg : "No has agregado recetas"}</h4>
             ) : null
           }
           <table className="uk-table uk-table-striped uk-table-hover uk-table-middle">

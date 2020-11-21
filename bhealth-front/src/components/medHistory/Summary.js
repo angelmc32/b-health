@@ -50,9 +50,12 @@ const Summary = () => {
       // window.open(fileURL);
     })
     .catch( res => {
-      console.log(res.response)
-      let { msg } = res.response.data;
-      if ( msg === 'Sesión expirada. Reinicia sesión por favor.' || res.response.status === 401 ) {
+
+      let msg = "Ocurrió un error, intenta de nuevo";
+      if ( res.response )
+        msg = res.response.data.msg;
+
+      if ( msg === 'Sesión expirada. Reinicia sesión por favor.' ) {
         if (msg === undefined) msg = 'Sesión expirada. Reinicia sesión por favor.';
         localStorage.clear();
         resetUserContext();

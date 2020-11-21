@@ -14,6 +14,11 @@ const ConsultationStudies = ({ studyType, url }) => {
   const { push, location } = useHistory();                    // Destructure push method from useHistory to "redirect" user
   const { user, resetUserContext } = useContext(AppContext);
   const [ studies, setStudies ] = useState([]);
+  const [ state, setState ] = useState({
+    isLoading: true,
+    isError: false,
+    errorMsg: 'Ha ocurrido un error, intenta de nuevo'
+  })
   let consultation;
 
   if ( !location.state )
@@ -40,20 +45,33 @@ const ConsultationStudies = ({ studyType, url }) => {
       getConsultationStudies(consultation._id)
       .then( res => {
         const { studies } = res.data;
-        setStudies(studies)
+        setStudies(studies);
+        setState( prevState => ({...prevState, isLoading: false, isError: false}))
       })
       .catch( res => {
-        const { msg } = res.response.data
-        if (res.response.status === 401) {
+        let status;
+        if ( res.response ) {
+          setState( prevState => ({...prevState, errorMsg: res.response.data.msg}))
+          status = res.response.status;
+        }
+        if (status === 401) {
           localStorage.clear();
           resetUserContext();
-          push('/login');
+          UIkit.notification({
+            message: `<p class="uk-text-center">${state.errorMsg}</p>`,
+            pos: 'bottom-center',
+            status: 'warning'
+          });
+          return push('/login');
         }
-        UIkit.notification({
-          message: `<p class="uk-text-center>${msg}</p>`,
-          pos: 'bottom-center',
-          status: 'danger'
-        });
+        else
+          UIkit.notification({
+            message: `<p class="uk-text-center">${state.errorMsg}</p>`,
+            pos: 'bottom-center',
+            status: 'danger'
+          });
+
+        setState( prevState => ({...prevState, isLoading: false, isError: true}))
       });
     }
 
@@ -71,8 +89,11 @@ const ConsultationStudies = ({ studyType, url }) => {
         </button>
       </div>
       <div className="uk-overflow-auto">
-        { studies.length < 1 ? (
-            <h4 className="uk-text-danger">No has agregado estudios a la consulta</h4>
+        { state.isLoading ? 
+            <h4>Cargando <div uk-spinner="true"></div></h4>
+          :
+          studies.length < 1 ? (
+            <h4 className="uk-text-danger">{ state.isError ? state.errorMsg : "No has agregado estudios a la consulta"}</h4>
           ) : 
             <p className="uk-margin-small">Estos son los estudios correspondientes a la consulta seleccionada:</p> 
         }

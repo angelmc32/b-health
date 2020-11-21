@@ -15,6 +15,11 @@ const Consultation = ({ url }) => {
   const { user, resetUserContext } = useContext(AppContext);
   const { push } = useHistory();
   const [ consultations, setConsultations ] = useState([]);
+  const [ state, setState ] = useState({
+    isLoading: true,
+    isError: false,
+    errorMsg: 'Ha ocurrido un error, intenta de nuevo',
+  });
 
   useEffect( () => {
 
@@ -32,14 +37,34 @@ const Consultation = ({ url }) => {
       
       const { consultations } = res.data;
       setConsultations(consultations);
+      setState( prevState => ({...prevState, isLoading: false}))
 
     })
-    .catch( error => {
-      if (error.response.status === 401) {
+    .catch( res => {
+      
+      let status;
+      if ( res.response ) {
+        setState( prevState => ({...prevState, errorMsg: res.response.data.msg}))
+        status = res.response.status;
+      }
+      if (status === 401) {
         localStorage.clear();
         resetUserContext();
-        push('/login');
+        UIkit.notification({
+          message: `<p class="uk-text-center">${state.errorMsg}</p>`,
+          pos: 'bottom-center',
+          status: 'warning'
+        });
+        return push('/login');
       }
+      else
+        UIkit.notification({
+          message: `<p class="uk-text-center">${state.errorMsg}</p>`,
+          pos: 'bottom-center',
+          status: 'danger'
+        });
+      
+      setState( prevState => ({...prevState, isLoading: false, isError: true}))
     })
     
   }, []);
@@ -57,10 +82,13 @@ const Consultation = ({ url }) => {
         + Nueva Consulta
       </button>
       <div className="uk-overflow-auto">
-        { consultations.length < 1 ? (
-            <h4 className="uk-text-danger">No has agregado consultas</h4>
-          ) : null
-        }
+        { state.isLoading ?
+              <h4>Cargando <div uk-spinner="true"></div></h4>
+            :
+            consultations.length < 1 ? (
+              <h4 className="uk-text-danger">{ state.isError ? state.errorMsg : "No has agregado consultas"}</h4>
+            ) : null
+          }
         <table className="uk-table uk-table-striped uk-table-hover uk-table-middle">
           <thead>
             <tr>

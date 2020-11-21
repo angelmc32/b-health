@@ -18,6 +18,8 @@ const StudyInfo = ({ url, action }) => {
   const [ state, setState ] = useState({
     isButtonDisabled: false,
     spinnerState: false,
+    isError: false,
+    errorMsg: 'Ha ocurrido un error, intenta de nuevo',
     study: {
       date: '',
       doctor: '',
@@ -63,17 +65,27 @@ const StudyInfo = ({ url, action }) => {
         studyID = null;
       })
       .catch( res => {
-        const { msg } = res.response.data
-        if (res.response.status === 401) {
+        let status;
+        if ( res.response ) {
+          setState( prevState => ({...prevState, errorMsg: res.response.data.msg}))
+          status = res.response.status;
+        }
+        if (status === 401) {
           localStorage.clear();
           resetUserContext();
-          push('/login');
+          UIkit.notification({
+            message: `<p class="uk-text-center">${state.errorMsg}</p>`,
+            pos: 'bottom-center',
+            status: 'warning'
+          });
+          return push('/login');
         }
-        UIkit.notification({
-          message: `<p class="uk-text-center">${msg}</p>`,
-          pos: 'bottom-center',
-          status: 'danger'
-        });
+        else
+          UIkit.notification({
+            message: `<p class="uk-text-center">${state.errorMsg}</p>`,
+            pos: 'bottom-center',
+            status: 'danger'
+          });
       });
     }
 
@@ -130,19 +142,28 @@ const StudyInfo = ({ url, action }) => {
       // }
     })
     .catch( res => {
-      const { msg } = res.response.data
-      if (res.response.status === 401) {
+      let status;
+      if ( res.response ) {
+        setState( prevState => ({...prevState, errorMsg: res.response.data.msg}))
+        status = res.response.status;
+      }
+      if (status === 401) {
         localStorage.clear();
         resetUserContext();
-        push('/login');
+        UIkit.notification({
+          message: `<p class="uk-text-center">${state.errorMsg}</p>`,
+          pos: 'bottom-center',
+          status: 'warning'
+        });
+        return push('/login');
       }
       else
         UIkit.notification({
-          message: `<p class="uk-text-center">${msg}</p>`,
+          message: `<p class="uk-text-center">${state.errorMsg}</p>`,
           pos: 'bottom-center',
           status: 'danger'
         });
-      setState( prevState => ({...prevState, isButtonDisabled: false, spinnerState: false}))
+      setState( prevState => ({...prevState, isButtonDisabled: false, spinnerState: false, isError: true}))
     })
 
   }
